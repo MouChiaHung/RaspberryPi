@@ -26,7 +26,7 @@ int main(void) {
 	wiringPiSetup();
 	pinMode(LED, OUTPUT);
 
-	while (true) {
+	while (1) {
 		digitalWrite(LED, HIGH);
 		delay(500);
 		digitalWrite(LED, LOW);
