@@ -55,7 +55,7 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-void handlerKY24(void ) {
+void handlerKY24(void) {
 	digitalWrite(LED, HIGH);
 	delay(DELAY_TIME);
 	digitalWrite(LED, LOW);
@@ -66,19 +66,18 @@ void handlerKY24(void ) {
 	LOG("%s Right count:\n", gCounter, GREEN);
 }
 
-PI_THREAD() (taskKY24) {
+PI_THREAD(taskKY24) {
 	int interval = 0;
 	int time = 0;
 	
-	while (true) {
+	while (1) {
 		time = millis();
 		if (time < interval) continue;
-		printf("");
-		wiringPiISR(LED, INT_EDGE_RISING, &handler);
+		wiringPiISR(LED, INT_EDGE_RISING, &handlerKY24);
 		interval = millis() + DEBOUNCE_TIME;
 	}
 }
-`
+
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	wiringPiSetup();
