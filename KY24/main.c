@@ -9,32 +9,79 @@
 #include <stdlib.h>
 #include <wiringPi.h>
 
+#include <stdarg.h>
+
 /* -------------------------------------------------------------------- */
 /* my define macro                                                     */
 /* -------------------------------------------------------------------- */
 #define LED 0
+#define	MUTEX_KEY 0
+#define	DEBOUNCE_TIME 100
+#define	DELAY_TIME 250
+
+#define NONECOLOR 	"\033[m"
+#define RED 		"\033[0;32;31m"
+#define LIGHT_RED 	"\033[1;31m"
+#define GREEN 		"\033[0;32;32m"
+#define LIGHT_GREEN "\033[1;32m"
+#define BLUE 		"\033[0;32;34m"
+#define LIGHT_BLUE 	"\033[1;34m"
+#define DARY_GRAY 	"\033[1;30m"
+#define CYAN 		"\033[0;36m"
+#define LIGHT_CYAN 	"\033[1;36m"
+#define PURPLE 		"\033[0;35m"
+#define LIGHT_PURPLE "\033[1;35m"
+#define BROWN 		"\033[0;33m"
+#define YELLOW 		"\033[1;33m"
+#define LIGHT_GRAY 	"\033[0;37m"
+#define WHITE 		"\033[1;37m"
+
 /* -------------------------------------------------------------------- */
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
+static volatile int gCounter = 0;
 
 /* -------------------------------------------------------------------- */
 /* implements                                                           */
 /* -------------------------------------------------------------------- */
+void LOG(const char* format, ...)
+{
+	char str[255];
+	va_list ap;
+	va_start(ap,format);
+	vsprintf(str,format,ap);
+	sprintf(str,"%s%s",str,NONECOLOR);
+	printf("%s",str);
+	va_end(ap); 
+}
 
-int main(void) {
-	printf ("Amo Raspberry Pi blink\n") ;
-	wiringPiSetup();
-	pinMode(LED, OUTPUT);
+void handlerKY24(void ) {
+	digitalWrite(LED, HIGH);
+	delay(DELAY_TIME);
+	digitalWrite(LED, LOW);
+	delay(DELAY_TIME);
+	piLock(MUTEX_KEY);
+	gCounter++;
+	piUnlock(MUTEX_KEY);
+	LOG("%s Right count:\n", gCounter, GREEN);
+}
 
+PI_THREAD() (taskKY24) {
+	int interval = 0;
+	int time = 0;
+	
 	while (true) {
-		digitalWrite(LED, HIGH);
-		delay(500);
-		digitalWrite(LED, LOW);
-		delay(500);
+		time = millis();
+		if (time < interval) continue;
+		printf("");
+		wiringPiISR(LED, INT_EDGE_RISING, &handler);
+		interval = millis() + DEBOUNCE_TIME;
 	}
-
-
-
-
+}
+`
+int main(void) {
+	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
+	wiringPiSetup();
+	piThreadCreate(taskKY24);
 	return 0;
 }
