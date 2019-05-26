@@ -9,7 +9,9 @@
 #include <stdlib.h>
 #include <wiringPi.h>
 #include <pthread.h>
+#include <unistd.h>
 #include <stdarg.h>
+
 
 /* -------------------------------------------------------------------- */
 /* my define macro                                                     */
