@@ -43,7 +43,7 @@
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
 int gCounter;
-
+pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER
 /* -------------------------------------------------------------------- */
 /* implements                                                           */
 /* -------------------------------------------------------------------- */
@@ -65,10 +65,13 @@ void handlerKY24(void) {
 	digitalWrite(LED, LOW);
 	delay(DELAY_TIME);
 	//piLock(MUTEX_KEY);
+	pthread_mutex_lock( &mutex1 );
 	LOG("%s going to gCounter++\n", GREEN);
 	(gCounter)++;
+	
 	//piUnlock(MUTEX_KEY);
 	LOG("%s ********* Right count:%d *********\n", gCounter, GREEN);
+	pthread_mutex_unlock( &mutex1 );
 }
 
 #if 0
@@ -95,14 +98,21 @@ void* taskLog(void* arg) {
 	arg = NULL;
 	int interval = 0;
 	int time = 0;
+	
+	pthread_mutex_lock(&mutex1);
+	LOG("%s going to gCounter++\n", GREEN);
+	(gCounter)++;
+	pthread_mutex_unlock( &mutex1 );
+	
 	while (1) {
 		time = millis();
 		if (time < interval) continue;
 		LOG("%s -*-*-*- Testing... -*-*-*-\n", YELLOW);
 		
+		pthread_mutex_lock(&mutex1);
 		LOG("%s going to gCounter++\n", GREEN);
 		(gCounter)++;
-		LOG("%s ********* Right count:%d *********\n", gCounter, GREEN);
+		pthread_mutex_unlock(&mutex1);
 		
 		interval = millis() + 1000;
 		//sleep(1);
@@ -112,8 +122,13 @@ void* taskLog(void* arg) {
 
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
+	
 	wiringPiSetup();
-	gCounter = 10;
+	pthread_mutex_lock( &mutex1 );
+	LOG("%s going to gCounter++\n", GREEN);
+	(gCounter)++;
+	pthread_mutex_unlock( &mutex1 );
+	
 	//piThreadCreate(taskKY24);
 	pthread_t tKY, tLog;
 	pthread_create(&tKY, NULL, taskKY24, NULL);
