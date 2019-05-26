@@ -75,7 +75,7 @@ void handlerKY24(void) {
 		
 	while (digitalRead (SENSOR_0) == HIGH) {
 		LOG("%s ********* HIGH INT and Delay *********\n", RED);
-		delay(500);
+		delay(1000);
 	}	
 }
 
@@ -93,7 +93,7 @@ PI_THREAD(taskKY24) {
 }
 #else 
 void* taskKY24(void* arg) {
-	system ("gpio edge 18 falling") ;
+	system ("gpio edge 18 rising") ;
 	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handlerKY24);
 	return 0;
 }
@@ -122,7 +122,7 @@ int main(void) {
 	wiringPiSetup();
 	pinMode (LED, OUTPUT);
 	pinMode (SENSOR_0, INPUT);
-	pullUpDnControl(SENSOR_0, PUD_UP);
+	pullUpDnControl(SENSOR_0, PUD_DOWN);
 	
 	pthread_mutex_lock( &mutex1 );
 	gCounter = 0;
