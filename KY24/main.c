@@ -73,7 +73,7 @@ void handlerKY24(void) {
 	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);
 	pthread_mutex_unlock(&mutex1);
 	
-	pullUpDnControl(SENSOR_0, PUD_DOWN);
+	digitalWrite(SENSOR_0, LOW);
 }
 
 #if 0
@@ -118,7 +118,6 @@ int main(void) {
 	wiringPiSetup();
 	pinMode (LED, OUTPUT);
 	pinMode (SENSOR_0, INPUT);
-	pullUpDnControl(LED, PUD_DOWN);
 	pullUpDnControl(SENSOR_0, PUD_DOWN);
 	
 	pthread_mutex_lock( &mutex1 );
