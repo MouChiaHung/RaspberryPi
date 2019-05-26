@@ -162,13 +162,19 @@ void* taskShow(void* arg) {
 		else {
 			LOG("%s --------- FAIL ---------\n", RED);
 		}
-		
+		pthread_mutex_unlock(&mutex_cond_show);
+	}
+	return 0;
+}
+
+void* taskReset(void* arg) {
+	int time = 0;
+	while (1) {
 		time = millis();
 		if (time > interval_reset) {
-			//resetCounter();
+			resetCounter();
 			interval_reset = millis() + DELAY_TIME;
 		}
-		pthread_mutex_unlock(&mutex_cond_show);
 	}
 	return 0;
 }
@@ -203,16 +209,15 @@ int main(void) {
 	pinMode (SENSOR_0, INPUT);
 	pullUpDnControl(SENSOR_0, PUD_DOWN);
 	
-	pthread_t tKY, tLog, tShow;
-	LOG("%s going to pthread_create(&tKY, NULL, taskKY24, NULL)\n", GREEN);
+	pthread_t tKY, tLog, tShow, tReset;
 	pthread_create(&tKY, NULL, taskKY24, NULL);
-	LOG("%s going to pthread_create(&tLog, NULL, taskLog, NULL)\n", GREEN);
 	pthread_create(&tLog, NULL, taskLog, NULL);
-	LOG("%s going to pthread_create(&tKY, NULL, taskKY24, NULL)\n", GREEN);
 	pthread_create(&tShow, NULL, taskShow, NULL);
+	pthread_create(&tReset, NULL, taskReset, NULL);
 	pthread_join(tKY, NULL);
 	pthread_join(tLog, NULL);
 	pthread_join(tShow, NULL);
+	pthread_join(tReset, NULL);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
 	return 0;
