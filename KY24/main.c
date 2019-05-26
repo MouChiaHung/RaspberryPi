@@ -160,6 +160,7 @@ void* taskShow(void* arg) {
 		else {
 			LOG("%s --------- FAIL ---------\n", RED);
 		}
+		delay(250);
 		resetCounter();
 		pthread_mutex_unlock(&mutex_cond_show);
 	}
@@ -167,21 +168,19 @@ void* taskShow(void* arg) {
 }
 
 int isPass() {
+	LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
+	LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
 	if (counter_gpio17 == 0) {
-		LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
+		return TEST_FAIL;
 	} 
 	else {
-		LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
-		return TEST_TRUE;
 	}
 	if (counter_gpio18 == 0) {
-		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
+		return TEST_FAIL;
 	} 
 	else {
-		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
-		return TEST_TRUE;
 	}
-	return TEST_FAIL;
+	return TEST_TRUE;
 }
 
 void resetCounter() {
