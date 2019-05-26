@@ -8,7 +8,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <wiringPi.h>
-
+#include <pthread.h>
 #include <stdarg.h>
 
 /* -------------------------------------------------------------------- */
