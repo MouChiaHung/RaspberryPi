@@ -173,6 +173,7 @@ void* taskShow(void* arg) {
 			delay(DELAY_TIME);
 			*/
 			LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
+			resetCounter();
 		} 
 		else {
 			if (is_reset) is_reset = 0;
@@ -195,7 +196,7 @@ void* taskReset(void* arg) {
 			pthread_cond_signal(&cond_show);
 			pthread_mutex_unlock(&mutex_cond_show);
 			resetCounter();
-			interval_reset = millis() + 10000;
+			interval_reset = millis() + 5000;
 			is_reset = 1;
 		}
 	}
@@ -236,20 +237,24 @@ int main(void) {
 	pthread_mutex_init(&mutex_gpio18, 0);
 	pthread_mutex_init(&mutex_cond_show, 0);
 	
+#if 0
+	pthread_t tLog;
+	pthread_create(&tLog, NULL, taskLog, NULL);
+	pthread_join(tLog, NULL);
 	
-	//pthread_t tLog;
-	//pthread_create(&tLog, NULL, taskLog, NULL);
-	//pthread_join(tLog, NULL);
-	
+	pthread_t tReset;
+	pthread_create(&tReset, NULL, taskReset, NULL);
+	pthread_join(tReset, NULL);
+#endif
 	pthread_t tKY;
 	pthread_t tShow;
-	pthread_t tReset;
+	
 	pthread_create(&tKY, NULL, taskKY24, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
-	pthread_create(&tReset, NULL, taskReset, NULL);
+	
 	pthread_join(tKY, NULL);
 	pthread_join(tShow, NULL);
-	pthread_join(tReset, NULL);
+	
 	pthread_mutex_destroy(&mutex_gpio17);
 	pthread_mutex_destroy(&mutex_gpio18);
 	pthread_mutex_destroy(&mutex_cond_show);
