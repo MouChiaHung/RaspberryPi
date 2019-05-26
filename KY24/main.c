@@ -69,6 +69,7 @@ void handlerKY24(void) {
 	LOG("%s ********* Right count: *********\n", gCounter, GREEN);
 }
 
+#if 0
 PI_THREAD(taskKY24) {
 	int interval = 0;
 	int time = 0;
@@ -80,6 +81,21 @@ PI_THREAD(taskKY24) {
 		interval = millis() + DEBOUNCE_TIME;
 	}
 }
+#else 
+void* taskKY24(void* arg) {
+	int interval = 0;
+	int time = 0;
+	
+	while (1) {
+		time = millis();
+		if (time < interval) continue;
+		LOG("%s -*-*-*- Waiting... -*-*-*-\n", gCounter, DARY_GRAY);
+		wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
+		interval = millis() + DEBOUNCE_TIME;
+	}
+	pthread_exit(NULL);
+}
+#endif
 
 void* taskLog(void* arg) {
 	arg = NULL;
@@ -99,8 +115,10 @@ int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	wiringPiSetup();
 	piThreadCreate(taskKY24);
-	pthread_t tLog;
+	pthread_t tKY, tLog;
+	pthread_create(&tKY, NULL, taskKY24, NULL);
 	pthread_create(&tLog, NULL, taskLog, NULL);
+	pthread_join(tKY, NULL);
 	pthread_join(tLog, NULL);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
