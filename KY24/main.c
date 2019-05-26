@@ -114,6 +114,9 @@ int main(void) {
 	
 	wiringPiSetup();
 	pinMode (LED, OUTPUT);
+	pinMode (SENSOR_0, INPUT);
+	pullUpDnControl(LED, PUD_DOWN);
+	pullUpDnControl(SENSOR_0, PUD_DOWN);
 	
 	pthread_mutex_lock( &mutex1 );
 	gCounter = 0;
