@@ -85,6 +85,7 @@ PI_THREAD(taskKY24) {
 void* taskKY24(void* arg) {
 	LOG("%s -*-*-*- Waiting... -*-*-*-\n", YELLOW);
 	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
+	return 0;
 }
 #endif
 
@@ -99,6 +100,7 @@ void* taskLog(void* arg) {
 		interval = millis() + 1000;
 		//sleep(1);
 	}
+	return 0;
 }
 
 int main(void) {
