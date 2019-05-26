@@ -176,10 +176,10 @@ int isPass() {
 	}
 	if (counter_gpio18 == 0) {
 		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
-		return TEST_TRUE;
 	} 
 	else {
 		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
+		return TEST_TRUE;
 	}
 	return TEST_FAIL;
 }
