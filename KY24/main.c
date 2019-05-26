@@ -94,6 +94,7 @@ void handlerKY24_GPIO17(void) {
 	//if (counter_gpio18 > 0 && counter_gpio17 > 0) {
 	if (1) {
 		LOG("%s ********* 17 SIG... *********\n", BLUE, counter_gpio17);
+		is_reset = 0;
 		pthread_cond_signal(&cond_show);
 	}
 	else {
@@ -125,6 +126,7 @@ void handlerKY24_GPIO18(void) {
 	//if (counter_gpio18 > 0 && counter_gpio17 > 0) {
 	if (1) {
 		LOG("%s ********* 18 SIG... *********\n", BLUE, counter_gpio17);
+		is_reset = 0;
 		pthread_cond_signal(&cond_show);
 	}
 	else {
