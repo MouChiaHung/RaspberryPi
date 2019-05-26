@@ -99,6 +99,11 @@ void* taskLog(void* arg) {
 		time = millis();
 		if (time < interval) continue;
 		LOG("%s -*-*-*- Testing... -*-*-*-\n", YELLOW);
+		
+		LOG("%s going to gCounter++\n", GREEN);
+		(*gCounter)++;
+		LOG("%s ********* Right count:%d *********\n", *gCounter, GREEN);
+		
 		interval = millis() + 1000;
 		//sleep(1);
 	}
