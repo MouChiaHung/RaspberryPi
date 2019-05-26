@@ -86,7 +86,7 @@ void handlerKY24_GPIO17(void) {
 	}
 	//Got it
 	(counter_gpio17)++;
-	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, counter_gpio17);
+	LOG("%s ********* Got it and GPIO17 count:%d *********\n", LIGHT_GREEN, counter_gpio17);
 	pthread_mutex_lock(&mutex_cond_show);
 	pthread_cond_signal(&cond_show);
 	pthread_mutex_unlock(&mutex_cond_show);
@@ -111,7 +111,7 @@ void handlerKY24_GPIO18(void) {
 	}
 	//Got it
 	(counter_gpio18)++;
-	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, counter_gpio18);
+	LOG("%s ********* Got it and GPIO18 count:%d *********\n", LIGHT_GREEN, counter_gpio18);
 	pthread_mutex_lock(&mutex_cond_show);
 	pthread_cond_signal(&cond_show);
 	pthread_mutex_unlock(&mutex_cond_show);
@@ -154,10 +154,10 @@ void* taskShow(void* arg) {
 			digitalWrite(LED, LOW);
 			delay(DELAY_TIME);
 			*/
-			LOG("%s ********* PASS *********\n", LIGHT_GREEN);
+			LOG("%s --------- PASS ---------n", LIGHT_GREEN);
 		} 
 		else {
-			LOG("%s ********* FAIL *********\n", RED);
+			LOG("%s --------- FAIL ---------n", RED);
 		}
 		time = millis();
 		if (time > interval) {
