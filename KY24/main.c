@@ -53,9 +53,9 @@ int fail = 0;
 int interval = 0;
 int interval_reset = 0;
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
-pthread_mutex_t mutex_cond_show = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutex_gpio17 = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutex_gpio18 = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_cond_show;
+pthread_mutex_t mutex_gpio17;
+pthread_mutex_t mutex_gpio18;
 
 int isPass();
 void resetCounter();
@@ -124,7 +124,8 @@ END:
 }
 
 void* taskKY24(void* arg) {
-	system ("gpio edge 18 rising") ;
+	system ("gpio edge 17 rising");
+	system ("gpio edge 18 rising");
 	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24_GPIO17);
 	wiringPiISR(SENSOR_1, INT_EDGE_RISING, &handlerKY24_GPIO18);
 	return 0;
@@ -208,6 +209,10 @@ int main(void) {
 	//pinMode (LED, OUTPUT);
 	pinMode (SENSOR_0, INPUT);
 	pullUpDnControl(SENSOR_0, PUD_DOWN);
+	
+	pthread_mutex_init(&mutex_gpio17, 0);
+	pthread_mutex_init(&mutex_gpio18, 0);
+	pthread_mutex_init(&mutex_cond_show, 0);
 	
 	pthread_t tKY, tLog, tShow, tReset;
 	pthread_create(&tKY, NULL, taskKY24, NULL);
