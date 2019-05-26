@@ -58,18 +58,18 @@ void LOG(const char* format, ...)
 }
 
 void handlerKY24(void) {
-	LOG("%s ********* GOT IT *********\n", GREEN);
+	
 	digitalWrite(LED, HIGH);
 	delay(DELAY_TIME);
 	digitalWrite(LED, LOW);
 	delay(DELAY_TIME);
+	
 	pthread_mutex_lock(&mutex1);
-	LOG("%s going to gCounter++\n", GREEN);
 	(gCounter)++;
 	pthread_mutex_unlock(&mutex1);
 	
 	pthread_mutex_lock(&mutex1);
-	LOG("%s ********* Count:%d *********\n", GREEN, gCounter);
+	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);
 	pthread_mutex_unlock(&mutex1);
 }
 
@@ -87,7 +87,6 @@ PI_THREAD(taskKY24) {
 }
 #else 
 void* taskKY24(void* arg) {
-	LOG("%s -*-*-*- Waiting... -*-*-*-\n", YELLOW);
 	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
 	return 0;
 }
@@ -101,9 +100,8 @@ void* taskLog(void* arg) {
 	while (1) {
 		time = millis();
 		if (time < interval) continue;
-		LOG("%s -*-*-*- Testing... -*-*-*-\n", YELLOW);
 		pthread_mutex_lock(&mutex1);
-		LOG("%s ********* Count:%d *********\n", GREEN, gCounter);
+		LOG("%s ********* Testing and now count:%d *********\n", DARY_GRAY, gCounter);
 		pthread_mutex_unlock(&mutex1);
 		interval = millis() + 1000;
 		sleep(1);
@@ -116,8 +114,7 @@ int main(void) {
 	
 	wiringPiSetup();
 	pthread_mutex_lock( &mutex1 );
-	LOG("%s going to gCounter = 99\n", GREEN);
-	gCounter = 99;
+	gCounter = 0;
 	pthread_mutex_unlock( &mutex1 );
 	
 	//piThreadCreate(taskKY24);
@@ -126,7 +123,7 @@ int main(void) {
 	pthread_create(&tKY, NULL, taskKY24, NULL);
 	LOG("%s going to pthread_create(&tLog, NULL, taskLog, NULL)\n", GREEN);
 	pthread_create(&tLog, NULL, taskLog, NULL);
-	//pthread_join(tKY, NULL);
+	pthread_join(tKY, NULL);
 	pthread_join(tLog, NULL);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
