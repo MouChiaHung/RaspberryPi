@@ -18,7 +18,6 @@
 /* -------------------------------------------------------------------- */
 #define LED 0
 #define SENSOR_0 1
-#define	MUTEX_KEY 0
 #define	DEBOUNCE_TIME 100
 #define	DELAY_TIME 250
 
@@ -64,14 +63,14 @@ void handlerKY24(void) {
 	delay(DELAY_TIME);
 	digitalWrite(LED, LOW);
 	delay(DELAY_TIME);
-	//piLock(MUTEX_KEY);
-	pthread_mutex_lock( &mutex1 );
+	pthread_mutex_lock(&mutex1);
 	LOG("%s going to gCounter++\n", GREEN);
 	(gCounter)++;
+	pthread_mutex_unlock(&mutex1);
 	
-	//piUnlock(MUTEX_KEY);
+	pthread_mutex_lock(&mutex1);
 	LOG("%s ********* Right count:%d *********\n", gCounter, GREEN);
-	pthread_mutex_unlock( &mutex1 );
+	pthread_mutex_unlock(&mutex1);
 }
 
 #if 0
@@ -98,22 +97,14 @@ void* taskLog(void* arg) {
 	arg = NULL;
 	int interval = 0;
 	int time = 0;
-	
-	pthread_mutex_lock(&mutex1);
-	LOG("%s going to gCounter++\n", GREEN);
-	(gCounter)++;
-	pthread_mutex_unlock( &mutex1 );
-	
+
 	while (1) {
 		time = millis();
 		if (time < interval) continue;
 		LOG("%s -*-*-*- Testing... -*-*-*-\n", YELLOW);
-		
 		pthread_mutex_lock(&mutex1);
-		LOG("%s going to gCounter++\n", GREEN);
-		(gCounter)++;
+		LOG("%s ********* Count:%d *********\n", gCounter, GREEN);
 		pthread_mutex_unlock(&mutex1);
-		
 		interval = millis() + 1000;
 		//sleep(1);
 	}
@@ -125,8 +116,8 @@ int main(void) {
 	
 	wiringPiSetup();
 	pthread_mutex_lock( &mutex1 );
-	LOG("%s going to gCounter++\n", GREEN);
-	(gCounter)++;
+	LOG("%s going to gCounter = 99\n", GREEN);
+	gCounter = 99;
 	pthread_mutex_unlock( &mutex1 );
 	
 	//piThreadCreate(taskKY24);
