@@ -18,8 +18,9 @@
 /* -------------------------------------------------------------------- */
 #define LED 0
 #define SENSOR_0 1
-#define	DEBOUNCE_TIME 100
-#define	DELAY_TIME 250
+#define	DEBOUNCE_TIME 250
+#define	DELAY_TIME 1000
+#define	DELAY_LOG 2000
 
 #define NONECOLOR 	"\033[m"
 #define RED 		"\033[0;32;31m"
@@ -65,6 +66,12 @@ void handlerKY24(void) {
 	delay(DELAY_TIME);
 	*/
 	
+	int interval = 0;
+	int time = 0;
+	time = millis();
+	if (time < interval) return;
+	interval = millis() + DEBOUNCE_TIME;
+	
 	pthread_mutex_lock(&mutex1);
 	(gCounter)++;
 	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);	
@@ -77,20 +84,12 @@ void handlerKY24(void) {
 
 #if 0
 PI_THREAD(taskKY24) {
-	int interval = 0;
-	int time = 0;
 	
-	while (1) {
-		time = millis();
-		if (time < interval) continue;
-		wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
-		interval = millis() + DEBOUNCE_TIME;
-	}
 }
 #else 
 void* taskKY24(void* arg) {
 	system ("gpio edge 18 rising") ;
-	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handlerKY24);
+	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
 	return 0;
 }
 #endif
@@ -106,7 +105,7 @@ void* taskLog(void* arg) {
 		pthread_mutex_lock(&mutex1);
 		LOG("%s ********* Testing and now count:%d *********\n", DARY_GRAY, gCounter);
 		pthread_mutex_unlock(&mutex1);
-		interval = millis() + 1000;
+		interval = millis() + DELAY_LOG;
 		sleep(1);
 	}
 	return 0;
@@ -123,8 +122,9 @@ int main(void) {
 	pthread_mutex_lock( &mutex1 );
 	gCounter = 0;
 	pthread_mutex_unlock( &mutex1 );
-	
-	//piThreadCreate(taskKY24);
+#if 0	
+	piThreadCreate(taskKY24);
+#endif	
 	pthread_t tKY, tLog;
 	LOG("%s going to pthread_create(&tKY, NULL, taskKY24, NULL)\n", GREEN);
 	pthread_create(&tKY, NULL, taskKY24, NULL);
