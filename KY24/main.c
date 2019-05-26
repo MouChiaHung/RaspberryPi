@@ -114,7 +114,7 @@ void* taskLog(void* arg) {
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	wiringPiSetup();
-	piThreadCreate(taskKY24);
+	//piThreadCreate(taskKY24);
 	pthread_t tKY, tLog;
 	pthread_create(&tKY, NULL, taskKY24, NULL);
 	pthread_create(&tLog, NULL, taskLog, NULL);
