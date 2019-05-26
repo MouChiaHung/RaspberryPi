@@ -106,7 +106,7 @@ void* taskLog(void* arg) {
 		LOG("%s ********* Count:%d *********\n", gCounter, GREEN);
 		pthread_mutex_unlock(&mutex1);
 		interval = millis() + 1000;
-		Sleep(1);
+		sleep(1);
 	}
 	return 0;
 }
