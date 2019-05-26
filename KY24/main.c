@@ -146,7 +146,6 @@ void* taskLog(void* arg) {
 }
 
 void* taskShow(void* arg) {
-	int time = 0;
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show); 
@@ -173,7 +172,7 @@ void* taskReset(void* arg) {
 		time = millis();
 		if (time > interval_reset) {
 			resetCounter();
-			interval_reset = millis() + DELAY_TIME;
+			interval_reset = millis() + 2000;
 		}
 	}
 	return 0;
