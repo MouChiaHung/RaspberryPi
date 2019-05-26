@@ -172,7 +172,7 @@ int isPass() {
 	} 
 	else {
 		LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
-		return TEST_TRUE
+		return TEST_TRUE;
 	}
 	if (counter_gpio18 == 0) {
 		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
