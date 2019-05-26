@@ -78,11 +78,11 @@ void handlerKY24_GPIO17(void) {
 	pthread_mutex_lock(&mutex_gpio17);
 	int time = 0;
 	time = millis();
-	if (time < interval) {
+	if (time < interval_17) {
 		//LOG("%s ********* TOO FAST AROUND GPIO17 *********\n", RED);
 		goto END;
 	}
-	interval = millis() + DEBOUNCE_TIME;
+	interval_17 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead (SENSOR_0) == HIGH) {
 		//LOG("%s ********* DON'T STICK AROUND GPIO17 *********\n", RED);
@@ -108,11 +108,11 @@ void handlerKY24_GPIO18(void) {
 	pthread_mutex_lock(&mutex_gpio18);
 	int time = 0;
 	time = millis();
-	if (time < interval) {
+	if (time < interval_18) {
 		//LOG("%s ********* TOO FAST AROUND GPIO18 *********\n", RED);
 		goto END;
 	}
-	interval = millis() + DEBOUNCE_TIME;
+	interval_18 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead (SENSOR_0) == HIGH) {
 		//LOG("%s ********* DON'T STICK AROUND GPIO18 *********\n", RED);
