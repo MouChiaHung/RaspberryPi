@@ -98,7 +98,7 @@ int main(void) {
 	wiringPiSetup();
 	piThreadCreate(taskKY24);
 	pthread_t tLog;
-	pthread_creat(&tLog, NULL, taskLog, NULL);
+	pthread_create(&tLog, NULL, taskLog, NULL);
 	pthread_join(tLog, NULL);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
