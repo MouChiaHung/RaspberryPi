@@ -93,8 +93,8 @@ PI_THREAD(taskKY24) {
 }
 #else 
 void* taskKY24(void* arg) {
-	system ("gpio edge 18 rising") ;
-	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
+	system ("gpio edge 18 falling") ;
+	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handlerKY24);
 	return 0;
 }
 #endif
@@ -122,7 +122,7 @@ int main(void) {
 	wiringPiSetup();
 	pinMode (LED, OUTPUT);
 	pinMode (SENSOR_0, INPUT);
-	pullUpDnControl(SENSOR_0, PUD_DOWN);
+	pullUpDnControl(SENSOR_0, PUD_UP);
 	
 	pthread_mutex_lock( &mutex1 );
 	gCounter = 0;
