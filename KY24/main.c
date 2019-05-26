@@ -59,7 +59,7 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-void handlerKY24(void) {
+void handlerKY24_GPIO18(void) {
 	/*
 	digitalWrite(LED, HIGH);
 	delay(DELAY_TIME);
@@ -71,12 +71,13 @@ void handlerKY24(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval) {
+		LOG("%s ********* TOO FAST *********\n", RED);
 		goto END;
 	}
 	interval = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead (SENSOR_0) == HIGH) {
-		LOG("%s ********* HIGH INT and return *********\n", RED);
+		LOG("%s ********* DON'T STICK AROUND GPIO18 *********\n", RED);
 		goto END;
 	}
 	(gCounter)++;
@@ -110,7 +111,7 @@ void* taskLog(void* arg) {
 		LOG("%s ********* Testing and now count:%d *********\n", DARY_GRAY, gCounter);
 		pthread_mutex_unlock(&mutex1);
 		interval_taskLog = millis() + DELAY_LOG;
-		sleep(1);
+		sleep(DELAY_LOG);
 	}
 	return 0;
 }
