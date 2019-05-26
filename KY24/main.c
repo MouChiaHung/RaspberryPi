@@ -43,6 +43,7 @@
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
 int gCounter;
+int interval = 0;
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 /* -------------------------------------------------------------------- */
 /* implements                                                           */
@@ -66,7 +67,6 @@ void handlerKY24(void) {
 	delay(DELAY_TIME);
 	*/
 	
-	int interval = 0;
 	int time = 0;
 	time = millis();
 	if (time < interval) return;
@@ -96,16 +96,16 @@ void* taskKY24(void* arg) {
 
 void* taskLog(void* arg) {
 	arg = NULL;
-	int interval = 0;
-	int time = 0;
+	int interval_taskLog = 0;
+	int time_taskLog = 0;
 
 	while (1) {
-		time = millis();
-		if (time < interval) continue;
+		time_taskLog = millis();
+		if (time_taskLog < interval_taskLog) continue;
 		pthread_mutex_lock(&mutex1);
 		LOG("%s ********* Testing and now count:%d *********\n", DARY_GRAY, gCounter);
 		pthread_mutex_unlock(&mutex1);
-		interval = millis() + DELAY_LOG;
+		interval_taskLog = millis() + DELAY_LOG;
 		sleep(1);
 	}
 	return 0;
