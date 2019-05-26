@@ -114,7 +114,7 @@ void handlerKY24_GPIO18(void) {
 	}
 	interval_18 = millis() + DEBOUNCE_TIME;
 	
-	if (digitalRead (SENSOR_0) == HIGH) {
+	if (digitalRead (SENSOR_1) == HIGH) {
 		//LOG("%s ********* DON'T STICK AROUND GPIO18 *********\n", RED);
 		goto END;
 	}
@@ -227,13 +227,18 @@ int main(void) {
 	pthread_mutex_init(&mutex_gpio18, 0);
 	pthread_mutex_init(&mutex_cond_show, 0);
 	
-	pthread_t tKY, tLog, tShow, tReset;
-	pthread_create(&tKY, NULL, taskKY24, NULL);
+	
+	//pthread_t tLog;
 	//pthread_create(&tLog, NULL, taskLog, NULL);
+	//pthread_join(tLog, NULL);
+	
+	pthread_t tKY;
+	pthread_t tShow;
+	pthread_t tReset;
+	pthread_create(&tKY, NULL, taskKY24, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
 	pthread_create(&tReset, NULL, taskReset, NULL);
 	pthread_join(tKY, NULL);
-	//pthread_join(tLog, NULL);
 	pthread_join(tShow, NULL);
 	pthread_join(tReset, NULL);
 	pthread_mutex_destroy(&mutex_gpio17);
