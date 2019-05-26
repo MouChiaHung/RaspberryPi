@@ -50,6 +50,7 @@ int counter_gpio17 = 0;
 int counter_gpio18 = 0;
 int interval_17 = 0;
 int interval_18 = 0;
+int interval_show = 0;
 int interval_reset = 0;
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show;
@@ -91,15 +92,11 @@ void handlerKY24_GPIO17(void) {
 	//Got it
 	(counter_gpio17)++;
 	LOG("%s ********* Got it and GPIO17 count:%d *********\n", BLUE, counter_gpio17);
-	//if (counter_gpio18 > 0 && counter_gpio17 > 0) {
-	if (1) {
-		LOG("%s ********* 17 SIG... *********\n", BLUE, counter_gpio17);
-		is_reset = 0;
-		pthread_cond_signal(&cond_show);
-	}
-	else {
-		
-	}
+
+	LOG("%s ********* 17 SIG... *********\n", BLUE, counter_gpio17);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
+}
 	
 END:		
 	pthread_mutex_unlock(&mutex_gpio17);
@@ -123,15 +120,11 @@ void handlerKY24_GPIO18(void) {
 	//Got it
 	(counter_gpio18)++;
 	LOG("%s ********* Got it and GPIO18 count:%d *********\n", BLUE, counter_gpio18);
-	//if (counter_gpio18 > 0 && counter_gpio17 > 0) {
-	if (1) {
-		LOG("%s ********* 18 SIG... *********\n", BLUE, counter_gpio17);
-		is_reset = 0;
-		pthread_cond_signal(&cond_show);
-	}
-	else {
-		
-	}
+	
+	LOG("%s ********* 18 SIG... *********\n", BLUE, counter_gpio17);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
+
 END:		
 	pthread_mutex_unlock(&mutex_gpio18);
 	return;
@@ -161,28 +154,37 @@ void* taskLog(void* arg) {
 }
 
 void* taskShow(void* arg) {
+	int time = 0;
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show); 
 		pthread_mutex_unlock(&mutex_cond_show);
-		if (isPass() == TEST_TRUE) {
-			/*
-			digitalWrite(LED, HIGH);
-			delay(DELAY_TIME);
-			digitalWrite(LED, LOW);
-			delay(DELAY_TIME);
-			*/
-			LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
-			resetCounter();
-		} 
-		else {
-			if (is_reset) is_reset = 0;
+		int time = 0;
+		while (1) {
+			time = millis();
+			if (time < interval_show) continue;
 			else {
-				LOG("%s --------- FAIL ---------\n", RED);
-				resetCounter();
+				interval_reset = millis() + DEBOUNCE_TIME;
+				if (isPass() == TEST_TRUE) {
+					/*
+					digitalWrite(LED, HIGH);
+					delay(DELAY_TIME);
+					digitalWrite(LED, LOW);
+					delay(DELAY_TIME);
+					*/
+					LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
+					resetCounter();
+					break;
+				}	 
+				else {
+					if (is_reset) is_reset = 0;
+					else {
+						LOG("%s --------- FAIL ---------\n", RED);
+						resetCounter();
+					}
+				}
 			}
 		}
-		
 	}
 	return 0;
 }
