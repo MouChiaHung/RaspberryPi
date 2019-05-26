@@ -19,7 +19,7 @@
 #define LED 0
 #define SENSOR_0 0
 #define SENSOR_1 1
-#define	DEBOUNCE_TIME 500
+#define	DEBOUNCE_TIME 1000
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
 
