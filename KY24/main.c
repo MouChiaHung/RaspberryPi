@@ -113,7 +113,7 @@ int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	
 	wiringPiSetup();
-	pinMode (LED, OUTPUT)
+	pinMode (LED, OUTPUT);
 	
 	pthread_mutex_lock( &mutex1 );
 	gCounter = 0;
