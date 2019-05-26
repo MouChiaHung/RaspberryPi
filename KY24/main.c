@@ -90,9 +90,15 @@ void handlerKY24_GPIO17(void) {
 	//Got it
 	(counter_gpio17)++;
 	LOG("%s ********* Got it and GPIO17 count:%d *********\n", BLUE, counter_gpio17);
-	pthread_mutex_lock(&mutex_cond_show);
-	if (counter_gpio18 > 0 && counter_gpio17 > 0) pthread_cond_signal(&cond_show);
-	pthread_mutex_unlock(&mutex_cond_show);
+	if (counter_gpio18 > 0 && counter_gpio17 > 0) {
+		pthread_mutex_lock(&mutex_cond_show);
+		pthread_cond_signal(&cond_show);
+		pthread_mutex_unlock(&mutex_cond_show);
+	}
+	else {
+		
+	}
+	
 END:		
 	pthread_mutex_unlock(&mutex_gpio17);
 	return;
@@ -115,9 +121,14 @@ void handlerKY24_GPIO18(void) {
 	//Got it
 	(counter_gpio18)++;
 	LOG("%s ********* Got it and GPIO18 count:%d *********\n", BLUE, counter_gpio18);
-	pthread_mutex_lock(&mutex_cond_show);
-	if (counter_gpio18 > 0 && counter_gpio17 > 0) pthread_cond_signal(&cond_show);
-	pthread_mutex_unlock(&mutex_cond_show);
+	if (counter_gpio18 > 0 && counter_gpio17 > 0) {
+		pthread_mutex_lock(&mutex_cond_show);
+		pthread_cond_signal(&cond_show);
+		pthread_mutex_unlock(&mutex_cond_show);
+	}
+	else {
+		
+	}
 END:		
 	pthread_mutex_unlock(&mutex_gpio18);
 	return;
@@ -173,6 +184,9 @@ void* taskReset(void* arg) {
 	while (1) {
 		time = millis();
 		if (time > interval_reset) {
+			pthread_mutex_lock(&mutex_cond_show);
+			pthread_cond_signal(&cond_show);
+			pthread_mutex_unlock(&mutex_cond_show);
 			resetCounter();
 			interval_reset = millis() + 5000;
 		}
@@ -223,6 +237,9 @@ int main(void) {
 	pthread_join(tLog, NULL);
 	pthread_join(tShow, NULL);
 	pthread_join(tReset, NULL);
+	pthread_mutex_destroy(&mutex_gpio17);
+	pthread_mutex_destroy(&mutex_gpio18);
+	pthread_mutex_destroy(&mutex_cond_show);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
 	return 0;
