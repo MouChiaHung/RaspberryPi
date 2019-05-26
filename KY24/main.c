@@ -65,6 +65,7 @@ void handlerKY24(void) {
 	digitalWrite(LED, LOW);
 	delay(DELAY_TIME);
 	//piLock(MUTEX_KEY);
+	LOG("%s going to gCounter++\n", GREEN);
 	gCounter++;
 	//piUnlock(MUTEX_KEY);
 	LOG("%s ********* Right count:%d *********\n", gCounter, GREEN);
