@@ -55,7 +55,7 @@ pthread_mutex_t mutex_gpio17 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_gpio18 = PTHREAD_MUTEX_INITIALIZER;
 
 int isPass();
-void reset();
+void resetCounter();
 /* -------------------------------------------------------------------- */
 /* implements                                                           */
 /* -------------------------------------------------------------------- */
@@ -176,7 +176,7 @@ int isPass() {
 	return ret > 0 ? TEST_TRUE : TEST_FAIL;
 }
 
-void restPass() {
+void resetCounter() {
 	counter_gpio17 = 0;
 	counter_gpio18 = 0;
 }
