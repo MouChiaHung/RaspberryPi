@@ -163,7 +163,7 @@ void* taskShow(void* arg) {
 			time = millis();
 			if (time < interval_show) continue;
 			else {
-				interval_reset = millis() + DEBOUNCE_TIME;
+				interval_show = millis() + DEBOUNCE_TIME;
 				if (isPass() == TEST_TRUE) {
 					/*
 					digitalWrite(LED, HIGH);
