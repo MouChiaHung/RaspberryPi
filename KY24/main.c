@@ -77,7 +77,7 @@ PI_THREAD(taskKY24) {
 	while (1) {
 		time = millis();
 		if (time < interval) continue;
-		wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
+		//wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
 		interval = millis() + DEBOUNCE_TIME;
 	}
 }
