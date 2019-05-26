@@ -132,9 +132,7 @@ void* taskLog(void* arg) {
 	while (1) {
 		time_taskLog = millis();
 		if (time_taskLog < interval_taskLog) continue;
-		pthread_mutex_lock(&mutex1);
 		LOG("%s ********* Testing *********\n", DARY_GRAY);
-		pthread_mutex_unlock(&mutex1);
 		interval_taskLog = millis() + DELAY_LOG;
 		sleep(DELAY_LOG);	
 	}	
