@@ -70,18 +70,20 @@ void handlerKY24(void) {
 	pthread_mutex_lock(&mutex1);
 	int time = 0;
 	time = millis();
-	if (time < interval) return;
+	if (time < interval) {
+		goto END;
+	}
 	interval = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead (SENSOR_0) == HIGH) {
 		LOG("%s ********* HIGH INT and return *********\n", RED);
-		return;
+		goto END;
 	}
-	
 	(gCounter)++;
 	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);	
-		
+END:		
 	pthread_mutex_unlock(&mutex1);
+	return;
 }
 
 #if 0
