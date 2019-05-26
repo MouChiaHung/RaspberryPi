@@ -106,7 +106,7 @@ void* taskLog(void* arg) {
 		LOG("%s ********* Count:%d *********\n", gCounter, GREEN);
 		pthread_mutex_unlock(&mutex1);
 		interval = millis() + 1000;
-		//sleep(1);
+		Sleep(1);
 	}
 	return 0;
 }
@@ -122,9 +122,11 @@ int main(void) {
 	
 	//piThreadCreate(taskKY24);
 	pthread_t tKY, tLog;
+	LOG("%s going to pthread_create(&tKY, NULL, taskKY24, NULL)\n", GREEN);
 	pthread_create(&tKY, NULL, taskKY24, NULL);
+	LOG("%s going to pthread_create(&tLog, NULL, taskLog, NULL)\n", GREEN);
 	pthread_create(&tLog, NULL, taskLog, NULL);
-	pthread_join(tKY, NULL);
+	//pthread_join(tKY, NULL);
 	pthread_join(tLog, NULL);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
