@@ -192,7 +192,7 @@ void* taskReset(void* arg) {
 			pthread_cond_signal(&cond_show);
 			pthread_mutex_unlock(&mutex_cond_show);
 			resetCounter();
-			interval_reset = millis() + 1000;
+			interval_reset = millis() + 10000;
 			is_reset = 1;
 		}
 	}
