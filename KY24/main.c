@@ -172,7 +172,7 @@ void* taskReset(void* arg) {
 		time = millis();
 		if (time > interval_reset) {
 			resetCounter();
-			interval_reset = millis() + 2000;
+			interval_reset = millis() + 5000;
 		}
 	}
 	return 0;
