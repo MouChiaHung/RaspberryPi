@@ -162,7 +162,7 @@ void* taskShow(void* arg) {
 		time = millis();
 		if (time > interval) {
 			LOG("%s ********* reset counters *********\n", DARY_GRAY);
-			reset();
+			resetCounter();
 		}
 		pthread_mutex_unlock(&mutex_cond_show);
 	}
