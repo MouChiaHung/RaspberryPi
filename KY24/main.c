@@ -232,7 +232,7 @@ int main(void) {
 	pthread_create(&tShow, NULL, taskShow, NULL);
 	pthread_create(&tReset, NULL, taskReset, NULL);
 	pthread_join(tKY, NULL);
-	pthread_join(tLog, NULL);
+	//pthread_join(tLog, NULL);
 	pthread_join(tShow, NULL);
 	pthread_join(tReset, NULL);
 	pthread_mutex_destroy(&mutex_gpio17);
