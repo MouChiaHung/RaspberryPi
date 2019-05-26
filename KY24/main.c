@@ -154,10 +154,10 @@ void* taskShow(void* arg) {
 			digitalWrite(LED, LOW);
 			delay(DELAY_TIME);
 			*/
-			LOG("%s --------- PASS ---------n", LIGHT_GREEN);
+			LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
 		} 
 		else {
-			LOG("%s --------- FAIL ---------n", RED);
+			LOG("%s --------- FAIL ---------\n", RED);
 		}
 		time = millis();
 		if (time > interval) {
