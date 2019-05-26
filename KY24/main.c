@@ -15,6 +15,7 @@
 /* my define macro                                                     */
 /* -------------------------------------------------------------------- */
 #define LED 0
+#define SENSOR_0 1
 #define	MUTEX_KEY 0
 #define	DEBOUNCE_TIME 100
 #define	DELAY_TIME 250
@@ -75,7 +76,7 @@ PI_THREAD(taskKY24) {
 	while (1) {
 		time = millis();
 		if (time < interval) continue;
-		wiringPiISR(LED, INT_EDGE_RISING, &handlerKY24);
+		wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
 		interval = millis() + DEBOUNCE_TIME;
 	}
 }
