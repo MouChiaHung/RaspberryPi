@@ -49,7 +49,7 @@
 int counter_gpio17 = 0;
 int counter_gpio18 = 0;
 int interval = 0;
-pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER
+pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_gpio17 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_gpio18 = PTHREAD_MUTEX_INITIALIZER;
@@ -137,9 +137,7 @@ void* taskLog(void* arg) {
 		pthread_mutex_unlock(&mutex1);
 		interval_taskLog = millis() + DELAY_LOG;
 		sleep(DELAY_LOG);	
-	}
-	
-	
+	}	
 	return 0;
 }
 
@@ -177,7 +175,7 @@ int isPass() {
 	return ret;
 }
 
-bool restPass() {
+void restPass() {
 	counter_gpio17 = 0;
 	counter_gpio18 = 0;
 }
