@@ -162,9 +162,9 @@ void* taskLog(void* arg) {
 
 void* taskShow(void* arg) {
 	while (1) {
-		delay(250);
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show); 
+		pthread_mutex_unlock(&mutex_cond_show);
 		if (isPass() == TEST_TRUE) {
 			/*
 			digitalWrite(LED, HIGH);
@@ -182,7 +182,7 @@ void* taskShow(void* arg) {
 				resetCounter();
 			}
 		}
-		pthread_mutex_unlock(&mutex_cond_show);
+		
 	}
 	return 0;
 }
@@ -246,6 +246,7 @@ int main(void) {
 	pthread_create(&tReset, NULL, taskReset, NULL);
 	pthread_join(tReset, NULL);
 #endif
+
 	pthread_t tKY;
 	pthread_t tShow;
 	
