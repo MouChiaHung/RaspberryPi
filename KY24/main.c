@@ -147,7 +147,7 @@ void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show); 
-		if (isPass()) {
+		if (isPass() == TEST_TRUE) {
 			/*
 			digitalWrite(LED, HIGH);
 			delay(DELAY_TIME);
@@ -170,13 +170,25 @@ void* taskShow(void* arg) {
 }
 
 int isPass() {
-	int ret = TEST_FAIL;
-	ret &= counter_gpio17;
-	ret &= counter_gpio18;
-	return ret > 0 ? TEST_TRUE : TEST_FAIL;
+	if (counter_gpio17 == 0) {
+		LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
+		 return TEST_FAIL;
+	} 
+	else {
+		LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
+	}
+	if (counter_gpio18 == 0) {
+		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
+		return TEST_FAIL;
+	} 
+	else {
+		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
+	}
+	return TEST_TRUE;
 }
 
 void resetCounter() {
+	LOG("%s going to reset counters", DARY_GRAY);
 	counter_gpio17 = 0;
 	counter_gpio18 = 0;
 }
