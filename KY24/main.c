@@ -90,9 +90,9 @@ void handlerKY24_GPIO17(void) {
 	//Got it
 	(counter_gpio17)++;
 	LOG("%s ********* Got it and GPIO17 count:%d *********\n", BLUE, counter_gpio17);
-	//pthread_mutex_lock(&mutex_cond_show);
-	//if (counter_gpio18 > 0) pthread_cond_signal(&cond_show);
-	//pthread_mutex_unlock(&mutex_cond_show);
+	pthread_mutex_lock(&mutex_cond_show);
+	if (counter_gpio18 > 0 && counter_gpio17 > 0) pthread_cond_signal(&cond_show);
+	pthread_mutex_unlock(&mutex_cond_show);
 END:		
 	pthread_mutex_unlock(&mutex_gpio17);
 	return;
@@ -115,9 +115,9 @@ void handlerKY24_GPIO18(void) {
 	//Got it
 	(counter_gpio18)++;
 	LOG("%s ********* Got it and GPIO18 count:%d *********\n", BLUE, counter_gpio18);
-	//pthread_mutex_lock(&mutex_cond_show);
-	//if (counter_gpio17 > 0) pthread_cond_signal(&cond_show);
-	//pthread_mutex_unlock(&mutex_cond_show);
+	pthread_mutex_lock(&mutex_cond_show);
+	if (counter_gpio18 > 0 && counter_gpio17 > 0) pthread_cond_signal(&cond_show);
+	pthread_mutex_unlock(&mutex_cond_show);
 END:		
 	pthread_mutex_unlock(&mutex_gpio18);
 	return;
@@ -149,8 +149,8 @@ void* taskLog(void* arg) {
 void* taskShow(void* arg) {
 	while (1) {
 		delay(250);
-		//pthread_mutex_lock(&mutex_cond_show);
-		//pthread_cond_wait(&cond_show, &mutex_cond_show); 
+		pthread_mutex_lock(&mutex_cond_show);
+		/pthread_cond_wait(&cond_show, &mutex_cond_show); 
 		if (isPass() == TEST_TRUE) {
 			/*
 			digitalWrite(LED, HIGH);
@@ -163,7 +163,7 @@ void* taskShow(void* arg) {
 		else {
 			LOG("%s --------- FAIL ---------\n", RED);
 		}
-		//pthread_mutex_unlock(&mutex_cond_show);
+		pthread_mutex_unlock(&mutex_cond_show);
 	}
 	return 0;
 }
