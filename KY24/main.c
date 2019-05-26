@@ -69,7 +69,7 @@ void handlerKY24(void) {
 	pthread_mutex_unlock(&mutex1);
 	
 	pthread_mutex_lock(&mutex1);
-	LOG("%s ********* Right count:%d *********\n", gCounter, GREEN);
+	LOG("%s ********* Count:%d *********\n", GREEN, gCounter);
 	pthread_mutex_unlock(&mutex1);
 }
 
@@ -103,7 +103,7 @@ void* taskLog(void* arg) {
 		if (time < interval) continue;
 		LOG("%s -*-*-*- Testing... -*-*-*-\n", YELLOW);
 		pthread_mutex_lock(&mutex1);
-		LOG("%s ********* Count:%d *********\n", gCounter, GREEN);
+		LOG("%s ********* Count:%d *********\n", GREEN, gCounter);
 		pthread_mutex_unlock(&mutex1);
 		interval = millis() + 1000;
 		sleep(1);
