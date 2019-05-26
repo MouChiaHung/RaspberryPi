@@ -67,18 +67,20 @@ void handlerKY24(void) {
 	delay(DELAY_TIME);
 	*/
 	
+	pthread_mutex_lock(&mutex1);
 	int time = 0;
 	time = millis();
 	if (time < interval) return;
 	interval = millis() + DEBOUNCE_TIME;
 	
-	pthread_mutex_lock(&mutex1);
+	if (digitalRead (SENSOR_0) == HIGH) {
+		LOG("%s ********* HIGH INT and return *********\n", RED);
+		return;
+	}
+	
 	(gCounter)++;
 	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);	
-	while (digitalRead (SENSOR_0) == HIGH) {
-		LOG("%s ********* HIGH INT and Delay *********\n", RED);
-		delay(1000);
-	}	
+		
 	pthread_mutex_unlock(&mutex1);
 }
 
