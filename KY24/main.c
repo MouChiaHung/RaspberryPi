@@ -82,11 +82,11 @@ void handlerKY24_GPIO17(void) {
 		goto END;
 	}
 	//Got it
+	(counter_gpio17)++;
+	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, counter_gpio17);
 	pthread_mutex_lock(&mutex_cond_show);
 	pthread_cond_signal(&cond_show);
 	pthread_mutex_unlock(&mutex_cond_show);
-	(counter_gpio17)++;
-	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);	
 END:		
 	pthread_mutex_unlock(&mutex_gpio17);
 	return;
@@ -107,11 +107,11 @@ void handlerKY24_GPIO18(void) {
 		goto END;
 	}
 	//Got it
+	(counter_gpio18)++;
+	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, counter_gpio18);
 	pthread_mutex_lock(&mutex_cond_show);
 	pthread_cond_signal(&cond_show);
 	pthread_mutex_unlock(&mutex_cond_show);
-	(counter_gpio18)++;
-	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);	
 END:		
 	pthread_mutex_unlock(&mutex_gpio18);
 	return;
