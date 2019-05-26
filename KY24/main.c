@@ -42,7 +42,7 @@
 /* -------------------------------------------------------------------- */
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
-int gCounter = 0;
+int* gCounter = malloc(sizeof(int));
 
 /* -------------------------------------------------------------------- */
 /* implements                                                           */
@@ -66,9 +66,9 @@ void handlerKY24(void) {
 	delay(DELAY_TIME);
 	//piLock(MUTEX_KEY);
 	LOG("%s going to gCounter++\n", GREEN);
-	gCounter++;
+	*gCounter++;
 	//piUnlock(MUTEX_KEY);
-	LOG("%s ********* Right count:%d *********\n", gCounter, GREEN);
+	LOG("%s ********* Right count:%d *********\n", *gCounter, GREEN);
 }
 
 #if 0
@@ -85,7 +85,7 @@ PI_THREAD(taskKY24) {
 }
 #else 
 void* taskKY24(void* arg) {
-	LOG("%s -*-*-*- Waiting... %d -*-*-*-\n", gCounter, YELLOW);
+	LOG("%s -*-*-*- Waiting... -*-*-*-\n", YELLOW);
 	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
 	return 0;
 }
@@ -108,7 +108,7 @@ void* taskLog(void* arg) {
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	wiringPiSetup();
-	gCounter = 1111;
+	*gCounter = 1111;
 	//piThreadCreate(taskKY24);
 	pthread_t tKY, tLog;
 	pthread_create(&tKY, NULL, taskKY24, NULL);
