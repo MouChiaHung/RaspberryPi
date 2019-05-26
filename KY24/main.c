@@ -150,7 +150,7 @@ void* taskShow(void* arg) {
 	while (1) {
 		delay(250);
 		pthread_mutex_lock(&mutex_cond_show);
-		/pthread_cond_wait(&cond_show, &mutex_cond_show); 
+		pthread_cond_wait(&cond_show, &mutex_cond_show); 
 		if (isPass() == TEST_TRUE) {
 			/*
 			digitalWrite(LED, HIGH);
