@@ -53,6 +53,9 @@ pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_gpio17 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_gpio18 = PTHREAD_MUTEX_INITIALIZER;
+
+int isPass();
+void reset();
 /* -------------------------------------------------------------------- */
 /* implements                                                           */
 /* -------------------------------------------------------------------- */
