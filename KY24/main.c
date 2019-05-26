@@ -190,7 +190,7 @@ void* taskReset(void* arg) {
 			pthread_cond_signal(&cond_show);
 			pthread_mutex_unlock(&mutex_cond_show);
 			resetCounter();
-			interval_reset = millis() + 5000;
+			interval_reset = millis() + 1000;
 			is_reset = 1;
 		}
 	}
@@ -198,8 +198,8 @@ void* taskReset(void* arg) {
 }
 
 int isPass() {
-	LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
-	LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
+	//LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
+	//LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
 	if (counter_gpio17 == 0) {
 		return TEST_FAIL;
 	} 
