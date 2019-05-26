@@ -66,7 +66,7 @@ void handlerKY24(void ) {
 	LOG("%s Right count:\n", gCounter, GREEN);
 }
 
-PI_THREAD() (taskKY24) {
+PI_THREAD (taskKY24) {
 	int interval = 0;
 	int time = 0;
 	
