@@ -58,11 +58,12 @@ void LOG(const char* format, ...)
 }
 
 void handlerKY24(void) {
-	
+	/*
 	digitalWrite(LED, HIGH);
 	delay(DELAY_TIME);
 	digitalWrite(LED, LOW);
 	delay(DELAY_TIME);
+	*/
 	
 	pthread_mutex_lock(&mutex1);
 	(gCounter)++;
@@ -71,6 +72,8 @@ void handlerKY24(void) {
 	pthread_mutex_lock(&mutex1);
 	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);
 	pthread_mutex_unlock(&mutex1);
+	
+	pullUpDnControl(SENSOR_0, PUD_DOWN);
 }
 
 #if 0
