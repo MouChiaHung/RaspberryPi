@@ -191,7 +191,7 @@ int isPass() {
 }
 
 void resetCounter() {
-	//LOG("%s reset counters\n", DARY_GRAY);
+	LOG("%s reset counters\n", DARY_GRAY);
 	counter_gpio17 = 0;
 	counter_gpio18 = 0;
 }
