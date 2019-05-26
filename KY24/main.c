@@ -64,10 +64,8 @@ void handlerKY24(void) {
 	piLock(MUTEX_KEY);
 	gCounter++;
 	piUnlock(MUTEX_KEY);
-	LOG("%s Right count:\n", gCounter, GREEN);
+	LOG("%s ********* Right count: *********\n", gCounter, GREEN);
 }
-
-
 
 PI_THREAD(taskKY24) {
 	int interval = 0;
@@ -81,9 +79,28 @@ PI_THREAD(taskKY24) {
 	}
 }
 
+void* taskLog(void* arg) {
+	arg = NULL;
+	int interval = 0;
+	int time = 0;
+	while (1) {
+		time = millis();
+		if (time < interval) continue;
+		LOG("%s -*-*-*- Testing... -*-*-*-\n", gCounter, DARY_GRAY);
+		interval = millis() + 250;
+		sleep(1);
+	}
+	pthread_exit(NULL);
+}
+
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	wiringPiSetup();
 	piThreadCreate(taskKY24);
+	pthread_t tLog;
+	pthread_creat(&tLog, NULL, taskLog, NULL);
+	pthread_join(tLog, NULL);
+	
+	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
 	return 0;
 }
