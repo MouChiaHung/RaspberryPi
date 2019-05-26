@@ -165,10 +165,9 @@ void* taskShow(void* arg) {
 		
 		time = millis();
 		if (time > interval_reset) {
-			resetCounter();
+			//resetCounter();
 			interval_reset = millis() + DELAY_TIME;
 		}
-		
 		pthread_mutex_unlock(&mutex_cond_show);
 	}
 	return 0;
