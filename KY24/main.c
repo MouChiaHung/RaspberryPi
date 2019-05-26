@@ -23,8 +23,8 @@
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
 
-#define	TRUE 1
-#define	FAIL 0
+#define	TEST_TRUE 1
+#define	TEST_FAIL 0
 
 #define NONECOLOR 	"\033[m"
 #define RED 		"\033[0;32;31m"
@@ -170,10 +170,10 @@ void* taskShow(void* arg) {
 }
 
 int isPass() {
-	int ret = FAIL;
+	int ret = TEST_FAIL;
 	ret &= counter_gpio17;
 	ret &= counter_gpio18;
-	return ret;
+	return ret > 0 ? TEST_TRUE : TEST_FAIL;
 }
 
 void restPass() {
