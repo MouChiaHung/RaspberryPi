@@ -59,13 +59,14 @@ void LOG(const char* format, ...)
 }
 
 void handlerKY24(void) {
+	LOG("%s ********* GOT IT *********\n", gCounter, GREEN);
 	digitalWrite(LED, HIGH);
 	delay(DELAY_TIME);
 	digitalWrite(LED, LOW);
 	delay(DELAY_TIME);
-	piLock(MUTEX_KEY);
+	//piLock(MUTEX_KEY);
 	gCounter++;
-	piUnlock(MUTEX_KEY);
+	//piUnlock(MUTEX_KEY);
 	LOG("%s ********* Right count: *********\n", gCounter, GREEN);
 }
 
@@ -77,7 +78,7 @@ PI_THREAD(taskKY24) {
 	while (1) {
 		time = millis();
 		if (time < interval) continue;
-		//wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
+		wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
 		interval = millis() + DEBOUNCE_TIME;
 	}
 }
