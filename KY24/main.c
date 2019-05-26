@@ -66,7 +66,7 @@ void handlerKY24(void) {
 	delay(DELAY_TIME);
 	//piLock(MUTEX_KEY);
 	LOG("%s going to gCounter++\n", GREEN);
-	*gCounter++;
+	(*gCounter)++;
 	//piUnlock(MUTEX_KEY);
 	LOG("%s ********* Right count:%d *********\n", *gCounter, GREEN);
 }
