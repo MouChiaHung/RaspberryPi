@@ -96,7 +96,6 @@ void handlerKY24_GPIO17(void) {
 	LOG("%s ********* 17 SIG... *********\n", BLUE, counter_gpio17);
 	is_reset = 0;
 	pthread_cond_signal(&cond_show);
-}
 	
 END:		
 	pthread_mutex_unlock(&mutex_gpio17);
