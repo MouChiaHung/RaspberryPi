@@ -75,13 +75,13 @@ void handlerKY24_GPIO17(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval) {
-		LOG("%s ********* TOO FAST AROUND GPIO17 *********\n", RED);
+		//LOG("%s ********* TOO FAST AROUND GPIO17 *********\n", RED);
 		goto END;
 	}
 	interval = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead (SENSOR_0) == HIGH) {
-		LOG("%s ********* DON'T STICK AROUND GPIO17 *********\n", RED);
+		//LOG("%s ********* DON'T STICK AROUND GPIO17 *********\n", RED);
 		goto END;
 	}
 	//Got it
@@ -100,13 +100,13 @@ void handlerKY24_GPIO18(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval) {
-		LOG("%s ********* TOO FAST AROUND GPIO18 *********\n", RED);
+		//LOG("%s ********* TOO FAST AROUND GPIO18 *********\n", RED);
 		goto END;
 	}
 	interval = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead (SENSOR_0) == HIGH) {
-		LOG("%s ********* DON'T STICK AROUND GPIO18 *********\n", RED);
+		//LOG("%s ********* DON'T STICK AROUND GPIO18 *********\n", RED);
 		goto END;
 	}
 	//Got it
