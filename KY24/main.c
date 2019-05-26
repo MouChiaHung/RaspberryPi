@@ -73,7 +73,10 @@ void handlerKY24(void) {
 	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);
 	pthread_mutex_unlock(&mutex1);
 		
-	while (digitalRead (SENSOR_0) == HIGH) delay(1) ;
+	while (digitalRead (SENSOR_0) == HIGH) {
+		LOG("%s ********* HIGH INT and Delay *********\n", RED);
+		delay(500);
+	}	
 }
 
 #if 0
