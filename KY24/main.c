@@ -48,8 +48,6 @@
 /* -------------------------------------------------------------------- */
 int counter_gpio17 = 0;
 int counter_gpio18 = 0;
-int pass = 0;
-int fail = 0;
 int interval_17 = 0;
 int interval_18 = 0;
 int interval_reset = 0;
@@ -57,6 +55,8 @@ pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show;
 pthread_mutex_t mutex_gpio17;
 pthread_mutex_t mutex_gpio18;
+//flag
+int is_reset = 0;
 
 int isPass();
 void resetCounter();
@@ -91,7 +91,8 @@ void handlerKY24_GPIO17(void) {
 	//Got it
 	(counter_gpio17)++;
 	LOG("%s ********* Got it and GPIO17 count:%d *********\n", BLUE, counter_gpio17);
-	if (counter_gpio18 > 0 && counter_gpio17 > 0) {
+	//if (counter_gpio18 > 0 && counter_gpio17 > 0) {
+	if (1) {
 		LOG("%s ********* 17 SIG... *********\n", BLUE, counter_gpio17);
 		pthread_cond_signal(&cond_show);
 	}
@@ -121,7 +122,8 @@ void handlerKY24_GPIO18(void) {
 	//Got it
 	(counter_gpio18)++;
 	LOG("%s ********* Got it and GPIO18 count:%d *********\n", BLUE, counter_gpio18);
-	if (counter_gpio18 > 0 && counter_gpio17 > 0) {
+	//if (counter_gpio18 > 0 && counter_gpio17 > 0) {
+	if (1) {
 		LOG("%s ********* 18 SIG... *********\n", BLUE, counter_gpio17);
 		pthread_cond_signal(&cond_show);
 	}
@@ -171,7 +173,8 @@ void* taskShow(void* arg) {
 			LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
 		} 
 		else {
-			LOG("%s --------- FAIL ---------\n", RED);
+			if (is_reset) is_reset = 0;
+			else LOG("%s --------- FAIL ---------\n", RED);
 		}
 		pthread_mutex_unlock(&mutex_cond_show);
 	}
@@ -188,6 +191,7 @@ void* taskReset(void* arg) {
 			pthread_mutex_unlock(&mutex_cond_show);
 			resetCounter();
 			interval_reset = millis() + 5000;
+			is_reset = 1;
 		}
 	}
 	return 0;
