@@ -72,8 +72,8 @@ void handlerKY24(void) {
 	pthread_mutex_lock(&mutex1);
 	LOG("%s ********* Got it and count:%d *********\n", LIGHT_GREEN, gCounter);
 	pthread_mutex_unlock(&mutex1);
-	
-	digitalWrite(SENSOR_0, LOW);
+		
+	while (digitalRead (SENSOR_0) == HIGH) delay(1) ;
 }
 
 #if 0
@@ -90,6 +90,7 @@ PI_THREAD(taskKY24) {
 }
 #else 
 void* taskKY24(void* arg) {
+	system ("gpio edge 18 rising") ;
 	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
 	return 0;
 }
