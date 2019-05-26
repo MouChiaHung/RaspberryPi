@@ -176,7 +176,10 @@ void* taskShow(void* arg) {
 		} 
 		else {
 			if (is_reset) is_reset = 0;
-			else LOG("%s --------- FAIL ---------\n", RED);
+			else {
+				LOG("%s --------- FAIL ---------\n", RED);
+				resetCounter();
+			}
 		}
 		pthread_mutex_unlock(&mutex_cond_show);
 	}
