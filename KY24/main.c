@@ -85,7 +85,6 @@ PI_THREAD(taskKY24) {
 void* taskKY24(void* arg) {
 	LOG("%s -*-*-*- Waiting... -*-*-*-\n", YELLOW);
 	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24);
-	pthread_exit(NULL);
 }
 #endif
 
@@ -98,9 +97,8 @@ void* taskLog(void* arg) {
 		if (time < interval) continue;
 		LOG("%s -*-*-*- Testing... -*-*-*-\n", YELLOW);
 		interval = millis() + 1000;
-		sleep(1);
+		//sleep(1);
 	}
-	pthread_exit(NULL);
 }
 
 int main(void) {
