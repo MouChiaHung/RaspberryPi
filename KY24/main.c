@@ -59,7 +59,7 @@ void LOG(const char* format, ...)
 }
 
 void handlerKY24(void) {
-	LOG("%s ********* GOT IT *********\n", gCounter, GREEN);
+	LOG("%s ********* GOT IT *********\n", GREEN);
 	digitalWrite(LED, HIGH);
 	delay(DELAY_TIME);
 	digitalWrite(LED, LOW);
@@ -67,7 +67,7 @@ void handlerKY24(void) {
 	//piLock(MUTEX_KEY);
 	gCounter++;
 	//piUnlock(MUTEX_KEY);
-	LOG("%s ********* Right count: *********\n", gCounter, GREEN);
+	LOG("%s ********* Right count:%d *********\n", gCounter, GREEN);
 }
 
 #if 0
