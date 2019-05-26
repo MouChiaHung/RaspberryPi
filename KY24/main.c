@@ -51,6 +51,7 @@ int counter_gpio18 = 0;
 int pass = 0;
 int fail = 0;
 int interval = 0;
+int interval_reset = 0;
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_gpio17 = PTHREAD_MUTEX_INITIALIZER;
@@ -145,6 +146,7 @@ void* taskLog(void* arg) {
 }
 
 void* taskShow(void* arg) {
+	int time = 0;
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show); 
@@ -160,8 +162,13 @@ void* taskShow(void* arg) {
 		else {
 			LOG("%s --------- FAIL ---------\n", RED);
 		}
-		delay(250);
-		resetCounter();
+		
+		time = millis();
+		if (time > interval_reset) {
+			resetCounter();
+			interval_reset = millis() + DELAY_TIME;
+		}
+		
 		pthread_mutex_unlock(&mutex_cond_show);
 	}
 	return 0;
