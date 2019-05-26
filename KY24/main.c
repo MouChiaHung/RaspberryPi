@@ -48,6 +48,8 @@
 /* -------------------------------------------------------------------- */
 int counter_gpio17 = 0;
 int counter_gpio18 = 0;
+int pass = 0;
+int fail = 0;
 int interval = 0;
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show = PTHREAD_MUTEX_INITIALIZER;
@@ -86,7 +88,7 @@ void handlerKY24_GPIO17(void) {
 	}
 	//Got it
 	(counter_gpio17)++;
-	LOG("%s ********* Got it and GPIO17 count:%d *********\n", LIGHT_GREEN, counter_gpio17);
+	LOG("%s ********* Got it and GPIO17 count:%d *********\n", BLUE, counter_gpio17);
 	pthread_mutex_lock(&mutex_cond_show);
 	pthread_cond_signal(&cond_show);
 	pthread_mutex_unlock(&mutex_cond_show);
@@ -111,7 +113,7 @@ void handlerKY24_GPIO18(void) {
 	}
 	//Got it
 	(counter_gpio18)++;
-	LOG("%s ********* Got it and GPIO18 count:%d *********\n", LIGHT_GREEN, counter_gpio18);
+	LOG("%s ********* Got it and GPIO18 count:%d *********\n", BLUE, counter_gpio18);
 	pthread_mutex_lock(&mutex_cond_show);
 	pthread_cond_signal(&cond_show);
 	pthread_mutex_unlock(&mutex_cond_show);
@@ -143,7 +145,6 @@ void* taskLog(void* arg) {
 }
 
 void* taskShow(void* arg) {
-	int time = 0;
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show); 
@@ -159,11 +160,7 @@ void* taskShow(void* arg) {
 		else {
 			LOG("%s --------- FAIL ---------\n", RED);
 		}
-		time = millis();
-		if (time > interval) {
-			LOG("%s ********* reset counters *********\n", DARY_GRAY);
-			resetCounter();
-		}
+		resetCounter();
 		pthread_mutex_unlock(&mutex_cond_show);
 	}
 	return 0;
@@ -172,19 +169,19 @@ void* taskShow(void* arg) {
 int isPass() {
 	if (counter_gpio17 == 0) {
 		LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
-		 return TEST_FAIL;
 	} 
 	else {
 		LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
+		return TEST_TRUE
 	}
 	if (counter_gpio18 == 0) {
 		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
-		return TEST_FAIL;
+		return TEST_TRUE;
 	} 
 	else {
 		LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
 	}
-	return TEST_TRUE;
+	return TEST_FAIL;
 }
 
 void resetCounter() {
