@@ -466,11 +466,33 @@ int main(void) {
 	
 	wiringPiSetup();
 	//pinMode (LED, OUTPUT);
+	pinMode (BTN, INPUT);
 	pinMode (SENSOR_0, INPUT);
+	pinMode (SENSOR_1, INPUT);
+	pinMode (SENSOR_2, INPUT);
+	pinMode (SENSOR_3, INPUT);
+	pinMode (SENSOR_4, INPUT);
+	pinMode (SENSOR_5, INPUT);
+	pinMode (SENSOR_6, INPUT);
+	pinMode (SENSOR_7, INPUT);
+	
 	pullUpDnControl(SENSOR_0, PUD_DOWN);
+	pullUpDnControl(SENSOR_1, PUD_DOWN);
+	pullUpDnControl(SENSOR_2, PUD_DOWN);
+	pullUpDnControl(SENSOR_3, PUD_DOWN);
+	pullUpDnControl(SENSOR_4, PUD_DOWN);
+	pullUpDnControl(SENSOR_5, PUD_DOWN);
+	pullUpDnControl(SENSOR_6, PUD_DOWN);
+	pullUpDnControl(SENSOR_7, PUD_DOWN);
 	
 	pthread_mutex_init(&mutex_gpio17, 0);
 	pthread_mutex_init(&mutex_gpio18, 0);
+	pthread_mutex_init(&mutex_gpio27, 0);
+	pthread_mutex_init(&mutex_gpio22, 0);
+	pthread_mutex_init(&mutex_gpio23, 0);
+	pthread_mutex_init(&mutex_gpio24, 0);
+	pthread_mutex_init(&mutex_gpio25, 0);
+	pthread_mutex_init(&mutex_gpio4, 0);
 	pthread_mutex_init(&mutex_cond_show, 0);
 	
 #if 0
@@ -494,6 +516,12 @@ int main(void) {
 	
 	pthread_mutex_destroy(&mutex_gpio17);
 	pthread_mutex_destroy(&mutex_gpio18);
+	pthread_mutex_destroy(&mutex_gpio27);
+	pthread_mutex_destroy(&mutex_gpio22);
+	pthread_mutex_destroy(&mutex_gpio23);
+	pthread_mutex_destroy(&mutex_gpio24);
+	pthread_mutex_destroy(&mutex_gpio25);
+	pthread_mutex_destroy(&mutex_gpio4);
 	pthread_mutex_destroy(&mutex_cond_show);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
