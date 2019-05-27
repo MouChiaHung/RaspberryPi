@@ -17,7 +17,7 @@
 /* my define macro                                                     */
 /* -------------------------------------------------------------------- */
 #define LED 0
-#define SENSOR_0 0
+#define BTN 17
 #define SENSOR_1 1
 #define SENSOR_2 2
 #define SENSOR_3 3
@@ -99,6 +99,12 @@ void LOG(const char* format, ...)
 	sprintf(str,"%s%s",str,NONECOLOR);
 	printf("%s",str);
 	va_end(ap); 
+}
+
+void handlerKY24_GPIO28(void) { //17
+	LOG("%s ********* Got a Button *********\n", BLUE);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
 }
 
 void handlerKY24_GPIO17(void) { //0
@@ -292,6 +298,7 @@ END:
 void* taskKY24(void* arg) {
 	system ("gpio edge 17 rising");
 	system ("gpio edge 18 rising");
+	wiringPiISR(BTN, INT_EDGE_RISING, &handlerKY24_GPIO28);
 	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24_GPIO17);
 	wiringPiISR(SENSOR_1, INT_EDGE_RISING, &handlerKY24_GPIO18);
 	wiringPiISR(SENSOR_2, INT_EDGE_RISING, &handlerKY24_GPIO27);
