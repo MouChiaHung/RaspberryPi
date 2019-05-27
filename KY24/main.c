@@ -378,6 +378,7 @@ void* taskReset(void* arg) {
 int isPass() {
 	//LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
 	//LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
+#if 0	
 	if (counter_gpio17 == 0) {
 		return TEST_FAIL;
 	} 
@@ -403,6 +404,41 @@ int isPass() {
 		return TEST_FAIL;
 	} 
 	return TEST_TRUE;
+#else 
+	if (digitalRead(SENSOR_0) == LOW) {
+		LOG("%s GPIO17 LOW...\n", DARY_GRAY);
+		return TEST_FAIL;
+	} 
+	if (digitalRead(SENSOR_1) == LOW) {
+		LOG("%s GPIO18 LOW...\n", DARY_GRAY);
+		return TEST_FAIL;
+	} 
+	if (digitalRead(SENSOR_2) == LOW) {
+		LOG("%s GPIO27 LOW...\n", DARY_GRAY);
+		return TEST_FAIL;
+	} 
+	if (digitalRead(SENSOR_3) == LOW) {
+		LOG("%s GPIO22 LOW...\n", DARY_GRAY);
+		return TEST_FAIL;
+	} 
+	if (digitalRead(SENSOR_4) == LOW) {
+		LOG("%s GPIO23 LOW...\n", DARY_GRAY);
+		return TEST_FAIL;
+	} 
+	if (digitalRead(SENSOR_5) == LOW) {
+		LOG("%s GPIO24 LOW...\n", DARY_GRAY);
+		return TEST_FAIL;
+	} 
+	if (digitalRead(SENSOR_6) == LOW) {
+		LOG("%s GPIO25 LOW...\n", DARY_GRAY);
+		return TEST_FAIL;
+	}
+	if (digitalRead(SENSOR_7) == LOW) {
+		LOG("%s GPIO4 LOW...\n", DARY_GRAY);
+		return TEST_FAIL;
+	} 
+	return TEST_TRUE;
+#endif
 }
 
 void resetCounter() {
