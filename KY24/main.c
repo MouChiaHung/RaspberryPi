@@ -50,8 +50,7 @@ int counter_gpio17 = 0;
 int counter_gpio18 = 0;
 int interval_17 = 0;
 int interval_18 = 0;
-int interval_show = 0;
-int interval_reset = 0;
+
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show;
 pthread_mutex_t mutex_gpio17;
@@ -158,12 +157,11 @@ void* taskShow(void* arg) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show); 
 		pthread_mutex_unlock(&mutex_cond_show);
-		int time = 0;
+		interval_show = millis() + 1000;
 		while (1) {
 			time = millis();
-			if (time < interval_show) continue;
+			if (time <= interval_show) continue;
 			else {
-				interval_show = millis() + DEBOUNCE_TIME;
 				if (isPass() == TEST_TRUE) {
 					/*
 					digitalWrite(LED, HIGH);
@@ -176,7 +174,10 @@ void* taskShow(void* arg) {
 					break;
 				}	 
 				else {
-					if (is_reset) is_reset = 0;
+					if (is_reset) {
+						is_reset = 0;
+						break;
+					}
 					else {
 						LOG("%s --------- FAIL ---------\n", RED);
 						resetCounter();
@@ -191,6 +192,7 @@ void* taskShow(void* arg) {
 
 void* taskReset(void* arg) {
 	int time = 0;
+	int interval_reset = 0;
 	while (1) {
 		time = millis();
 		if (time > interval_reset) {
