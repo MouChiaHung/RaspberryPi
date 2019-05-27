@@ -180,6 +180,7 @@ void* taskShow(void* arg) {
 					else {
 						LOG("%s --------- FAIL ---------\n", RED);
 						resetCounter();
+						break;
 					}
 				}
 			}
@@ -221,7 +222,7 @@ int isPass() {
 }
 
 void resetCounter() {
-	LOG("%s reset counters\n", DARY_GRAY);
+	//LOG("%s reset counters\n", DARY_GRAY);
 	counter_gpio17 = 0;
 	counter_gpio18 = 0;
 }
