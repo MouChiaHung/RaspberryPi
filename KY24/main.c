@@ -29,7 +29,7 @@
 #define	DEBOUNCE_TIME 1000
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
-#define	DELAY_MAGIC 888
+#define	DELAY_MAGIC 1500
 
 #define	TEST_TRUE 1
 #define	TEST_FAIL 0
