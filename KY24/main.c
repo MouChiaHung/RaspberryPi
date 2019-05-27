@@ -407,15 +407,15 @@ int isPass() {
 #else 
 	if (digitalRead(SENSOR_0) == LOW) {
 		LOG("%s GPIO17 LOW...\n", DARY_GRAY);
-		//return TEST_FAIL;
+		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_1) == LOW) {
 		LOG("%s GPIO18 LOW...\n", DARY_GRAY);
-		//return TEST_FAIL;
+		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_2) == LOW) {
 		LOG("%s GPIO27 LOW...\n", DARY_GRAY);
-		//return TEST_FAIL;
+		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_3) == LOW) {
 		LOG("%s GPIO22 LOW...\n", DARY_GRAY);
@@ -423,7 +423,7 @@ int isPass() {
 	} 
 	if (digitalRead(SENSOR_4) == LOW) {
 		LOG("%s GPIO23 LOW...\n", DARY_GRAY);
-		//return TEST_FAIL;
+		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_5) == LOW) {
 		LOG("%s GPIO24 LOW...\n", DARY_GRAY);
