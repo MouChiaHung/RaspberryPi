@@ -19,9 +19,17 @@
 #define LED 0
 #define SENSOR_0 0
 #define SENSOR_1 1
+#define SENSOR_2 2
+#define SENSOR_3 3
+#define SENSOR_4 4
+#define SENSOR_5 5
+#define SENSOR_6 6
+#define SENSOR_7 7
+
 #define	DEBOUNCE_TIME 1000
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
+#define	DELAY_MAGIC 888
 
 #define	TEST_TRUE 1
 #define	TEST_FAIL 0
@@ -48,13 +56,32 @@
 /* -------------------------------------------------------------------- */
 int counter_gpio17 = 0;
 int counter_gpio18 = 0;
+int counter_gpio27 = 0;
+int counter_gpio22 = 0;
+int counter_gpio23 = 0;
+int counter_gpio24 = 0;
+int counter_gpio25 = 0;
+int counter_gpio4 = 0;
+
 int interval_17 = 0;
 int interval_18 = 0;
+int interval_27 = 0;
+int interval_22 = 0;
+int interval_23 = 0;
+int interval_24 = 0;
+int interval_25 = 0;
+int interval_4 = 0;
 
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show;
-pthread_mutex_t mutex_gpio17;
-pthread_mutex_t mutex_gpio18;
+pthread_mutex_t mutex_gpio17; //0
+pthread_mutex_t mutex_gpio18; //1
+pthread_mutex_t mutex_gpio27; //2
+pthread_mutex_t mutex_gpio22; //3
+pthread_mutex_t mutex_gpio23; //4
+pthread_mutex_t mutex_gpio24; //5
+pthread_mutex_t mutex_gpio25; //6
+pthread_mutex_t mutex_gpio4;  //7
 //flag
 int is_reset = 0;
 
@@ -74,7 +101,7 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-void handlerKY24_GPIO17(void) {
+void handlerKY24_GPIO17(void) { //0
 	pthread_mutex_lock(&mutex_gpio17);
 	int time = 0;
 	time = millis();
@@ -84,15 +111,13 @@ void handlerKY24_GPIO17(void) {
 	}
 	interval_17 = millis() + DEBOUNCE_TIME;
 	
-	if (digitalRead (SENSOR_0) == HIGH) {
+	if (digitalRead(SENSOR_0) == HIGH) {
 		//LOG("%s ********* DON'T STICK AROUND GPIO17 *********\n", RED);
 		goto END;
 	}
 	//Got it
 	(counter_gpio17)++;
-	LOG("%s ********* Got it and GPIO17 count:%d *********\n", BLUE, counter_gpio17);
-
-	LOG("%s ********* 17 SIG... *********\n", BLUE, counter_gpio17);
+	LOG("%s ********* Got at GPIO17 *********\n", BLUE);
 	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 	
@@ -101,7 +126,7 @@ END:
 	return;
 }
 
-void handlerKY24_GPIO18(void) {
+void handlerKY24_GPIO18(void) { //1
 	pthread_mutex_lock(&mutex_gpio18);
 	int time = 0;
 	time = millis();
@@ -111,15 +136,13 @@ void handlerKY24_GPIO18(void) {
 	}
 	interval_18 = millis() + DEBOUNCE_TIME;
 	
-	if (digitalRead (SENSOR_1) == HIGH) {
+	if (digitalRead(SENSOR_1) == HIGH) {
 		//LOG("%s ********* DON'T STICK AROUND GPIO18 *********\n", RED);
 		goto END;
 	}
 	//Got it
 	(counter_gpio18)++;
-	LOG("%s ********* Got it and GPIO18 count:%d *********\n", BLUE, counter_gpio18);
-	
-	LOG("%s ********* 18 SIG... *********\n", BLUE, counter_gpio17);
+	LOG("%s ********* Got at GPIO18 *********\n", BLUE);
 	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 
@@ -128,11 +151,155 @@ END:
 	return;
 }
 
+void handlerKY24_GPIO27(void) { //2
+	pthread_mutex_lock(&mutex_gpio27);
+	int time = 0;
+	time = millis();
+	if (time < interval_27) {
+		goto END;
+	}
+	interval_27 = millis() + DEBOUNCE_TIME;
+	
+	if (digitalRead(SENSOR_2) == HIGH) {
+		goto END;
+	}
+	//Got it
+	(counter_gpio27)++;
+	LOG("%s ********* Got at GPIO27 *********\n", BLUE);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
+	
+END:		
+	pthread_mutex_unlock(&mutex_gpio27);
+	return;
+}
+
+void handlerKY24_GPIO22(void) { //3
+	pthread_mutex_lock(&mutex_gpio22);
+	int time = 0;
+	time = millis();
+	if (time < interval_22) {
+		goto END;
+	}
+	interval_22 = millis() + DEBOUNCE_TIME;
+	
+	if (digitalRead(SENSOR_3) == HIGH) {
+		goto END;
+	}
+	//Got it
+	(counter_gpio22)++;
+	LOG("%s ********* Got at GPIO22 *********\n", BLUE);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
+	
+END:		
+	pthread_mutex_unlock(&mutex_gpio22);
+	return;
+}
+
+void handlerKY24_GPIO23(void) { //4
+	pthread_mutex_lock(&mutex_gpio23);
+	int time = 0;
+	time = millis();
+	if (time < interval_23) {
+		goto END;
+	}
+	interval_23 = millis() + DEBOUNCE_TIME;
+	
+	if (digitalRead(SENSOR_4) == HIGH) {
+		goto END;
+	}
+	//Got it
+	(counter_gpio23)++;
+	LOG("%s ********* Got at GPIO23 *********\n", BLUE);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
+	
+END:		
+	pthread_mutex_unlock(&mutex_gpio23);
+	return;
+}
+
+void handlerKY24_GPIO24(void) { //5
+	pthread_mutex_lock(&mutex_gpio24);
+	int time = 0;
+	time = millis();
+	if (time < interval_24) {
+		goto END;
+	}
+	interval_24 = millis() + DEBOUNCE_TIME;
+	
+	if (digitalRead(SENSOR_5) == HIGH) {
+		goto END;
+	}
+	//Got it
+	(counter_gpio24)++;
+	LOG("%s ********* Got at GPIO24 *********\n", BLUE);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
+	
+END:		
+	pthread_mutex_unlock(&mutex_gpio24);
+	return;
+}
+
+void handlerKY24_GPIO25(void) { //6
+	pthread_mutex_lock(&mutex_gpio25);
+	int time = 0;
+	time = millis();
+	if (time < interval_25) {
+		goto END;
+	}
+	interval_25 = millis() + DEBOUNCE_TIME;
+	
+	if (digitalRead(SENSOR_6) == HIGH) {
+		goto END;
+	}
+	//Got it
+	(counter_gpio25)++;
+	LOG("%s ********* Got at GPIO25 *********\n", BLUE);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
+	
+END:		
+	pthread_mutex_unlock(&mutex_gpio25);
+	return;
+}
+
+void handlerKY24_GPIO4(void) { //7
+	pthread_mutex_lock(&mutex_gpio4);
+	int time = 0;
+	time = millis();
+	if (time < interval_4) {
+		goto END;
+	}
+	interval_4 = millis() + DEBOUNCE_TIME;
+	
+	if (digitalRead(SENSOR_7) == HIGH) {
+		goto END;
+	}
+	//Got it
+	(counter_gpio4)++;
+	LOG("%s ********* Got at GPIO4 *********\n", BLUE);
+	is_reset = 0;
+	pthread_cond_signal(&cond_show);
+	
+END:		
+	pthread_mutex_unlock(&mutex_gpio4);
+	return;
+}
+
 void* taskKY24(void* arg) {
 	system ("gpio edge 17 rising");
 	system ("gpio edge 18 rising");
 	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24_GPIO17);
 	wiringPiISR(SENSOR_1, INT_EDGE_RISING, &handlerKY24_GPIO18);
+	wiringPiISR(SENSOR_2, INT_EDGE_RISING, &handlerKY24_GPIO27);
+	wiringPiISR(SENSOR_3, INT_EDGE_RISING, &handlerKY24_GPIO22);
+	wiringPiISR(SENSOR_4, INT_EDGE_RISING, &handlerKY24_GPIO23);
+	wiringPiISR(SENSOR_5, INT_EDGE_RISING, &handlerKY24_GPIO24);
+	wiringPiISR(SENSOR_6, INT_EDGE_RISING, &handlerKY24_GPIO25);
+	wiringPiISR(SENSOR_7, INT_EDGE_RISING, &handlerKY24_GPIO4);
 	return 0;
 }
 
@@ -158,7 +325,7 @@ void* taskShow(void* arg) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show); 
 		pthread_mutex_unlock(&mutex_cond_show);
-		interval_show = millis() + 1000;
+		interval_show = millis() + DELAY_MAGIC;
 		while (1) {
 			time = millis();
 			if (time <= interval_show) continue;
@@ -214,13 +381,27 @@ int isPass() {
 	if (counter_gpio17 == 0) {
 		return TEST_FAIL;
 	} 
-	else {
-	}
 	if (counter_gpio18 == 0) {
 		return TEST_FAIL;
 	} 
-	else {
+	if (counter_gpio27 == 0) {
+		return TEST_FAIL;
+	} 
+	if (counter_gpio22 == 0) {
+		return TEST_FAIL;
+	} 
+	if (counter_gpio23 == 0) {
+		return TEST_FAIL;
+	} 
+	if (counter_gpio24 == 0) {
+		return TEST_FAIL;
+	} 
+	if (counter_gpio25 == 0) {
+		return TEST_FAIL;
 	}
+	if (counter_gpio4 == 0) {
+		return TEST_FAIL;
+	} 
 	return TEST_TRUE;
 }
 
@@ -228,6 +409,12 @@ void resetCounter() {
 	//LOG("%s reset counters\n", DARY_GRAY);
 	counter_gpio17 = 0;
 	counter_gpio18 = 0;
+	counter_gpio27 = 0;
+	counter_gpio22 = 0;
+	counter_gpio23 = 0;
+	counter_gpio24 = 0;
+	counter_gpio25 = 0;
+	counter_gpio4 = 0;
 }
 
 int main(void) {
