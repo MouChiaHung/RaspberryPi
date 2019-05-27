@@ -18,6 +18,7 @@
 /* -------------------------------------------------------------------- */
 #define LED 0
 #define BTN 17
+#define SENSOR_0 0
 #define SENSOR_1 1
 #define SENSOR_2 2
 #define SENSOR_3 3
