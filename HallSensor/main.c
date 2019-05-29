@@ -102,13 +102,13 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-void handlerKY24_GPIO28(void) { //17
+void handler_GPIO28(void) { //17
 	LOG("%s ********* Got a Button *********\n", BLUE);
 	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 }
 
-void handlerKY24_GPIO17(void) { //0
+void handler_GPIO17(void) { //0
 	pthread_mutex_lock(&mutex_gpio17);
 	int time = 0;
 	time = millis();
@@ -133,7 +133,7 @@ END:
 	return;
 }
 
-void handlerKY24_GPIO18(void) { //1
+void handler_GPIO18(void) { //1
 	pthread_mutex_lock(&mutex_gpio18);
 	int time = 0;
 	time = millis();
@@ -158,7 +158,7 @@ END:
 	return;
 }
 
-void handlerKY24_GPIO27(void) { //2
+void handler_GPIO27(void) { //2
 	pthread_mutex_lock(&mutex_gpio27);
 	int time = 0;
 	time = millis();
@@ -181,7 +181,7 @@ END:
 	return;
 }
 
-void handlerKY24_GPIO22(void) { //3
+void handler_GPIO22(void) { //3
 	pthread_mutex_lock(&mutex_gpio22);
 	int time = 0;
 	time = millis();
@@ -204,7 +204,7 @@ END:
 	return;
 }
 
-void handlerKY24_GPIO23(void) { //4
+void handler_GPIO23(void) { //4
 	pthread_mutex_lock(&mutex_gpio23);
 	int time = 0;
 	time = millis();
@@ -227,7 +227,7 @@ END:
 	return;
 }
 
-void handlerKY24_GPIO24(void) { //5
+void handler_GPIO24(void) { //5
 	pthread_mutex_lock(&mutex_gpio24);
 	int time = 0;
 	time = millis();
@@ -250,7 +250,7 @@ END:
 	return;
 }
 
-void handlerKY24_GPIO25(void) { //6
+void handler_GPIO25(void) { //6
 	pthread_mutex_lock(&mutex_gpio25);
 	int time = 0;
 	time = millis();
@@ -273,7 +273,7 @@ END:
 	return;
 }
 
-void handlerKY24_GPIO4(void) { //7
+void handler_GPIO4(void) { //7
 	pthread_mutex_lock(&mutex_gpio4);
 	int time = 0;
 	time = millis();
@@ -296,18 +296,25 @@ END:
 	return;
 }
 
-void* taskKY24(void* arg) {
-	system ("gpio edge 17 rising");
-	system ("gpio edge 18 rising");
-	wiringPiISR(BTN, INT_EDGE_RISING, &handlerKY24_GPIO28);
-	wiringPiISR(SENSOR_0, INT_EDGE_RISING, &handlerKY24_GPIO17);
-	wiringPiISR(SENSOR_1, INT_EDGE_RISING, &handlerKY24_GPIO18);
-	wiringPiISR(SENSOR_2, INT_EDGE_RISING, &handlerKY24_GPIO27);
-	wiringPiISR(SENSOR_3, INT_EDGE_RISING, &handlerKY24_GPIO22);
-	wiringPiISR(SENSOR_4, INT_EDGE_RISING, &handlerKY24_GPIO23);
-	wiringPiISR(SENSOR_5, INT_EDGE_RISING, &handlerKY24_GPIO24);
-	wiringPiISR(SENSOR_6, INT_EDGE_RISING, &handlerKY24_GPIO25);
-	wiringPiISR(SENSOR_7, INT_EDGE_RISING, &handlerKY24_GPIO4);
+void* taskSensor(void* arg) {
+	system ("gpio edge 17 falling");
+	system ("gpio edge 18 falling");
+	system ("gpio edge 27 falling");
+	system ("gpio edge 22 falling");
+	system ("gpio edge 23 falling");
+	system ("gpio edge 24 falling");
+	system ("gpio edge 25 falling");
+	system ("gpio edge 4 falling");
+
+	wiringPiISR(BTN, INT_EDGE_FALLING, &handler_GPIO28);
+	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_GPIO17);
+	wiringPiISR(SENSOR_1, INT_EDGE_FALLING, &handler_GPIO18);
+	wiringPiISR(SENSOR_2, INT_EDGE_FALLING, &handler_GPIO27);
+	wiringPiISR(SENSOR_3, INT_EDGE_FALLING, &handler_GPIO22);
+	wiringPiISR(SENSOR_4, INT_EDGE_FALLING, &handler_GPIO23);
+	wiringPiISR(SENSOR_5, INT_EDGE_FALLING, &handler_GPIO24);
+	wiringPiISR(SENSOR_6, INT_EDGE_FALLING, &handler_GPIO25);
+	wiringPiISR(SENSOR_7, INT_EDGE_FALLING, &handler_GPIO4);
 	return 0;
 }
 
@@ -476,14 +483,14 @@ int main(void) {
 	pinMode (SENSOR_6, INPUT);
 	pinMode (SENSOR_7, INPUT);
 	
-	pullUpDnControl(SENSOR_0, PUD_DOWN);
-	pullUpDnControl(SENSOR_1, PUD_DOWN);
-	pullUpDnControl(SENSOR_2, PUD_DOWN);
-	pullUpDnControl(SENSOR_3, PUD_DOWN);
-	pullUpDnControl(SENSOR_4, PUD_DOWN);
-	pullUpDnControl(SENSOR_5, PUD_DOWN);
-	pullUpDnControl(SENSOR_6, PUD_DOWN);
-	pullUpDnControl(SENSOR_7, PUD_DOWN);
+	pullUpDnControl(SENSOR_0, PUD_UP);
+	pullUpDnControl(SENSOR_1, PUD_UP);
+	pullUpDnControl(SENSOR_2, PUD_UP);
+	pullUpDnControl(SENSOR_3, PUD_UP);
+	pullUpDnControl(SENSOR_4, PUD_UP);
+	pullUpDnControl(SENSOR_5, PUD_UP);
+	pullUpDnControl(SENSOR_6, PUD_UP);
+	pullUpDnControl(SENSOR_7, PUD_UP);
 	
 	pthread_mutex_init(&mutex_gpio17, 0);
 	pthread_mutex_init(&mutex_gpio18, 0);
@@ -505,13 +512,13 @@ int main(void) {
 	pthread_join(tReset, NULL);
 #endif
 
-	pthread_t tKY;
+	pthread_t tSensor;
 	pthread_t tShow;
 	
-	pthread_create(&tKY, NULL, taskKY24, NULL);
+	pthread_create(&tSensor, NULL, taskSensor, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
 	
-	pthread_join(tKY, NULL);
+	pthread_join(tSensor, NULL);
 	pthread_join(tShow, NULL);
 	
 	pthread_mutex_destroy(&mutex_gpio17);
