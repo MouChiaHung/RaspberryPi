@@ -420,36 +420,36 @@ int isPass() {
 	} 
 	return TEST_TRUE;
 #else 
-	if (digitalRead(SENSOR_0) == LOW) {
-		LOG("%s GPIO17 LOW...\n", DARY_GRAY);
+	if (digitalRead(SENSOR_0) == HIGH) {
+		LOG("%s GPIO17 HIGH...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
-	if (digitalRead(SENSOR_1) == LOW) {
-		LOG("%s GPIO18 LOW...\n", DARY_GRAY);
+	if (digitalRead(SENSOR_1) == HIGH) {
+		LOG("%s GPIO18 HIGH...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
-	if (digitalRead(SENSOR_2) == LOW) {
-		LOG("%s GPIO27 LOW...\n", DARY_GRAY);
+	if (digitalRead(SENSOR_2) == HIGH) {
+		LOG("%s GPIO27 HIGH...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
-	if (digitalRead(SENSOR_3) == LOW) {
-		LOG("%s GPIO22 LOW...\n", DARY_GRAY);
+	if (digitalRead(SENSOR_3) == HIGH) {
+		LOG("%s GPIO22 HIGH...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
-	if (digitalRead(SENSOR_4) == LOW) {
-		LOG("%s GPIO23 LOW...\n", DARY_GRAY);
+	if (digitalRead(SENSOR_4) == HIGH) {
+		LOG("%s GPIO23 HIGH...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
-	if (digitalRead(SENSOR_5) == LOW) {
-		LOG("%s GPIO24 LOW...\n", DARY_GRAY);
+	if (digitalRead(SENSOR_5) == HIGH) {
+		LOG("%s GPIO24 HIGH...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
-	if (digitalRead(SENSOR_6) == LOW) {
-		LOG("%s GPIO25 LOW...\n", DARY_GRAY);
+	if (digitalRead(SENSOR_6) == HIGH) {
+		LOG("%s GPIO25 HIGH...\n", DARY_GRAY);
 		return TEST_FAIL;
 	}
-	if (digitalRead(SENSOR_7) == LOW) {
-		LOG("%s GPIO4 LOW...\n", DARY_GRAY);
+	if (digitalRead(SENSOR_7) == HIGH) {
+		LOG("%s GPIO4 HIGH...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
 	return TEST_TRUE;
