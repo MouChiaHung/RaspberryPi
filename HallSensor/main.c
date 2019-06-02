@@ -30,7 +30,7 @@
 #define	DEBOUNCE_TIME 250
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
-#define	DELAY_MAGIC 250
+#define	DELAY_MAGIC 0
 
 #define	TEST_TRUE 1
 #define	TEST_FAIL 0
@@ -421,35 +421,35 @@ int isPass() {
 	return TEST_TRUE;
 #else 
 	if (digitalRead(SENSOR_0) == HIGH) {
-		LOG("%s GPIO17 HIGH...\n", DARY_GRAY);
+		LOG("%s GPIO17 FAIL...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_1) == HIGH) {
-		LOG("%s GPIO18 HIGH...\n", DARY_GRAY);
+		LOG("%s GPIO18 FAIL...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_2) == HIGH) {
-		LOG("%s GPIO27 HIGH...\n", DARY_GRAY);
+		LOG("%s GPIO27 FAIL...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_3) == HIGH) {
-		LOG("%s GPIO22 HIGH...\n", DARY_GRAY);
+		LOG("%s GPIO22 FAIL...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_4) == HIGH) {
-		LOG("%s GPIO23 HIGH...\n", DARY_GRAY);
+		LOG("%s GPIO23 FAIL...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_5) == HIGH) {
-		LOG("%s GPIO24 HIGH...\n", DARY_GRAY);
+		LOG("%s GPIO24 FAIL...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
 	if (digitalRead(SENSOR_6) == HIGH) {
-		LOG("%s GPIO25 HIGH...\n", DARY_GRAY);
+		LOG("%s GPIO25 FAIL...\n", DARY_GRAY);
 		return TEST_FAIL;
 	}
 	if (digitalRead(SENSOR_7) == HIGH) {
-		LOG("%s GPIO4 HIGH...\n", DARY_GRAY);
+		LOG("%s GPIO4 FAIL...\n", DARY_GRAY);
 		return TEST_FAIL;
 	} 
 	return TEST_TRUE;
