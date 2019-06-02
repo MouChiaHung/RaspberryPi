@@ -27,10 +27,10 @@
 #define SENSOR_6 6
 #define SENSOR_7 7
 
-#define	DEBOUNCE_TIME 1000
+#define	DEBOUNCE_TIME 250
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
-#define	DELAY_MAGIC 2000
+#define	DELAY_MAGIC 250
 
 #define	TEST_TRUE 1
 #define	TEST_FAIL 0
