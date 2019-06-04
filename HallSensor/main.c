@@ -351,40 +351,43 @@ void* taskShow(void* arg) {
 
 int test() {
 	int level = 0;
+	char str[128];
 	if (digitalRead(SENSOR_0) == HIGH) {
-		LOG("%s BAD GPIO17\n", DARY_GRAY);
+		strcat(str, " GPIO17");
 		level++;
 	} 
 	if (digitalRead(SENSOR_1) == HIGH) {
-		LOG("%s BAD GPIO18\n", DARY_GRAY);
+		strcat(str, " GPIO18");
 		level++;
 	} 
 	if (digitalRead(SENSOR_2) == HIGH) {
-		LOG("%s BAD GPIO27\n", DARY_GRAY);
+		strcat(str, " GPIO27");
 		level++;
 	} 
 	if (digitalRead(SENSOR_3) == HIGH) {
-		LOG("%s BAD GPIO22\n", DARY_GRAY);
+		strcat(str, " GPIO22");
 		level++;
 	} 
 	if (digitalRead(SENSOR_4) == HIGH) {
-		LOG("%s BAD GPIO23\n", DARY_GRAY);
+		strcat(str, " GPIO23");
 		level++;
 	} 
 	if (digitalRead(SENSOR_5) == HIGH) {
-		LOG("%s BAD GPIO24\n", DARY_GRAY);
+		strcat(str, " GPIO24");
 		level++;
 	} 
 	if (digitalRead(SENSOR_6) == HIGH) {
-		LOG("%s BAD GPIO25\n", DARY_GRAY);
+		strcat(str, " GPIO25");
 		level++;
 	}
 	if (digitalRead(SENSOR_7) == HIGH) {
-		LOG("%s BAD GPIO4\n", DARY_GRAY);
+		strcat(str, " GPIO4");
 		level++;
 	}
+	LOG("%s %s\n", LIGHT_GRAY, str);
 	if (level == 0) return TEST_PASS;
 	else if (level == 8) return TEST_DRAW;
+	LOG("%s %s%s\n", LIGHT_GRAY, "BAD ", str);
 	return TEST_FAIL;
 }
 
