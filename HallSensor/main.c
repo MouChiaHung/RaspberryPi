@@ -30,7 +30,7 @@
 #define	DEBOUNCE_TIME 250
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
-#define	DELAY_MAGIC 100
+#define	DELAY_MAGIC 350
 
 #define	TEST_PASS 1
 #define	TEST_FAIL 2
@@ -327,7 +327,7 @@ void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
-		delay(300);
+		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		int ret = test();
 		if (ret == TEST_PASS) {
@@ -337,13 +337,13 @@ void* taskShow(void* arg) {
 			digitalWrite(LED, LOW);
 			delay(DELAY_TIME);
 			*/
-			LOG("%s -*-*-*-*-*-*-*-*- PASS -*-*-*-*-*-*-*-*-\n", LIGHT_GREEN);
+			LOG("%s PASS\n", LIGHT_GREEN);
 		}
 		else if (ret == TEST_DRAW){
-			LOG("%s ................. DRAW .................\n", LIGHT_CYAN);
+			LOG("%s DRAW\n", LIGHT_CYAN);
 		}
 		else {
-			LOG("%s ! ! ! ! ! ! ! ! ! FAIL ! ! ! ! ! ! ! ! !\n", LIGHT_RED);
+			LOG("%s FAIL\n", LIGHT_RED);
 		}
 	}
 	return 0;
