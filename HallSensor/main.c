@@ -340,13 +340,9 @@ void* taskShow(void* arg) {
 			delay(DELAY_TIME);
 			*/
 			LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
-			resetCounter();
-			break;
 		}	 
 		else {
 			LOG("%s --------- FAIL ---------\n", RED);
-			resetCounter();
-			break;
 		}
 	}
 	return 0;
