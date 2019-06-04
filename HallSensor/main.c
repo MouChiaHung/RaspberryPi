@@ -32,8 +32,9 @@
 #define	DELAY_LOG 2000
 #define	DELAY_MAGIC 100
 
-#define	TEST_TRUE 1
-#define	TEST_FAIL 0
+#define	TEST_PASS 1
+#define	TEST_FAIL 2
+#define	TEST_DRAW 3
 
 #define NONECOLOR 	"\033[m"
 #define RED 		"\033[0;32;31m"
@@ -84,7 +85,7 @@ pthread_mutex_t mutex_gpio24; //5
 pthread_mutex_t mutex_gpio25; //6
 pthread_mutex_t mutex_gpio4;  //7
 
-int isPass();
+int test();
 void resetCounter();
 /* -------------------------------------------------------------------- */
 /* implements                                                           */
@@ -323,98 +324,68 @@ void* taskLog(void* arg) {
 }
 
 void* taskShow(void* arg) {
-	//int time = 0;
-	//int interval_show = 0;
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
-		//interval_show = millis() + DELAY_MAGIC;
-		LOG("%s --------- GOING TO WAIT ---------\n", YELLOW);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
-		LOG("%s --------- RESUMED ---------\n", YELLOW);
 		delay(300);
 		pthread_mutex_unlock(&mutex_cond_show);
-		//time = millis();
-		//if (time <= interval_show) continue;
-		if (isPass() == TEST_TRUE) {
+		bool ret = test();
+		if (ret == TEST_PASS) {
 			/*
 			digitalWrite(LED, HIGH);
 			delay(DELAY_TIME);
 			digitalWrite(LED, LOW);
 			delay(DELAY_TIME);
 			*/
-			LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
-		}	 
+			LOG("%s -*-*-*-*-*-*-*-*- PASS -*-*-*-*-*-*-*-*-\n", LIGHT_GREEN);
+		}
+		else if (ret == TEST_DRAW){
+			LOG("%s ................. DRAW .................\n", LIGHT_CYAN);
+		}
 		else {
-			LOG("%s --------- FAIL ---------\n", RED);
+			LOG("%s ! ! ! ! ! ! ! ! ! FAIL ! ! ! ! ! ! ! ! !\n", LIGHT_RED);
 		}
 	}
 	return 0;
 }
 
-int isPass() {
-	//LOG("%s counter of gpio17:%d\n", DARY_GRAY, counter_gpio17);
-	//LOG("%s counter of gpio18:%d\n", DARY_GRAY, counter_gpio18);
-#if 0	
-	if (counter_gpio17 == 0) {
-		return TEST_FAIL;
-	} 
-	if (counter_gpio18 == 0) {
-		return TEST_FAIL;
-	} 
-	if (counter_gpio27 == 0) {
-		return TEST_FAIL;
-	} 
-	if (counter_gpio22 == 0) {
-		return TEST_FAIL;
-	} 
-	if (counter_gpio23 == 0) {
-		return TEST_FAIL;
-	} 
-	if (counter_gpio24 == 0) {
-		return TEST_FAIL;
-	} 
-	if (counter_gpio25 == 0) {
-		return TEST_FAIL;
-	}
-	if (counter_gpio4 == 0) {
-		return TEST_FAIL;
-	} 
-	return TEST_TRUE;
-#else 
+int test() {
+	int level = 0;
 	if (digitalRead(SENSOR_0) == HIGH) {
-		LOG("%s GPIO17 FAIL...\n", DARY_GRAY);
-		return TEST_FAIL;
+		LOG("%s BAD GPIO17\n", DARY_GRAY);
+		level++;
 	} 
 	if (digitalRead(SENSOR_1) == HIGH) {
-		LOG("%s GPIO18 FAIL...\n", DARY_GRAY);
-		return TEST_FAIL;
+		LOG("%s BAD GPIO18\n", DARY_GRAY);
+		level++;
 	} 
 	if (digitalRead(SENSOR_2) == HIGH) {
-		LOG("%s GPIO27 FAIL...\n", DARY_GRAY);
-		return TEST_FAIL;
+		LOG("%s BAD GPIO27\n", DARY_GRAY);
+		level++;
 	} 
 	if (digitalRead(SENSOR_3) == HIGH) {
-		LOG("%s GPIO22 FAIL...\n", DARY_GRAY);
-		return TEST_FAIL;
+		LOG("%s BAD GPIO22\n", DARY_GRAY);
+		level++;
 	} 
 	if (digitalRead(SENSOR_4) == HIGH) {
-		LOG("%s GPIO23 FAIL...\n", DARY_GRAY);
-		return TEST_FAIL;
+		LOG("%s BAD GPIO23\n", DARY_GRAY);
+		level++;
 	} 
 	if (digitalRead(SENSOR_5) == HIGH) {
-		LOG("%s GPIO24 FAIL...\n", DARY_GRAY);
-		return TEST_FAIL;
+		LOG("%s BAD GPIO24\n", DARY_GRAY);
+		level++;
 	} 
 	if (digitalRead(SENSOR_6) == HIGH) {
-		LOG("%s GPIO25 FAIL...\n", DARY_GRAY);
-		return TEST_FAIL;
+		LOG("%s BAD GPIO25\n", DARY_GRAY);
+		level++;
 	}
 	if (digitalRead(SENSOR_7) == HIGH) {
-		LOG("%s GPIO4 FAIL...\n", DARY_GRAY);
-		return TEST_FAIL;
-	} 
-	return TEST_TRUE;
-#endif
+		LOG("%s BAD GPIO4\n", DARY_GRAY);
+		level++;
+	}
+	if (level == 0) return TEST_PASS;
+	else if (level == 8) return TEST_DRAW;
+	return TEST_FAIL;
 }
 
 void resetCounter() {
