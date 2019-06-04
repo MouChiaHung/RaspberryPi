@@ -34,7 +34,7 @@
 
 #define	TEST_PASS 1
 #define	TEST_FAIL 2
-#define	TEST_DRAW 3
+#define	TEST_MISS 3
 
 #define NONECOLOR 	"\033[m"
 #define RED 		"\033[0;32;31m"
@@ -339,8 +339,8 @@ void* taskShow(void* arg) {
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
 		}
-		else if (ret == TEST_DRAW){
-			LOG("%s DRAW\n", LIGHT_CYAN);
+		else if (ret == TEST_MISS){
+			LOG("%s MISS\n", LIGHT_CYAN);
 		}
 		else {
 			LOG("%s FAIL\n", LIGHT_RED);
@@ -386,7 +386,7 @@ int test() {
 		level++;
 	}
 	if (level == 0) return TEST_PASS;
-	else if (level == 8) return TEST_DRAW;
+	else if (level == 8) return TEST_MISS;
 	strcat(str2, "BAD");
 	LOG("%s %s%s\n", LIGHT_GRAY, str2, str);
 	return TEST_FAIL;
