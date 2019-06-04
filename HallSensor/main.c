@@ -329,7 +329,7 @@ void* taskShow(void* arg) {
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
 		delay(300);
 		pthread_mutex_unlock(&mutex_cond_show);
-		bool ret = test();
+		int ret = test();
 		if (ret == TEST_PASS) {
 			/*
 			digitalWrite(LED, HIGH);
