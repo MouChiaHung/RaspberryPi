@@ -323,15 +323,16 @@ void* taskLog(void* arg) {
 }
 
 void* taskShow(void* arg) {
-	int time = 0;
-	int interval_show = 0;
+	//int time = 0;
+	//int interval_show = 0;
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
-		interval_show = millis() + DELAY_MAGIC;
+		//interval_show = millis() + DELAY_MAGIC;
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
+		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
-		time = millis();
-		if (time <= interval_show) continue;
+		//time = millis();
+		//if (time <= interval_show) continue;
 		if (isPass() == TEST_TRUE) {
 			/*
 			digitalWrite(LED, HIGH);
