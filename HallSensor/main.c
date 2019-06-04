@@ -388,7 +388,7 @@ int test() {
 	if (level == 0) return TEST_PASS;
 	else if (level == 8) return TEST_DRAW;
 	strcat(str2, "BAD");
-	LOG("%s %s %s\n", LIGHT_GRAY, str2, str);
+	LOG("%s %s%s\n", LIGHT_GRAY, str2, str);
 	return TEST_FAIL;
 }
 
