@@ -384,7 +384,6 @@ int test() {
 		strcat(str, " GPIO4");
 		level++;
 	}
-	LOG("%s %s\n", LIGHT_GRAY, str);
 	if (level == 0) return TEST_PASS;
 	else if (level == 8) return TEST_DRAW;
 	LOG("%s %s%s\n", LIGHT_GRAY, "BAD ", str);
