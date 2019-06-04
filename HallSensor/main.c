@@ -83,8 +83,6 @@ pthread_mutex_t mutex_gpio23; //4
 pthread_mutex_t mutex_gpio24; //5
 pthread_mutex_t mutex_gpio25; //6
 pthread_mutex_t mutex_gpio4;  //7
-//flag
-int is_reset = 0;
 
 int isPass();
 void resetCounter();
@@ -104,7 +102,6 @@ void LOG(const char* format, ...)
 
 void handler_GPIO28(void) { //17
 	LOG("%s ********* Got a Button *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 }
 
@@ -125,7 +122,6 @@ void handler_GPIO17(void) { //0
 	//Got it
 	(counter_gpio17)++;
 	LOG("%s ********* Got at GPIO17 *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -150,7 +146,6 @@ void handler_GPIO18(void) { //1
 	//Got it
 	(counter_gpio18)++;
 	LOG("%s ********* Got at GPIO18 *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 
 END:		
@@ -173,7 +168,6 @@ void handler_GPIO27(void) { //2
 	//Got it
 	(counter_gpio27)++;
 	LOG("%s ********* Got at GPIO27 *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -196,7 +190,6 @@ void handler_GPIO22(void) { //3
 	//Got it
 	(counter_gpio22)++;
 	LOG("%s ********* Got at GPIO22 *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -219,7 +212,6 @@ void handler_GPIO23(void) { //4
 	//Got it
 	(counter_gpio23)++;
 	LOG("%s ********* Got at GPIO23 *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -242,7 +234,6 @@ void handler_GPIO24(void) { //5
 	//Got it
 	(counter_gpio24)++;
 	LOG("%s ********* Got at GPIO24 *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -265,7 +256,6 @@ void handler_GPIO25(void) { //6
 	//Got it
 	(counter_gpio25)++;
 	LOG("%s ********* Got at GPIO25 *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -288,7 +278,6 @@ void handler_GPIO4(void) { //7
 	//Got it
 	(counter_gpio4)++;
 	LOG("%s ********* Got at GPIO4 *********\n", BLUE);
-	is_reset = 0;
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -338,54 +327,29 @@ void* taskShow(void* arg) {
 	int interval_show = 0;
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
-		pthread_cond_wait(&cond_show, &mutex_cond_show); 
-		pthread_mutex_unlock(&mutex_cond_show);
 		interval_show = millis() + DELAY_MAGIC;
-		while (1) {
-			time = millis();
-			if (time <= interval_show) continue;
-			else {
-				if (isPass() == TEST_TRUE) {
-					/*
-					digitalWrite(LED, HIGH);
-					delay(DELAY_TIME);
-					digitalWrite(LED, LOW);
-					delay(DELAY_TIME);
-					*/
-					LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
-					resetCounter();
-					break;
-				}	 
-				else {
-					if (is_reset) {
-						is_reset = 0;
-						break;
-					}
-					else {
-						LOG("%s --------- FAIL ---------\n", RED);
-						resetCounter();
-						break;
-					}
-				}
-			}
+		pthread_cond_wait(&cond_show, &mutex_cond_show);
+		pthread_mutex_unlock(&mutex_cond_show);
+		time = millis();
+		if (time <= interval_show) continue;
+		if (isPass() == TEST_TRUE) {
+			/*
+			digitalWrite(LED, HIGH);
+			delay(DELAY_TIME);
+			digitalWrite(LED, LOW);
+			delay(DELAY_TIME);
+			*/
+			LOG("%s --------- PASS ---------\n", LIGHT_GREEN);
+			resetCounter();
+			break;
+		}	 
+		else {
+			LOG("%s --------- FAIL ---------\n", RED);
+			resetCounter();
+			break;
 		}
 	}
-	return 0;
-}
-
-void* taskReset(void* arg) {
-	int time = 0;
-	int interval_reset = 0;
-	while (1) {
-		time = millis();
-		if (time > interval_reset) {
-			pthread_mutex_lock(&mutex_cond_show);
-			pthread_cond_signal(&cond_show);
-			pthread_mutex_unlock(&mutex_cond_show);
-			resetCounter();
-			interval_reset = millis() + 5000;
-			is_reset = 1;
-		}
+		
 	}
 	return 0;
 }
@@ -506,10 +470,6 @@ int main(void) {
 	pthread_t tLog;
 	pthread_create(&tLog, NULL, taskLog, NULL);
 	pthread_join(tLog, NULL);
-	
-	pthread_t tReset;
-	pthread_create(&tReset, NULL, taskReset, NULL);
-	pthread_join(tReset, NULL);
 #endif
 
 	pthread_t tSensor;
