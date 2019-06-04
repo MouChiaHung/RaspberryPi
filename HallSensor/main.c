@@ -122,7 +122,7 @@ void handler_GPIO17(void) { //0
 	}
 	//Got it
 	(counter_gpio17)++;
-	LOG("%s ********* Got at GPIO17 *********\n", BLUE);
+	//LOG("%s ********* Got at GPIO17 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -146,7 +146,7 @@ void handler_GPIO18(void) { //1
 	}
 	//Got it
 	(counter_gpio18)++;
-	LOG("%s ********* Got at GPIO18 *********\n", BLUE);
+	//LOG("%s ********* Got at GPIO18 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 
 END:		
@@ -168,7 +168,7 @@ void handler_GPIO27(void) { //2
 	}
 	//Got it
 	(counter_gpio27)++;
-	LOG("%s ********* Got at GPIO27 *********\n", BLUE);
+	//LOG("%s ********* Got at GPIO27 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -190,7 +190,7 @@ void handler_GPIO22(void) { //3
 	}
 	//Got it
 	(counter_gpio22)++;
-	LOG("%s ********* Got at GPIO22 *********\n", BLUE);
+	//LOG("%s ********* Got at GPIO22 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -212,7 +212,7 @@ void handler_GPIO23(void) { //4
 	}
 	//Got it
 	(counter_gpio23)++;
-	LOG("%s ********* Got at GPIO23 *********\n", BLUE);
+	//LOG("%s ********* Got at GPIO23 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -234,7 +234,7 @@ void handler_GPIO24(void) { //5
 	}
 	//Got it
 	(counter_gpio24)++;
-	LOG("%s ********* Got at GPIO24 *********\n", BLUE);
+	//LOG("%s ********* Got at GPIO24 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -256,7 +256,7 @@ void handler_GPIO25(void) { //6
 	}
 	//Got it
 	(counter_gpio25)++;
-	LOG("%s ********* Got at GPIO25 *********\n", BLUE);
+	//LOG("%s ********* Got at GPIO25 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 	
 END:		
@@ -278,7 +278,7 @@ void handler_GPIO4(void) { //7
 	}
 	//Got it
 	(counter_gpio4)++;
-	LOG("%s ********* Got at GPIO4 *********\n", BLUE);
+	//LOG("%s ********* Got at GPIO4 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 	
 END:		
