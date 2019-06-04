@@ -349,8 +349,6 @@ void* taskShow(void* arg) {
 			break;
 		}
 	}
-		
-	}
 	return 0;
 }
 
