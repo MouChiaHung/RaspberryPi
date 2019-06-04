@@ -352,6 +352,7 @@ void* taskShow(void* arg) {
 int test() {
 	int level = 0;
 	char str[128] = "";
+	char str2[8] = "";
 	if (digitalRead(SENSOR_0) == HIGH) {
 		strcat(str, " GPIO17");
 		level++;
@@ -386,8 +387,8 @@ int test() {
 	}
 	if (level == 0) return TEST_PASS;
 	else if (level == 8) return TEST_DRAW;
-	strcat(str, "BAD");
-	LOG("%s %s\n", LIGHT_GRAY, str);
+	strcat(str2, "BAD");
+	LOG("%s %s %s\n", LIGHT_GRAY, str2, str);
 	return TEST_FAIL;
 }
 
