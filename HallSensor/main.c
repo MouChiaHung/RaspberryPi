@@ -328,8 +328,10 @@ void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		//interval_show = millis() + DELAY_MAGIC;
+		LOG("%s --------- GOING TO WAIT ---------\n", YELLOW);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
-		delay(DELAY_MAGIC);
+		LOG("%s --------- RESUMED ---------\n", YELLOW);
+		delay(300);
 		pthread_mutex_unlock(&mutex_cond_show);
 		//time = millis();
 		//if (time <= interval_show) continue;
