@@ -29,7 +29,7 @@
 #define SENSOR_7 7
 #else //BCM
 #define SENSOR_0 17
-#define SENSOR_1 18
+#define SENSOR_1 28
 #define SENSOR_2 27
 #define SENSOR_3 22
 #define SENSOR_4 23
@@ -75,7 +75,7 @@
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
 int counter_gpio17 = 0;
-int counter_gpio18 = 0;
+int counter_gpio28 = 0;
 int counter_gpio27 = 0;
 int counter_gpio22 = 0;
 int counter_gpio23 = 0;
@@ -84,7 +84,7 @@ int counter_gpio25 = 0;
 int counter_gpio4 = 0;
 
 int interval_17 = 0;
-int interval_18 = 0;
+int interval_28 = 0;
 int interval_27 = 0;
 int interval_22 = 0;
 int interval_23 = 0;
@@ -95,7 +95,7 @@ int interval_4 = 0;
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show;
 pthread_mutex_t mutex_gpio17; //0
-pthread_mutex_t mutex_gpio18; //1
+pthread_mutex_t mutex_gpio28; //1
 pthread_mutex_t mutex_gpio27; //2
 pthread_mutex_t mutex_gpio22; //3
 pthread_mutex_t mutex_gpio23; //4
@@ -172,27 +172,27 @@ END:
 	return;
 }
 
-void handler_GPIO18(void) { //1
-	pthread_mutex_lock(&mutex_gpio18);
+void handler_GPIO28(void) { //1
+	pthread_mutex_lock(&mutex_gpio28);
 	int time = 0;
 	time = millis();
-	if (time < interval_18) {
-		//LOG("%s ********* TOO FAST AROUND GPIO18 *********\n", RED);
+	if (time < interval_28) {
+		//LOG("%s ********* TOO FAST AROUND GPIO28 *********\n", RED);
 		goto END;
 	}
-	interval_18 = millis() + DEBOUNCE_TIME;
+	interval_28 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_1) == HIGH) {
-		//LOG("%s ********* DON'T STICK AROUND GPIO18 *********\n", RED);
+		//LOG("%s ********* DON'T STICK AROUND GPIO28 *********\n", RED);
 		goto END;
 	}
 	//Got it
-	(counter_gpio18)++;
-	//LOG("%s ********* Got at GPIO18 *********\n", BLUE);
+	(counter_gpio28)++;
+	//LOG("%s ********* Got at GPIO28 *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 
 END:		
-	pthread_mutex_unlock(&mutex_gpio18);
+	pthread_mutex_unlock(&mutex_gpio28);
 	return;
 }
 
@@ -330,7 +330,7 @@ END:
 
 void* taskSensor(void* arg) {
 	system ("gpio edge 17 falling");
-	system ("gpio edge 18 falling");
+	system ("gpio edge 28 falling");
 	system ("gpio edge 27 falling");
 	system ("gpio edge 22 falling");
 	system ("gpio edge 23 falling");
@@ -340,7 +340,7 @@ void* taskSensor(void* arg) {
 
 	wiringPiISR(BTN, INT_EDGE_FALLING, &handler_GPIO28);
 	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_GPIO17);
-	wiringPiISR(SENSOR_1, INT_EDGE_FALLING, &handler_GPIO18);
+	wiringPiISR(SENSOR_1, INT_EDGE_FALLING, &handler_GPIO28);
 	wiringPiISR(SENSOR_2, INT_EDGE_FALLING, &handler_GPIO27);
 	wiringPiISR(SENSOR_3, INT_EDGE_FALLING, &handler_GPIO22);
 	wiringPiISR(SENSOR_4, INT_EDGE_FALLING, &handler_GPIO23);
@@ -404,7 +404,7 @@ int test() {
 		level++;
 	} 
 	if (digitalRead(SENSOR_1) == HIGH) {
-		strcat(str, " GPIO18");
+		strcat(str, " GPIO28");
 		level++;
 	} 
 	if (digitalRead(SENSOR_2) == HIGH) {
@@ -441,7 +441,7 @@ int test() {
 void resetCounter() {
 	//LOG("%s reset counters\n", DARY_GRAY);
 	counter_gpio17 = 0;
-	counter_gpio18 = 0;
+	counter_gpio28 = 0;
 	counter_gpio27 = 0;
 	counter_gpio22 = 0;
 	counter_gpio23 = 0;
@@ -455,7 +455,12 @@ int main(void) {
 	
 	//wiringPiSetup();
 	wiringPiSetupGpio();
-   	pinMode (18, PWM_OUTPUT) ;
+   	pinMode (SERVO_0, PWM_OUTPUT) ;
+   	pwmSetMode (PWM_MODE_MS);
+   	pwmSetRange (200);
+   	pwmSetClock (1920);
+
+   	pinMode (SERVO_1, PWM_OUTPUT) ;
    	pwmSetMode (PWM_MODE_MS);
    	pwmSetRange (200);
    	pwmSetClock (1920);
@@ -481,7 +486,7 @@ int main(void) {
 	pullUpDnControl(SENSOR_7, PUD_UP);
 	
 	pthread_mutex_init(&mutex_gpio17, 0);
-	pthread_mutex_init(&mutex_gpio18, 0);
+	pthread_mutex_init(&mutex_gpio28, 0);
 	pthread_mutex_init(&mutex_gpio27, 0);
 	pthread_mutex_init(&mutex_gpio22, 0);
 	pthread_mutex_init(&mutex_gpio23, 0);
@@ -507,7 +512,7 @@ int main(void) {
 	pthread_join(tShow, NULL);
 	
 	pthread_mutex_destroy(&mutex_gpio17);
-	pthread_mutex_destroy(&mutex_gpio18);
+	pthread_mutex_destroy(&mutex_gpio28);
 	pthread_mutex_destroy(&mutex_gpio27);
 	pthread_mutex_destroy(&mutex_gpio22);
 	pthread_mutex_destroy(&mutex_gpio23);
