@@ -128,14 +128,14 @@ void servo(int servo, int angle) {
 			period_per_unit = (1/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000;
 			duty = (period_per_unit*SERV_0_DUTY_90)-((90-angle)/180)*10*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
 			value = duty/period_per_unit;
-			LOG(("%s servo_0 going to pwmWrite:%d\n", LIGHT_GRAY, value);
+			LOG("%s servo_0 going to pwmWrite:%d\n", LIGHT_GRAY, value);
 			pwmWrite(SERVO_0, value);
 			break;
 		case 1:
 			period_per_unit = (1/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000;
 			duty = (period_per_unit*SERV_0_DUTY_90)-((90-angle)/180)*10*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
 			value = duty/period_per_unit;
-			LOG(("%s servo_1 going to pwmWrite:%d\n", LIGHT_GRAY, value);
+			LOG("%s servo_1 going to pwmWrite:%d\n", LIGHT_GRAY, value);
 			pwmWrite(SERVO_1, value);
 			break;
 		default:
