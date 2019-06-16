@@ -18,6 +18,7 @@
 /* -------------------------------------------------------------------- */
 #define LED 0
 #define BTN 17
+#if 0 //WiringPi
 #define SENSOR_0 0
 #define SENSOR_1 1
 #define SENSOR_2 2
@@ -26,6 +27,23 @@
 #define SENSOR_5 5
 #define SENSOR_6 6
 #define SENSOR_7 7
+#else //BCM
+#define SENSOR_0 17
+#define SENSOR_1 18
+#define SENSOR_2 27
+#define SENSOR_3 22
+#define SENSOR_4 23
+#define SENSOR_5 24
+#define SENSOR_6 25
+#define SENSOR_7 4
+#define SERVO_0 18
+#define SERVO_1 12
+#endif
+
+#define SERV_0_90_DUTY 20
+#define PWM_CHANNEL_0_CLOCK 1920
+#define PWM_CHANNEL_0_RANGE 200
+#define PWM_BASE_FREQ 19200000
 
 #define	DEBOUNCE_TIME 250
 #define	DELAY_TIME 1000
@@ -338,6 +356,10 @@ void* taskShow(void* arg) {
 			delay(DELAY_TIME);
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
+			servo(0, 90);
+			delay(100);
+			servo(0, 90);
+
 		}
 		else if (ret == TEST_RETRY){
 			LOG("%s RETRY\n", LIGHT_CYAN);
@@ -392,6 +414,30 @@ int test() {
 	return TEST_FAIL;
 }
 
+void servo(int servo, int angle) {
+	float period_per_unit = 0.1 //0.1ms;
+	int duty = 0; //ms
+	int value = 0; //count of units
+	switch (servo) {
+		case 0:
+			period_per_unit = (1/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000;
+			duty = (period_per_unit*SERV_0_DUTY_90)-((90-angle)/180)*10*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
+			value = duty/period_per_unit;
+			LOG(("%s servo_0 going to pwmWrite:\n", LIGHT_GRAY, value);
+			pwmWrite(SERVO_0, value);
+			break;
+		case 1:
+			period_per_unit = (1/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000;
+			duty = (period_per_unit*SERV_0_DUTY_90)-((90-angle)/180)*10*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
+			value = duty/period_per_unit;
+			LOG(("%s servo_1 going to pwmWrite:\n", LIGHT_GRAY, value);
+			pwmWrite(SERVO_1, value);
+			break;
+		default:
+			break;
+	}
+}
+
 void resetCounter() {
 	//LOG("%s reset counters\n", DARY_GRAY);
 	counter_gpio17 = 0;
@@ -407,7 +453,13 @@ void resetCounter() {
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	
-	wiringPiSetup();
+	//wiringPiSetup();
+	wiringPiSetupGpio();
+   	pinMode (18, PWM_OUTPUT) ;
+   	pwmSetMode (PWM_MODE_MS);
+   	pwmSetRange (200);
+   	pwmSetClock (1920);
+
 	//pinMode (LED, OUTPUT);
 	pinMode (BTN, INPUT);
 	pinMode (SENSOR_0, INPUT);
@@ -437,6 +489,7 @@ int main(void) {
 	pthread_mutex_init(&mutex_gpio25, 0);
 	pthread_mutex_init(&mutex_gpio4, 0);
 	pthread_mutex_init(&mutex_cond_show, 0);
+
 	
 #if 0
 	pthread_t tLog;
