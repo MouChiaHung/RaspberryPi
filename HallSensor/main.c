@@ -143,7 +143,7 @@ void servo(int servo, int angle) {
 	}
 }
 
-void handler_GPIO28(void) { //17
+void handler_BTN(void) { //17
 	LOG("%s ********* Got a Button *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 }
@@ -338,7 +338,7 @@ void* taskSensor(void* arg) {
 	system ("gpio edge 25 falling");
 	system ("gpio edge 4 falling");
 
-	wiringPiISR(BTN, INT_EDGE_FALLING, &handler_GPIO28);
+	wiringPiISR(BTN, INT_EDGE_FALLING, &handler_BTN);
 	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_GPIO17);
 	wiringPiISR(SENSOR_1, INT_EDGE_FALLING, &handler_GPIO28);
 	wiringPiISR(SENSOR_2, INT_EDGE_FALLING, &handler_GPIO27);
