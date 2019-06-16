@@ -120,7 +120,7 @@ void LOG(const char* format, ...)
 }
 
 void servo(int servo, int angle) {
-	float period_per_unit = 0.1 //0.1ms;
+	float period_per_unit = 0.1; //0.1ms;
 	int duty = 0; //ms
 	int value = 0; //count of units
 	switch (servo) {
