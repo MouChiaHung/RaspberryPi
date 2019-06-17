@@ -315,14 +315,14 @@ END:
 }
 
 void* taskSensor(void* arg) {
-	system ("gpio edge -g 17 falling");
-	system ("gpio edge -g 8 falling");
-	system ("gpio edge -g 27 falling");
-	system ("gpio edge -g 22 falling");
-	system ("gpio edge -g 23 falling");
-	system ("gpio edge -g 24 falling");
-	system ("gpio edge -g 25 falling");
-	system ("gpio edge -g 4 falling");
+	system ("gpio edge 17 falling");
+	system ("gpio edge 8 falling");
+	system ("gpio edge 27 falling");
+	system ("gpio edge 22 falling");
+	system ("gpio edge 23 falling");
+	system ("gpio edge 24 falling");
+	system ("gpio edge 25 falling");
+	system ("gpio edge 4 falling");
 
 	wiringPiISR(BTN, INT_EDGE_FALLING, &handler_BTN);
 	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_sensor_0);
