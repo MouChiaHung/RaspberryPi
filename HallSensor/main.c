@@ -29,7 +29,7 @@
 #define SENSOR_7 7
 #else //BCM
 #define SENSOR_0 17
-#define SENSOR_1 28
+#define SENSOR_1 8
 #define SENSOR_2 27
 #define SENSOR_3 22
 #define SENSOR_4 23
@@ -114,7 +114,7 @@ pthread_mutex_t mutex_sensor_7;  //7
 #define SERVO_0 18
 #define SERVO_1 12
 
-char sensor_gpio[8][8] = {" GPIO17", " GPIO28", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO4"};
+char sensor_gpio[8][8] = {" GPIO17", " GPIO8", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO4"};
 
 int test();
 void resetCounter();
@@ -326,14 +326,14 @@ END:
 }
 
 void* taskSensor(void* arg) {
-	system ("gpio edge 17 falling");
-	system ("gpio edge 28 falling");
-	system ("gpio edge 27 falling");
-	system ("gpio edge 22 falling");
-	system ("gpio edge 23 falling");
-	system ("gpio edge 24 falling");
-	system ("gpio edge 25 falling");
-	system ("gpio edge 4 falling");
+	system ("gpio -g edge 17 falling");
+	system ("gpio -g edge 8 falling");
+	system ("gpio -g edge 27 falling");
+	system ("gpio -g edge 22 falling");
+	system ("gpio -g edge 23 falling");
+	system ("gpio -g edge 24 falling");
+	system ("gpio -g edge 25 falling");
+	system ("gpio -g edge 4 falling");
 
 	wiringPiISR(BTN, INT_EDGE_FALLING, &handler_BTN);
 	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_sensor_0);
