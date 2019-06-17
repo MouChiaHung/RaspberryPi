@@ -114,7 +114,7 @@ pthread_mutex_t mutex_sensor_7;  //7
 #define SERVO_0 18
 #define SERVO_1 12
 
-char sensor_gpio[8][8] = {"GPIO17", "GPIO28", "GPIO27", "GPIO22", "GPIO23", "GPIO24", "GPIO25", "GPIO4"};
+char sensor_gpio[8][8] = {" GPIO17", " GPIO28", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO4"};
 
 int test();
 void resetCounter();
