@@ -74,34 +74,47 @@
 /* -------------------------------------------------------------------- */
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
-int counter_gpio17 = 0;
-int counter_gpio28 = 0;
-int counter_gpio27 = 0;
-int counter_gpio22 = 0;
-int counter_gpio23 = 0;
-int counter_gpio24 = 0;
-int counter_gpio25 = 0;
-int counter_gpio4 = 0;
+int counter_sensor_0 = 0;
+int counter_sensor_1 = 0;
+int counter_sensor_2 = 0;
+int counter_sensor_3 = 0;
+int counter_sensor_4 = 0;
+int counter_sensor_5 = 0;
+int counter_sensor_6 = 0;
+int counter_sensor_7 = 0;
 
-int interval_17 = 0;
-int interval_28 = 0;
-int interval_27 = 0;
-int interval_22 = 0;
-int interval_23 = 0;
-int interval_24 = 0;
-int interval_25 = 0;
-int interval_4 = 0;
+int interval_sensor_0 = 0;
+int interval_sensor_1 = 0;
+int interval_sensor_2 = 0;
+int interval_sensor_3 = 0;
+int interval_sensor_4 = 0;
+int interval_sensor_5 = 0;
+int interval_sensor_6 = 0;
+int interval_sensor_7 = 0;
 
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show;
-pthread_mutex_t mutex_gpio17; //0
-pthread_mutex_t mutex_gpio28; //1
-pthread_mutex_t mutex_gpio27; //2
-pthread_mutex_t mutex_gpio22; //3
-pthread_mutex_t mutex_gpio23; //4
-pthread_mutex_t mutex_gpio24; //5
-pthread_mutex_t mutex_gpio25; //6
-pthread_mutex_t mutex_gpio4;  //7
+pthread_mutex_t mutex_sensor_0; //0
+pthread_mutex_t mutex_sensor_1; //1
+pthread_mutex_t mutex_sensor_2; //2
+pthread_mutex_t mutex_sensor_3; //3
+pthread_mutex_t mutex_sensor_4; //4
+pthread_mutex_t mutex_sensor_5; //5
+pthread_mutex_t mutex_sensor_6; //6
+pthread_mutex_t mutex_sensor_7;  //7
+
+#define SENSOR_0 17
+#define SENSOR_1 28
+#define SENSOR_2 27
+#define SENSOR_3 22
+#define SENSOR_4 23
+#define SENSOR_5 24
+#define SENSOR_6 25
+#define SENSOR_7 4
+#define SERVO_0 18
+#define SERVO_1 12
+
+char sensor_gpio[8][8] = {"GPIO17", "GPIO28", "GPIO27", "GPIO22", "GPIO23", "GPIO24", "GPIO25", "GPIO4"};
 
 int test();
 void resetCounter();
@@ -143,188 +156,172 @@ void servo(int servo, int angle) {
 	}
 }
 
-void handler_BTN(void) { //17
+void handler_BTN(void) {
 	LOG("%s ********* Got a Button *********\n", BLUE);
 	pthread_cond_signal(&cond_show);
 }
 
-void handler_GPIO17(void) { //0
-	pthread_mutex_lock(&mutex_gpio17);
+void handler_sensor_0(void) {
+	pthread_mutex_lock(&mutex_sensor_0);
 	int time = 0;
 	time = millis();
-	if (time < interval_17) {
-		//LOG("%s ********* TOO FAST AROUND GPIO17 *********\n", RED);
+	if (time < interval_sensor_0) {
+		//LOG("%s ********* FAST SENSOR 0 *********\n", RED);
 		goto END;
 	}
-	interval_17 = millis() + DEBOUNCE_TIME;
+	interval_sensor_0 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_0) == HIGH) {
-		//LOG("%s ********* DON'T STICK AROUND GPIO17 *********\n", RED);
+		//LOG("%s ********* LOST SENSOR 0 *********\n", RED);
 		goto END;
 	}
-	//Got it
-	(counter_gpio17)++;
-	//LOG("%s ********* Got at GPIO17 *********\n", BLUE);
+	(counter_sensor_0)++;
 	pthread_cond_signal(&cond_show);
 	
 END:		
-	pthread_mutex_unlock(&mutex_gpio17);
+	pthread_mutex_unlock(&mutex_sensor_0);
 	return;
 }
 
-void handler_GPIO28(void) { //1
-	pthread_mutex_lock(&mutex_gpio28);
+void handler_sensor_1(void) {
+	pthread_mutex_lock(&mutex_sensor_1);
 	int time = 0;
 	time = millis();
-	if (time < interval_28) {
-		//LOG("%s ********* TOO FAST AROUND GPIO28 *********\n", RED);
+	if (time < interval_sensor_1) {
+		//LOG("%s ********* FAST SENSOR 1 *********\n", RED);
 		goto END;
 	}
-	interval_28 = millis() + DEBOUNCE_TIME;
+	interval_sensor_1 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_1) == HIGH) {
-		//LOG("%s ********* DON'T STICK AROUND GPIO28 *********\n", RED);
+		//LOG("%s ********* LOST SENSOR 1 *********\n", RED);
 		goto END;
 	}
-	//Got it
-	(counter_gpio28)++;
-	//LOG("%s ********* Got at GPIO28 *********\n", BLUE);
+	(counter_sensor_1)++;
 	pthread_cond_signal(&cond_show);
 
 END:		
-	pthread_mutex_unlock(&mutex_gpio28);
+	pthread_mutex_unlock(&mutex_sensor_1);
 	return;
 }
 
-void handler_GPIO27(void) { //2
-	pthread_mutex_lock(&mutex_gpio27);
+void handler_sensor_2(void) {
+	pthread_mutex_lock(&mutex_sensor_2);
 	int time = 0;
 	time = millis();
-	if (time < interval_27) {
+	if (time < interval_sensor_2) {
 		goto END;
 	}
-	interval_27 = millis() + DEBOUNCE_TIME;
+	interval_sensor_2 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_2) == HIGH) {
 		goto END;
 	}
-	//Got it
-	(counter_gpio27)++;
-	//LOG("%s ********* Got at GPIO27 *********\n", BLUE);
+	(counter_sensor_2)++;
 	pthread_cond_signal(&cond_show);
 	
 END:		
-	pthread_mutex_unlock(&mutex_gpio27);
+	pthread_mutex_unlock(&mutex_sensor_2);
 	return;
 }
 
-void handler_GPIO22(void) { //3
-	pthread_mutex_lock(&mutex_gpio22);
+void handler_sensor_3(void) {
+	pthread_mutex_lock(&mutex_sensor_3);
 	int time = 0;
 	time = millis();
-	if (time < interval_22) {
+	if (time < interval_sensor_3) {
 		goto END;
 	}
-	interval_22 = millis() + DEBOUNCE_TIME;
+	interval_sensor_3 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_3) == HIGH) {
 		goto END;
 	}
-	//Got it
-	(counter_gpio22)++;
-	//LOG("%s ********* Got at GPIO22 *********\n", BLUE);
+	(counter_sensor_3)++;
 	pthread_cond_signal(&cond_show);
 	
 END:		
-	pthread_mutex_unlock(&mutex_gpio22);
+	pthread_mutex_unlock(&mutex_sensor_3);
 	return;
 }
 
-void handler_GPIO23(void) { //4
-	pthread_mutex_lock(&mutex_gpio23);
+void handler_sensor_4(void) {
+	pthread_mutex_lock(&mutex_sensor_4);
 	int time = 0;
 	time = millis();
-	if (time < interval_23) {
+	if (time < interval_sensor_4) {
 		goto END;
 	}
-	interval_23 = millis() + DEBOUNCE_TIME;
+	interval_sensor_4 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_4) == HIGH) {
 		goto END;
 	}
-	//Got it
-	(counter_gpio23)++;
-	//LOG("%s ********* Got at GPIO23 *********\n", BLUE);
+	(counter_sensor_4)++;
 	pthread_cond_signal(&cond_show);
 	
 END:		
-	pthread_mutex_unlock(&mutex_gpio23);
+	pthread_mutex_unlock(&mutex_sensor_4);
 	return;
 }
 
-void handler_GPIO24(void) { //5
-	pthread_mutex_lock(&mutex_gpio24);
+void handler_sensor_5(void) {
+	pthread_mutex_lock(&mutex_sensor_5);
 	int time = 0;
 	time = millis();
-	if (time < interval_24) {
+	if (time < interval_sensor_5) {
 		goto END;
 	}
-	interval_24 = millis() + DEBOUNCE_TIME;
+	interval_sensor_5 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_5) == HIGH) {
 		goto END;
 	}
-	//Got it
-	(counter_gpio24)++;
-	//LOG("%s ********* Got at GPIO24 *********\n", BLUE);
+	(counter_sensor_5)++;
 	pthread_cond_signal(&cond_show);
 	
 END:		
-	pthread_mutex_unlock(&mutex_gpio24);
+	pthread_mutex_unlock(&mutex_sensor_5);
 	return;
 }
 
-void handler_GPIO25(void) { //6
-	pthread_mutex_lock(&mutex_gpio25);
+void handler_sensor_6(void) {
+	pthread_mutex_lock(&mutex_sensor_6);
 	int time = 0;
 	time = millis();
-	if (time < interval_25) {
+	if (time < interval_sensor_6) {
 		goto END;
 	}
-	interval_25 = millis() + DEBOUNCE_TIME;
+	interval_sensor_6 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_6) == HIGH) {
 		goto END;
 	}
-	//Got it
-	(counter_gpio25)++;
-	//LOG("%s ********* Got at GPIO25 *********\n", BLUE);
+	(counter_sensor_6)++;
 	pthread_cond_signal(&cond_show);
 	
 END:		
-	pthread_mutex_unlock(&mutex_gpio25);
+	pthread_mutex_unlock(&mutex_sensor_6);
 	return;
 }
 
-void handler_GPIO4(void) { //7
-	pthread_mutex_lock(&mutex_gpio4);
+void handler_sensor_7(void) {
+	pthread_mutex_lock(&mutex_sensor_7);
 	int time = 0;
 	time = millis();
-	if (time < interval_4) {
+	if (time < interval_sensor_7) {
 		goto END;
 	}
-	interval_4 = millis() + DEBOUNCE_TIME;
+	interval_sensor_7 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_7) == HIGH) {
 		goto END;
 	}
-	//Got it
-	(counter_gpio4)++;
-	//LOG("%s ********* Got at GPIO4 *********\n", BLUE);
+	(counter_sensor_7)++;
 	pthread_cond_signal(&cond_show);
 	
 END:		
-	pthread_mutex_unlock(&mutex_gpio4);
+	pthread_mutex_unlock(&mutex_sensor_7);
 	return;
 }
 
@@ -339,14 +336,14 @@ void* taskSensor(void* arg) {
 	system ("gpio edge 4 falling");
 
 	wiringPiISR(BTN, INT_EDGE_FALLING, &handler_BTN);
-	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_GPIO17);
-	wiringPiISR(SENSOR_1, INT_EDGE_FALLING, &handler_GPIO28);
-	wiringPiISR(SENSOR_2, INT_EDGE_FALLING, &handler_GPIO27);
-	wiringPiISR(SENSOR_3, INT_EDGE_FALLING, &handler_GPIO22);
-	wiringPiISR(SENSOR_4, INT_EDGE_FALLING, &handler_GPIO23);
-	wiringPiISR(SENSOR_5, INT_EDGE_FALLING, &handler_GPIO24);
-	wiringPiISR(SENSOR_6, INT_EDGE_FALLING, &handler_GPIO25);
-	wiringPiISR(SENSOR_7, INT_EDGE_FALLING, &handler_GPIO4);
+	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_sensor_0);
+	wiringPiISR(SENSOR_1, INT_EDGE_FALLING, &handler_sensor_1);
+	wiringPiISR(SENSOR_2, INT_EDGE_FALLING, &handler_sensor_2);
+	wiringPiISR(SENSOR_3, INT_EDGE_FALLING, &handler_sensor_3);
+	wiringPiISR(SENSOR_4, INT_EDGE_FALLING, &handler_sensor_4);
+	wiringPiISR(SENSOR_5, INT_EDGE_FALLING, &handler_sensor_5);
+	wiringPiISR(SENSOR_6, INT_EDGE_FALLING, &handler_sensor_6);
+	wiringPiISR(SENSOR_7, INT_EDGE_FALLING, &handler_sensor_7);
 	return 0;
 }
 
@@ -400,35 +397,35 @@ int test() {
 	char str[128] = "";
 	char str2[8] = "";
 	if (digitalRead(SENSOR_0) == HIGH) {
-		strcat(str, " GPIO17");
+		strcat(str, sensor_gpio[0]);
 		level++;
 	} 
 	if (digitalRead(SENSOR_1) == HIGH) {
-		strcat(str, " GPIO28");
+		strcat(str, sensor_gpio[1]);
 		level++;
 	} 
 	if (digitalRead(SENSOR_2) == HIGH) {
-		strcat(str, " GPIO27");
+		strcat(str, sensor_gpio[2]);
 		level++;
 	} 
 	if (digitalRead(SENSOR_3) == HIGH) {
-		strcat(str, " GPIO22");
+		strcat(str, sensor_gpio[3]);
 		level++;
 	} 
 	if (digitalRead(SENSOR_4) == HIGH) {
-		strcat(str, " GPIO23");
+		strcat(str, sensor_gpio[4]);
 		level++;
 	} 
 	if (digitalRead(SENSOR_5) == HIGH) {
-		strcat(str, " GPIO24");
+		strcat(str, sensor_gpio[5]);
 		level++;
 	} 
 	if (digitalRead(SENSOR_6) == HIGH) {
-		strcat(str, " GPIO25");
+		strcat(str, sensor_gpio[6]);
 		level++;
 	}
 	if (digitalRead(SENSOR_7) == HIGH) {
-		strcat(str, " GPIO4");
+		strcat(str, sensor_gpio[7]);
 		level++;
 	}
 	if (level == 0) return TEST_PASS;
@@ -440,14 +437,14 @@ int test() {
 
 void resetCounter() {
 	//LOG("%s reset counters\n", DARY_GRAY);
-	counter_gpio17 = 0;
-	counter_gpio28 = 0;
-	counter_gpio27 = 0;
-	counter_gpio22 = 0;
-	counter_gpio23 = 0;
-	counter_gpio24 = 0;
-	counter_gpio25 = 0;
-	counter_gpio4 = 0;
+	counter_sensor_0 = 0;
+	counter_sensor_1 = 0;
+	counter_sensor_2 = 0;
+	counter_sensor_3 = 0;
+	counter_sensor_4 = 0;
+	counter_sensor_5 = 0;
+	counter_sensor_6 = 0;
+	counter_sensor_7 = 0;
 }
 
 int main(void) {
@@ -485,14 +482,14 @@ int main(void) {
 	pullUpDnControl(SENSOR_6, PUD_UP);
 	pullUpDnControl(SENSOR_7, PUD_UP);
 	
-	pthread_mutex_init(&mutex_gpio17, 0);
-	pthread_mutex_init(&mutex_gpio28, 0);
-	pthread_mutex_init(&mutex_gpio27, 0);
-	pthread_mutex_init(&mutex_gpio22, 0);
-	pthread_mutex_init(&mutex_gpio23, 0);
-	pthread_mutex_init(&mutex_gpio24, 0);
-	pthread_mutex_init(&mutex_gpio25, 0);
-	pthread_mutex_init(&mutex_gpio4, 0);
+	pthread_mutex_init(&mutex_sensor_0, 0);
+	pthread_mutex_init(&mutex_sensor_1, 0);
+	pthread_mutex_init(&mutex_sensor_2, 0);
+	pthread_mutex_init(&mutex_sensor_3, 0);
+	pthread_mutex_init(&mutex_sensor_4, 0);
+	pthread_mutex_init(&mutex_sensor_5, 0);
+	pthread_mutex_init(&mutex_sensor_6, 0);
+	pthread_mutex_init(&mutex_sensor_7, 0);
 	pthread_mutex_init(&mutex_cond_show, 0);
 
 	
@@ -511,14 +508,14 @@ int main(void) {
 	pthread_join(tSensor, NULL);
 	pthread_join(tShow, NULL);
 	
-	pthread_mutex_destroy(&mutex_gpio17);
-	pthread_mutex_destroy(&mutex_gpio28);
-	pthread_mutex_destroy(&mutex_gpio27);
-	pthread_mutex_destroy(&mutex_gpio22);
-	pthread_mutex_destroy(&mutex_gpio23);
-	pthread_mutex_destroy(&mutex_gpio24);
-	pthread_mutex_destroy(&mutex_gpio25);
-	pthread_mutex_destroy(&mutex_gpio4);
+	pthread_mutex_destroy(&mutex_sensor_0);
+	pthread_mutex_destroy(&mutex_sensor_1);
+	pthread_mutex_destroy(&mutex_sensor_2);
+	pthread_mutex_destroy(&mutex_sensor_3);
+	pthread_mutex_destroy(&mutex_sensor_4);
+	pthread_mutex_destroy(&mutex_sensor_5);
+	pthread_mutex_destroy(&mutex_sensor_6);
+	pthread_mutex_destroy(&mutex_sensor_7);
 	pthread_mutex_destroy(&mutex_cond_show);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
