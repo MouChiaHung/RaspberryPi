@@ -103,17 +103,6 @@ pthread_mutex_t mutex_sensor_5; //5
 pthread_mutex_t mutex_sensor_6; //6
 pthread_mutex_t mutex_sensor_7;  //7
 
-#define SENSOR_0 17
-#define SENSOR_1 28
-#define SENSOR_2 27
-#define SENSOR_3 22
-#define SENSOR_4 23
-#define SENSOR_5 24
-#define SENSOR_6 25
-#define SENSOR_7 4
-#define SERVO_0 18
-#define SERVO_1 12
-
 char sensor_gpio[8][8] = {" GPIO17", " GPIO8", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO4"};
 
 int test();
