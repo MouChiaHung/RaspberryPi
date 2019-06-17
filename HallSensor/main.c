@@ -123,21 +123,21 @@ void LOG(const char* format, ...)
 
 void servo(int servo, int angle) {
 	float period_per_unit = 0.1; //0.1ms;
-	int duty = 0; //ms
+	float duty = 0; //ms
 	int value = 0; //count of units
 	switch (servo) {
 		case 0:
-			period_per_unit = (1/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000;
+			period_per_unit = (1/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000; //ms
 			duty = (period_per_unit*SERV_0_DUTY_90)-((90-angle)/180)*10*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
 			value = duty/period_per_unit;
-			LOG("%s servo_0 going to pwmWrite:%d\n", LIGHT_GRAY, value);
+			LOG("%s servo_0 going to pwmWrite:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
 			pwmWrite(SERVO_0, value);
 			break;
 		case 1:
 			period_per_unit = (1/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000;
 			duty = (period_per_unit*SERV_0_DUTY_90)-((90-angle)/180)*10*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
 			value = duty/period_per_unit;
-			LOG("%s servo_1 going to pwmWrite:%d\n", LIGHT_GRAY, value);
+			LOG("%s servo_1 going to pwmWrite:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
 			pwmWrite(SERVO_1, value);
 			break;
 		default:
@@ -368,7 +368,7 @@ void* taskShow(void* arg) {
 			LOG("%s PASS\n", LIGHT_GREEN);
 			servo(0, 90);
 			delay(100);
-			servo(0, 90);
+			servo(0, -90);
 
 		}
 		else if (ret == TEST_RETRY){
