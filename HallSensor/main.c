@@ -366,11 +366,11 @@ void* taskShow(void* arg) {
 			delay(DELAY_TIME);
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
-			servo(0, -80);
+			servo(0, -60);
 			delay(1500);
-			servo(0, 200);
+			servo(0, 240);
 			delay(1500);
-			servo(0, -80);
+			servo(0, -60);
 		}
 		else if (ret == TEST_RETRY){
 			LOG("%s RETRY\n", LIGHT_CYAN);
@@ -446,7 +446,7 @@ int main(void) {
    	pwmSetMode (PWM_MODE_MS);
    	pwmSetRange (200);
    	pwmSetClock (1920);
-	servo(0, -90);
+	servo(0, -60);
 
    	pinMode (SERVO_1, PWM_OUTPUT) ;
    	pwmSetMode (PWM_MODE_MS);
