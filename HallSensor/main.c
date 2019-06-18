@@ -48,7 +48,7 @@
 #define	DEBOUNCE_TIME 250
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
-#define	DELAY_MAGIC 500
+#define	DELAY_MAGIC 600
 
 #define	TEST_PASS 1
 #define	TEST_FAIL 2
@@ -177,13 +177,11 @@ void handler_sensor_1(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_1) {
-		//LOG("%s ********* FAST SENSOR 1 *********\n", RED);
 		goto END;
 	}
 	interval_sensor_1 = millis() + DEBOUNCE_TIME;
 	
 	if (digitalRead(SENSOR_1) == HIGH) {
-		//LOG("%s ********* LOST SENSOR 1 *********\n", RED);
 		goto END;
 	}
 	(counter_sensor_1)++;
@@ -355,6 +353,7 @@ void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
+		LOG("%s ********* WAKEN and DELAY *********\n", DARY_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		int ret = test();
