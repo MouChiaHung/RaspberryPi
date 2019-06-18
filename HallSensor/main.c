@@ -368,7 +368,7 @@ void* taskShow(void* arg) {
 			LOG("%s PASS\n", LIGHT_GREEN);
 			servo(0, -80);
 			delay(1500);
-			servo(0, 110);
+			servo(0, 140);
 			delay(1500);
 			servo(0, -80);
 		}
