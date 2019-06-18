@@ -367,9 +367,9 @@ void* taskShow(void* arg) {
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
 			servo(0, -60);
-			delay(1500);
+			delay(2000);
 			servo(0, 270);
-			delay(1500);
+			delay(2000);
 			servo(0, -60);
 		}
 		else if (ret == TEST_RETRY){
