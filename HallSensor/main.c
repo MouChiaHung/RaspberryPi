@@ -367,13 +367,13 @@ void* taskShow(void* arg) {
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
 			servo(0, -90);
-			delay(100);
+			delay(500);
 			servo(0, 0);
-			delay(100);
+			delay(500);
 			servo(0, 90);
-			delay(100);
+			delay(500);
 			servo(0, 0);
-			delay(100);
+			delay(500);
 			servo(0, -90);
 		}
 		else if (ret == TEST_RETRY){
