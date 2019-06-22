@@ -502,7 +502,7 @@ int main(void) {
 	pinMode (SENSOR_6, INPUT);
 	pinMode (SENSOR_7, INPUT);
 	
-	pullUpDnControl(SENSOR_0, PUD_DOWN);
+	pullUpDnControl(BTN, PUD_DOWN);
 	pullUpDnControl(SENSOR_0, PUD_UP);
 	pullUpDnControl(SENSOR_1, PUD_UP);
 	pullUpDnControl(SENSOR_2, PUD_UP);
