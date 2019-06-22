@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <wiringPi.h>
+#include <softServo.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <stdarg.h>
@@ -118,6 +119,7 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
+#if 0
 void servo_init(int servo, int pwmc, int pwmr) {
 	switch (servo) {
 		case 0:
@@ -138,6 +140,12 @@ void servo_init(int servo, int pwmc, int pwmr) {
 			break;
 	}
 }
+#else 
+void servo_init() {
+  softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
+}
+
+#endif
 
 void servo(int servo, int angle) {
 	float period_per_unit = 0.1; //0.1ms;
@@ -419,27 +427,34 @@ void* taskCheck(void* arg) {
 		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
+#if 0			
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, -90);
-			//servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 			delay(2*DELAY_MAGIC);
 			servo(1, 90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
-			//servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
+#else
+			softServoWrite (0, 2000);
+			delay(DELAY_MAGIC);
+			softServoWrite (0, 1000);
+			delay(DELAY_MAGIC);
+			softServoWrite (1, 1000);
+			delay(DELAY_MAGIC);
+			softServoWrite (1, 1500);
+#endif	
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
-			servo(0, 90);
+			softServoWrite (0, 2000);
 			delay(DELAY_MAGIC);
-			servo(0, -90);
-			//servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
-			delay(2*DELAY_MAGIC);
-			servo(1, -90);
+			softServoWrite (0, 1000);
 			delay(DELAY_MAGIC);
-			servo(1, 0);
-			//servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
+			softServoWrite (1, 2000);
+			delay(DELAY_MAGIC);
+			softServoWrite (1, 1500);
+			
 		}
 	}
 	return 0;
@@ -505,8 +520,9 @@ int main(void) {
 	
 	//wiringPiSetup();
 	wiringPiSetupGpio();
-	servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
-	servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
+	//servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+	//servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
+	servo_init();
 
 	pinMode (LED, OUTPUT);
 	pinMode (BTN, INPUT);
