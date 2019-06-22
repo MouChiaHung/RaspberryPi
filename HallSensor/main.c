@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <wiringPi.h>
 #include <softServo.h>
-#include <drogon/wiringpi/wiringPi/softServo.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <stdarg.h>
