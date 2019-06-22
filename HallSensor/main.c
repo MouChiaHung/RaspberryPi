@@ -373,10 +373,6 @@ void* taskLog(void* arg) {
 }
 
 void* taskShow(void* arg) {
-	struct timeval tv;
-    struct timespec ts;
-	int timeInMs = 3000;
-
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
