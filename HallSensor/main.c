@@ -404,9 +404,11 @@ void* taskShow(void* arg) {
 			//ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timeInMs % 1000);
 			//ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
 			//ts.tv_nsec %= (1000 * 1000 * 1000);
-			pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
+			//pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
+			pthread_cond_timed(&cond_fail_check, &mutex_cond_fail_check);
 			LOG("%s *PRESSED\n", LIGHT_RED);
 			delay(DELAY_MAGIC);
+			pthread_mutex_unlock(&mutex_cond_fail_check);
 			int ret = test();
 			if (ret == TEST_PASS) {
 				LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
@@ -422,7 +424,6 @@ void* taskShow(void* arg) {
 				servo(1, -90);
 				servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 			}
-			pthread_mutex_unlock(&mutex_cond_fail_check);
 		}
 	}
 	return 0;
