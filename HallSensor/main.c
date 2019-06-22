@@ -405,7 +405,7 @@ void* taskShow(void* arg) {
 			//ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
 			//ts.tv_nsec %= (1000 * 1000 * 1000);
 			//pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
-			pthread_cond_timed(&cond_fail_check, &mutex_cond_fail_check);
+			pthread_cond_wait(&cond_fail_check, &mutex_cond_fail_check);
 			LOG("%s *PRESSED\n", LIGHT_RED);
 			delay(DELAY_MAGIC);
 			pthread_mutex_unlock(&mutex_cond_fail_check);
