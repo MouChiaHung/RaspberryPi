@@ -162,6 +162,7 @@ void servo(int servo, int angle) {
 }
 
 void handler_BTN(void) {
+	LOG("%s >>> BTN\n", LIGHT_RED);
 	pthread_cond_signal(&cond_fail_check);
 }
 
