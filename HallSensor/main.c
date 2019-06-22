@@ -87,6 +87,8 @@ int interval_sensor_7 = 0;
 
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show;
+pthread_cond_t cond_fail_check = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t mutex_cond_fail_check;
 pthread_mutex_t mutex_sensor_0; //0
 pthread_mutex_t mutex_sensor_1; //1
 pthread_mutex_t mutex_sensor_2; //2
@@ -160,8 +162,7 @@ void servo(int servo, int angle) {
 }
 
 void handler_BTN(void) {
-	LOG("%s ********* Got a Button *********\n", BLUE);
-	pthread_cond_signal(&cond_show);
+	pthread_cond_signal(&cond_fail_check);
 }
 
 void handler_sensor_0(void) {
@@ -335,8 +336,9 @@ void* taskSensor(void* arg) {
 	system ("gpio edge 24 falling");
 	system ("gpio edge 25 falling");
 	system ("gpio edge 4 falling");
+	system ("gpio edge 6 rising");
 
-	wiringPiISR(BTN, INT_EDGE_FALLING, &handler_BTN);
+	wiringPiISR(BTN, INT_EDGE_RISING, &handler_BTN);
 	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_sensor_0);
 	wiringPiISR(SENSOR_1, INT_EDGE_FALLING, &handler_sensor_1);
 	wiringPiISR(SENSOR_2, INT_EDGE_FALLING, &handler_sensor_2);
@@ -364,10 +366,14 @@ void* taskLog(void* arg) {
 }
 
 void* taskShow(void* arg) {
+	struct timeval tv;
+    struct timespec ts;
+	int timeInMs = 3000;
+
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
-		//LOG("%s ********* WAKEN and DELAY *********\n", DARY_GRAY);
+		LOG("%s *DETECTED\n", LIGHT_RED);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		int ret = test();
@@ -378,17 +384,44 @@ void* taskShow(void* arg) {
 			digitalWrite(LED, LOW);
 			delay(DELAY_TIME);
 			*/
-			LOG("%s PASS\n", LIGHT_GREEN);
+			LOG("%s [PASS]\n", LIGHT_GREEN);
 			servo(0, 90);
-			delay(666);
+			delay(DELAY_MAGIC);
 			servo(0, -90);
 			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 		}
+#if 0 //no retry case		
 		else if (ret == TEST_RETRY){
-			LOG("%s RETRY\n", LIGHT_CYAN);
+			LOG("%s [RETRY]\n", LIGHT_GRAY);
 		}
+#endif		
 		else {
-			LOG("%s FAIL\n", LIGHT_RED);
+			LOG("%s [CHECK]\n", YELLOW);
+			pthread_mutex_lock(&mutex_cond_fail_check);
+			gettimeofday(&tv, NULL);
+			ts.tv_sec = time(NULL) + timeInMs / 1000;
+			ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timeInMs % 1000);
+			ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
+			ts.tv_nsec %= (1000 * 1000 * 1000);
+			pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
+			LOG("%s *PRESSED\n", LIGHT_RED);
+			delay(DELAY_MAGIC);
+			int ret = test();
+			if (ret == TEST_PASS) {
+				LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
+				servo(0, 90);
+				delay(DELAY_MAGIC);
+				servo(0, -90);
+				servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			}
+			else {
+				LOG("%s [CHECK and FAIL]\n", LIGHT_GREEN);
+				servo(1, 90);
+				delay(DELAY_MAGIC);
+				servo(1, -90);
+				servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
+			}
+			pthread_mutex_unlock(&mutex_cond_fail_check);
 		}
 	}
 	return 0;
@@ -431,7 +464,7 @@ int test() {
 		level++;
 	}
 	if (level == 0) return TEST_PASS;
-	else if (level == 8) return TEST_RETRY;
+	//else if (level == 8) return TEST_RETRY;
 	strcat(str2, "BAD");
 	LOG("%s %s%s\n", LIGHT_GRAY, str2, str);
 	return TEST_FAIL;
@@ -468,6 +501,7 @@ int main(void) {
 	pinMode (SENSOR_6, INPUT);
 	pinMode (SENSOR_7, INPUT);
 	
+	pullUpDnControl(SENSOR_0, PUD_DOWN);
 	pullUpDnControl(SENSOR_0, PUD_UP);
 	pullUpDnControl(SENSOR_1, PUD_UP);
 	pullUpDnControl(SENSOR_2, PUD_UP);
@@ -486,6 +520,7 @@ int main(void) {
 	pthread_mutex_init(&mutex_sensor_6, 0);
 	pthread_mutex_init(&mutex_sensor_7, 0);
 	pthread_mutex_init(&mutex_cond_show, 0);
+	pthread_mutex_init(&mutex_cond_fail_check, 0);
 
 	
 #if 0
@@ -512,6 +547,7 @@ int main(void) {
 	pthread_mutex_destroy(&mutex_sensor_6);
 	pthread_mutex_destroy(&mutex_sensor_7);
 	pthread_mutex_destroy(&mutex_cond_show);
+	pthread_mutex_destroy(&mutex_cond_fail_check);
 	
 	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
 	return 0;
