@@ -26,8 +26,8 @@ CFLAGS = $(DEBUG) -Wall $(INCLUDE) -Winline -pipe
 
 LDFLAGS	= -L/usr/local/lib
 LDLIBS = -lwiringPi -lwiringPiDev -lpthread -lm -lcrypt -lrt
-OBJS =  main.o
-EXE	= main
+OBJS =  qbi.o
+EXE	= qbi
 
 all: $(EXE)
 	
