@@ -11,7 +11,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <stdarg.h>
-
+#include <time.h>
 
 /* -------------------------------------------------------------------- */
 /* my define macro                                                     */
