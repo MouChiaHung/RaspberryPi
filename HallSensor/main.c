@@ -174,7 +174,6 @@ void handler_BTN(void) {
 
 void handler_sensor_0(void) {
 	pthread_mutex_lock(&mutex_sensor_0);
-	LOG("%s SENSOR 0 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_0) {
@@ -182,7 +181,7 @@ void handler_sensor_0(void) {
 		goto END;
 	}
 	interval_sensor_0 = millis() + DEBOUNCE_TIME;
-	
+	LOG("%s SENSOR 0 \n", RED);
 	if (digitalRead(SENSOR_0) == HIGH) {
 		//LOG("%s ********* LOST SENSOR 0 *********\n", RED);
 		goto END;
@@ -197,14 +196,13 @@ END:
 
 void handler_sensor_1(void) {
 	pthread_mutex_lock(&mutex_sensor_1);
-	LOG("%s SENSOR 1 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_1) {
 		goto END;
 	}
 	interval_sensor_1 = millis() + DEBOUNCE_TIME;
-	
+	LOG("%s SENSOR 1 \n", RED);
 	if (digitalRead(SENSOR_1) == HIGH) {
 		goto END;
 	}
@@ -218,14 +216,13 @@ END:
 
 void handler_sensor_2(void) {
 	pthread_mutex_lock(&mutex_sensor_2);
-	LOG("%s SENSOR 2 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_2) {
 		goto END;
 	}
 	interval_sensor_2 = millis() + DEBOUNCE_TIME;
-	
+	LOG("%s SENSOR 2 \n", RED);	
 	if (digitalRead(SENSOR_2) == HIGH) {
 		goto END;
 	}
@@ -239,14 +236,13 @@ END:
 
 void handler_sensor_3(void) {
 	pthread_mutex_lock(&mutex_sensor_3);
-	LOG("%s SENSOR 3 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_3) {
 		goto END;
 	}
 	interval_sensor_3 = millis() + DEBOUNCE_TIME;
-	
+	LOG("%s SENSOR 3 \n", RED);
 	if (digitalRead(SENSOR_3) == HIGH) {
 		goto END;
 	}
@@ -260,14 +256,13 @@ END:
 
 void handler_sensor_4(void) {
 	pthread_mutex_lock(&mutex_sensor_4);
-	LOG("%s SENSOR 4 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_4) {
 		goto END;
 	}
 	interval_sensor_4 = millis() + DEBOUNCE_TIME;
-	
+	LOG("%s SENSOR 4 \n", RED);
 	if (digitalRead(SENSOR_4) == HIGH) {
 		goto END;
 	}
@@ -281,14 +276,13 @@ END:
 
 void handler_sensor_5(void) {
 	pthread_mutex_lock(&mutex_sensor_5);
-	LOG("%s SENSOR 5 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_5) {
 		goto END;
 	}
 	interval_sensor_5 = millis() + DEBOUNCE_TIME;
-	
+	LOG("%s SENSOR 5 \n", RED);
 	if (digitalRead(SENSOR_5) == HIGH) {
 		goto END;
 	}
@@ -302,14 +296,13 @@ END:
 
 void handler_sensor_6(void) {
 	pthread_mutex_lock(&mutex_sensor_6);
-	LOG("%s SENSOR 6 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_6) {
 		goto END;
 	}
 	interval_sensor_6 = millis() + DEBOUNCE_TIME;
-	
+	LOG("%s SENSOR 6 \n", RED);
 	if (digitalRead(SENSOR_6) == HIGH) {
 		goto END;
 	}
@@ -323,14 +316,13 @@ END:
 
 void handler_sensor_7(void) {
 	pthread_mutex_lock(&mutex_sensor_7);
-	LOG("%s SENSOR 7 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_7) {
 		goto END;
 	}
 	interval_sensor_7 = millis() + DEBOUNCE_TIME;
-	
+	LOG("%s SENSOR 7 \n", RED);
 	if (digitalRead(SENSOR_7) == HIGH) {
 		goto END;
 	}
