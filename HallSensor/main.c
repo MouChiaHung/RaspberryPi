@@ -16,37 +16,6 @@
 /* -------------------------------------------------------------------- */
 /* my define macro                                                     */
 /* -------------------------------------------------------------------- */
-//BCM
-#define LED 5
-#define BTN 6
-#define SENSOR_0 17
-#define SENSOR_1 26
-#define SENSOR_2 27
-#define SENSOR_3 22
-#define SENSOR_4 23
-#define SENSOR_5 24
-#define SENSOR_6 25
-#define SENSOR_7 4
-#define SERVO_0 18
-#define SERVO_1 13
-
-#define SERV_0_DUTY_90 20
-#define SERV_1_DUTY_90 20
-#define PWM_CHANNEL_0_CLOCK 1920
-#define PWM_CHANNEL_1_CLOCK 19200
-#define PWM_CHANNEL_0_RANGE 200
-#define PWM_CHANNEL_1_RANGE 20
-#define PWM_BASE_FREQ 19200000
-
-#define	DEBOUNCE_TIME 250
-#define	DELAY_TIME 1000
-#define	DELAY_LOG 2000
-#define	DELAY_MAGIC 600
-
-#define	TEST_PASS 1
-#define	TEST_FAIL 2
-#define	TEST_RETRY 3
-
 #define NONECOLOR 	"\033[m"
 #define RED 		"\033[0;32;31m"
 #define LIGHT_RED 	"\033[1;31m"
@@ -64,9 +33,41 @@
 #define LIGHT_GRAY 	"\033[0;37m"
 #define WHITE 		"\033[1;37m"
 
+//BCM
+#define LED 5
+#define BTN 6
+#define SENSOR_0 17
+#define SENSOR_1 26
+#define SENSOR_2 27
+#define SENSOR_3 22
+#define SENSOR_4 23
+#define SENSOR_5 24
+#define SENSOR_6 25
+#define SENSOR_7 4
+#define SERVO_0 18
+#define SERVO_1 13
+
+#define SERV_0_DUTY_90 20
+#define SERV_1_DUTY_90 2
+#define PWM_CHANNEL_0_CLOCK 1920
+#define PWM_CHANNEL_1_CLOCK 19200
+#define PWM_CHANNEL_0_RANGE 200
+#define PWM_CHANNEL_1_RANGE 20
+#define PWM_BASE_FREQ 19200000
+
+#define	DEBOUNCE_TIME 250
+#define	DELAY_TIME 1000
+#define	DELAY_LOG 2000
+#define	DELAY_MAGIC 600
+
+#define	TEST_PASS 1
+#define	TEST_FAIL 2
+#define	TEST_RETRY 3
 /* -------------------------------------------------------------------- */
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
+char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO4"};
+
 int counter_sensor_0 = 0;
 int counter_sensor_1 = 0;
 int counter_sensor_2 = 0;
@@ -99,7 +100,7 @@ pthread_mutex_t mutex_sensor_5; //5
 pthread_mutex_t mutex_sensor_6; //6
 pthread_mutex_t mutex_sensor_7;  //7
 
-char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO4"};
+
 
 int test();
 void resetCounter();
@@ -357,21 +358,6 @@ void* taskSensor(void* arg) {
 	return 0;
 }
 
-void* taskLog(void* arg) {
-	arg = NULL;
-	int interval_taskLog = 0;
-	int time_taskLog = 0;
-
-	while (1) {
-		time_taskLog = millis();
-		if (time_taskLog < interval_taskLog) continue;
-		LOG("%s ********* Testing *********\n", DARY_GRAY);
-		interval_taskLog = millis() + DELAY_LOG;
-		sleep(DELAY_LOG);	
-	}	
-	return 0;
-}
-
 void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
@@ -528,13 +514,6 @@ int main(void) {
 	pthread_mutex_init(&mutex_sensor_7, 0);
 	pthread_mutex_init(&mutex_cond_show, 0);
 	pthread_mutex_init(&mutex_cond_fail_check, 0);
-
-	
-#if 0
-	pthread_t tLog;
-	pthread_create(&tLog, NULL, taskLog, NULL);
-	pthread_join(tLog, NULL);
-#endif
 
 	pthread_t tSensor;
 	pthread_t tShow;
