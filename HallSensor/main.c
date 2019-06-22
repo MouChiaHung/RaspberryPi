@@ -389,9 +389,9 @@ void* taskShow(void* arg) {
 			delay(DELAY_TIME);
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
-			servo(0, -60);
+			servo(0, -90);
 			delay(500);
-			servo(0, 120);
+			servo(0, 90);
 			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 		}
 		else if (ret == TEST_RETRY){
