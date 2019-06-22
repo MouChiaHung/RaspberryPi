@@ -76,6 +76,7 @@ int counter_sensor_5 = 0;
 int counter_sensor_6 = 0;
 int counter_sensor_7 = 0;
 
+int interval_btn = 0;
 int interval_sensor_0 = 0;
 int interval_sensor_1 = 0;
 int interval_sensor_2 = 0;
@@ -162,12 +163,18 @@ void servo(int servo, int angle) {
 }
 
 void handler_BTN(void) {
+	time = millis();
+	if (time < interval_btn) {
+		return;
+	}
+	interval_btn = millis() + DEBOUNCE_TIME;
 	LOG("%s >>> BTN\n", LIGHT_RED);
 	pthread_cond_signal(&cond_fail_check);
 }
 
 void handler_sensor_0(void) {
 	pthread_mutex_lock(&mutex_sensor_0);
+	LOG("%s SENSOR 0 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_0) {
@@ -190,6 +197,7 @@ END:
 
 void handler_sensor_1(void) {
 	pthread_mutex_lock(&mutex_sensor_1);
+	LOG("%s SENSOR 1 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_1) {
@@ -210,6 +218,7 @@ END:
 
 void handler_sensor_2(void) {
 	pthread_mutex_lock(&mutex_sensor_2);
+	LOG("%s SENSOR 2 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_2) {
@@ -230,6 +239,7 @@ END:
 
 void handler_sensor_3(void) {
 	pthread_mutex_lock(&mutex_sensor_3);
+	LOG("%s SENSOR 3 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_3) {
@@ -250,6 +260,7 @@ END:
 
 void handler_sensor_4(void) {
 	pthread_mutex_lock(&mutex_sensor_4);
+	LOG("%s SENSOR 4 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_4) {
@@ -270,6 +281,7 @@ END:
 
 void handler_sensor_5(void) {
 	pthread_mutex_lock(&mutex_sensor_5);
+	LOG("%s SENSOR 5 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_5) {
@@ -290,6 +302,7 @@ END:
 
 void handler_sensor_6(void) {
 	pthread_mutex_lock(&mutex_sensor_6);
+	LOG("%s SENSOR 6 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_6) {
@@ -310,6 +323,7 @@ END:
 
 void handler_sensor_7(void) {
 	pthread_mutex_lock(&mutex_sensor_7);
+	LOG("%s SENSOR 7 \n", RED);
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_7) {
@@ -379,12 +393,6 @@ void* taskShow(void* arg) {
 		pthread_mutex_unlock(&mutex_cond_show);
 		int ret = test();
 		if (ret == TEST_PASS) {
-			/*
-			digitalWrite(LED, HIGH);
-			delay(DELAY_TIME);
-			digitalWrite(LED, LOW);
-			delay(DELAY_TIME);
-			*/
 			LOG("%s [PASS]\n", LIGHT_GREEN);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
@@ -401,9 +409,9 @@ void* taskShow(void* arg) {
 			pthread_mutex_lock(&mutex_cond_fail_check);
 			gettimeofday(&tv, NULL);
 			ts.tv_sec = time(NULL) + timeInMs / 1000;
-			ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timeInMs % 1000);
-			ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
-			ts.tv_nsec %= (1000 * 1000 * 1000);
+			//ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timeInMs % 1000);
+			//ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
+			//ts.tv_nsec %= (1000 * 1000 * 1000);
 			pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
 			LOG("%s *PRESSED\n", LIGHT_RED);
 			delay(DELAY_MAGIC);
