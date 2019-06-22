@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <wiringPi.h>
 #include <softServo.h>
+#include <drogon/wiringpi/wiringPi/softServo.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <stdarg.h>
@@ -436,24 +437,24 @@ void* taskCheck(void* arg) {
 			delay(DELAY_MAGIC);
 			servo(1, 0);
 #else
-			softServoWrite (0, 2000);
+			softServoWrite(0, -250);
 			delay(DELAY_MAGIC);
-			softServoWrite (0, 1000);
+			softServoWrite(0, 1250);
 			delay(DELAY_MAGIC);
-			softServoWrite (1, 1000);
+			softServoWrite(1, -250);
 			delay(DELAY_MAGIC);
-			softServoWrite (1, 1500);
+			softServoWrite(1, 750);
 #endif	
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
-			softServoWrite (0, 2000);
+			softServoWrite(0, -250);
 			delay(DELAY_MAGIC);
-			softServoWrite (0, 1000);
+			softServoWrite(0, 1250);
 			delay(DELAY_MAGIC);
-			softServoWrite (1, 2000);
+			softServoWrite(1, 1250);
 			delay(DELAY_MAGIC);
-			softServoWrite (1, 1500);
+			softServoWrite(1, 750);
 			
 		}
 	}
