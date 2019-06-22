@@ -398,32 +398,41 @@ void* taskShow(void* arg) {
 #endif		
 		else {
 			LOG("%s [CHECK]\n", YELLOW);
-			pthread_mutex_lock(&mutex_cond_fail_check);
-			gettimeofday(&tv, NULL);
-			ts.tv_sec = time(NULL) + timeInMs / 1000;
-			//ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timeInMs % 1000);
-			//ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
-			//ts.tv_nsec %= (1000 * 1000 * 1000);
-			//pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
-			pthread_cond_wait(&cond_fail_check, &mutex_cond_fail_check);
-			LOG("%s *PRESSED\n", LIGHT_RED);
+		}
+	}
+	return 0;
+}
+
+void* taskCheck(void* arg) {
+	struct timeval tv;
+    struct timespec ts;
+	int timeInMs = 3000;
+	while (1) {
+		pthread_mutex_lock(&mutex_cond_fail_check);
+		gettimeofday(&tv, NULL);
+		ts.tv_sec = time(NULL) + timeInMs / 1000;
+		//ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timeInMs % 1000);
+		//ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
+		//ts.tv_nsec %= (1000 * 1000 * 1000);
+		//pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
+		pthread_cond_wait(&cond_fail_check, &mutex_cond_fail_check);
+		LOG("%s *PRESSED\n", LIGHT_RED);
+		delay(DELAY_MAGIC);
+		pthread_mutex_unlock(&mutex_cond_fail_check);
+		int ret = test();
+		if (ret == TEST_PASS) {
+			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
+			servo(0, 90);
 			delay(DELAY_MAGIC);
-			pthread_mutex_unlock(&mutex_cond_fail_check);
-			int ret = test();
-			if (ret == TEST_PASS) {
-				LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
-				servo(0, 90);
-				delay(DELAY_MAGIC);
-				servo(0, -90);
-				servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
-			}
-			else {
-				LOG("%s [CHECK and FAIL]\n", LIGHT_GREEN);
-				servo(1, 90);
-				delay(DELAY_MAGIC);
-				servo(1, -90);
-				servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
-			}
+			servo(0, -90);
+			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+		}
+		else {
+			LOG("%s [CHECK and FAIL]\n", LIGHT_GREEN);
+			servo(1, 90);
+			delay(DELAY_MAGIC);
+			servo(1, -90);
+			servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 		}
 	}
 	return 0;
@@ -533,12 +542,15 @@ int main(void) {
 
 	pthread_t tSensor;
 	pthread_t tShow;
+	pthread_t tCheck;
 	
 	pthread_create(&tSensor, NULL, taskSensor, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
+	pthread_create(&tCheck, NULL, taskCheck, NULL);
 	
 	pthread_join(tSensor, NULL);
 	pthread_join(tShow, NULL);
+	pthread_join(tCheck, NULL);
 	
 	pthread_mutex_destroy(&mutex_sensor_0);
 	pthread_mutex_destroy(&mutex_sensor_1);
