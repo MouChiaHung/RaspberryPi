@@ -404,13 +404,13 @@ void* taskShow(void* arg) {
 }
 
 void* taskCheck(void* arg) {
-	struct timeval tv;
-    struct timespec ts;
-	int timeInMs = 3000;
+	//struct timeval tv;
+    //struct timespec ts;
+	//int timeInMs = 3000;
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_fail_check);
-		gettimeofday(&tv, NULL);
-		ts.tv_sec = time(NULL) + timeInMs / 1000;
+		//gettimeofday(&tv, NULL);
+		//ts.tv_sec = time(NULL) + timeInMs / 1000;
 		//ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timeInMs % 1000);
 		//ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
 		//ts.tv_nsec %= (1000 * 1000 * 1000);
