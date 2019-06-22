@@ -382,6 +382,7 @@ void* taskShow(void* arg) {
 			delay(DELAY_MAGIC);
 			servo(0, -90);
 			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			delay(2*DELAY_MAGIC);
 			servo(1, 90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
@@ -393,7 +394,7 @@ void* taskShow(void* arg) {
 		}
 #endif		
 		else {
-			LOG("%s [CHECK]\n", YELLOW);
+			LOG("%s [Please CHECK]\n", YELLOW);
 		}
 	}
 	return 0;
@@ -422,6 +423,7 @@ void* taskCheck(void* arg) {
 			delay(DELAY_MAGIC);
 			servo(0, -90);
 			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			delay(2*DELAY_MAGIC);
 			servo(1, 90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
@@ -433,6 +435,7 @@ void* taskCheck(void* arg) {
 			delay(DELAY_MAGIC);
 			servo(0, -90);
 			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			delay(2*DELAY_MAGIC);
 			servo(1, -90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
