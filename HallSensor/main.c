@@ -41,8 +41,11 @@
 #endif
 
 #define SERV_0_DUTY_90 20
+#define SERV_1_DUTY_90 20
 #define PWM_CHANNEL_0_CLOCK 1920
+#define PWM_CHANNEL_1_CLOCK 1920
 #define PWM_CHANNEL_0_RANGE 200
+#define PWM_CHANNEL_1_RANGE 200
 #define PWM_BASE_FREQ 19200000
 
 #define	DEBOUNCE_TIME 250
@@ -121,6 +124,27 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
+void servo_init(int servo, int pwmc, int pwmr) {
+	switch (servo) {
+		case 0:
+			LOG("%s initialize servo_0 at pin:%d, pwmc:%d, pwmr:%d\n", LIGHT_GRAY, SERVO_0, pwmc, pwmr);
+			pinMode (SERVO_0, PWM_OUTPUT) ;
+			pwmSetMode (PWM_MODE_MS);
+			pwmSetClock (pwmc);
+			pwmSetRange (pwmr);
+			break;
+		case 1:
+			LOG("%s initialize servo_1 at pin:%d, pwmc:%d, pwmr:%d\n", LIGHT_GRAY, SERVO_1, pwmc, pwmr);
+			pinMode (SERVO_1, PWM_OUTPUT) ;
+			pwmSetMode (PWM_MODE_MS);
+			pwmSetClock (pwmc);
+			pwmSetRange (pwmr);
+			break;
+		default:
+			break;
+	}
+}
+
 void servo(int servo, int angle) {
 	float period_per_unit = 0.1; //0.1ms;
 	float duty = 0; //ms
@@ -130,14 +154,14 @@ void servo(int servo, int angle) {
 			period_per_unit = (1.0f/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000.0f; //ms
 			duty = (period_per_unit*SERV_0_DUTY_90)-((90.0f-angle)/180.0f)*10.0f*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
 			value = duty/period_per_unit;
-			LOG("%s servo_0 going to pwmWrite:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
+			LOG("%s pwm write servo_0 value:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
 			pwmWrite(SERVO_0, value);
 			break;
 		case 1:
-			period_per_unit = (1.0f/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000.0f;
-			duty = (period_per_unit*SERV_0_DUTY_90)-((90.0f-angle)/180.0f)*10.0f*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
+			period_per_unit = (1.0f/PWM_BASE_FREQ)*PWM_CHANNEL_1_CLOCK*1000.0f;
+			duty = (period_per_unit*SERV_1_DUTY_90)-((90.0f-angle)/180.0f)*10.0f*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
 			value = duty/period_per_unit;
-			LOG("%s servo_1 going to pwmWrite:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
+			LOG("%s pwm write servo_1 value:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
 			pwmWrite(SERVO_1, value);
 			break;
 		default:
@@ -365,11 +389,10 @@ void* taskShow(void* arg) {
 			delay(DELAY_TIME);
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
-			//servo(0, -60);
-			//delay(1000);
-			servo(0, 120);
-			delay(1000);
 			servo(0, -60);
+			delay(500);
+			servo(0, 120);
+			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 		}
 		else if (ret == TEST_RETRY){
 			LOG("%s RETRY\n", LIGHT_CYAN);
@@ -441,16 +464,8 @@ int main(void) {
 	
 	//wiringPiSetup();
 	wiringPiSetupGpio();
-   	pinMode (SERVO_0, PWM_OUTPUT) ;
-   	pwmSetMode (PWM_MODE_MS);
-   	pwmSetRange (200);
-   	pwmSetClock (1920);
-	servo(0, -60);
-
-   	pinMode (SERVO_1, PWM_OUTPUT) ;
-   	pwmSetMode (PWM_MODE_MS);
-   	pwmSetRange (200);
-   	pwmSetClock (1920);
+	servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+	servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 
 	//pinMode (LED, OUTPUT);
 	pinMode (BTN, INPUT);
