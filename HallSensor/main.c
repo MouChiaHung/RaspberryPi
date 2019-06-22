@@ -163,7 +163,7 @@ void servo(int servo, int angle) {
 }
 
 void handler_BTN(void) {
-	time = millis();
+	int time = millis();
 	if (time < interval_btn) {
 		return;
 	}
