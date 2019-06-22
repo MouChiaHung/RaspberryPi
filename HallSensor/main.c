@@ -16,18 +16,9 @@
 /* -------------------------------------------------------------------- */
 /* my define macro                                                     */
 /* -------------------------------------------------------------------- */
-#define LED 0
-#define BTN 17
-#if 0 //WiringPi
-#define SENSOR_0 0
-#define SENSOR_1 1
-#define SENSOR_2 2
-#define SENSOR_3 3
-#define SENSOR_4 4
-#define SENSOR_5 5
-#define SENSOR_6 6
-#define SENSOR_7 7
-#else //BCM
+//BCM
+#define LED 5
+#define BTN 6
 #define SENSOR_0 17
 #define SENSOR_1 26
 #define SENSOR_2 27
@@ -38,7 +29,6 @@
 #define SENSOR_7 4
 #define SERVO_0 18
 #define SERVO_1 12
-#endif
 
 #define SERV_0_DUTY_90 20
 #define SERV_1_DUTY_90 20
@@ -389,11 +379,12 @@ void* taskShow(void* arg) {
 			delay(DELAY_TIME);
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
-			servo(0, -90);
-			delay(1000);
-			servo(0, 90);
-			delay(1000);
 			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			delay(500);
+			servo(0, 90);
+			delay(500);
+			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			
 		}
 		else if (ret == TEST_RETRY){
 			LOG("%s RETRY\n", LIGHT_CYAN);
