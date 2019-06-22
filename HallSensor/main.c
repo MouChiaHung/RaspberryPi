@@ -379,11 +379,11 @@ void* taskShow(void* arg) {
 			delay(DELAY_TIME);
 			*/
 			LOG("%s PASS\n", LIGHT_GREEN);
-			servo(0, -80);
+			servo(0, -70);
 			delay(1000);
-			servo(0, 100);
+			servo(0, 110);
 			delay(1000);
-			servo(0, -80);
+			servo(0, -70);
 			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 		}
 		else if (ret == TEST_RETRY){
