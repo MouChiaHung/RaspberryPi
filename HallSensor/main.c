@@ -146,14 +146,14 @@ void servo(int servo, int angle) {
 	switch (servo) {
 		case 0:
 			period_per_unit = (1.0f/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000.0f; //ms
-			duty = (period_per_unit*SERV_0_DUTY_90)-((90.0f-angle)/180.0f)*10.0f*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
+			duty = (period_per_unit*SERV_0_DUTY_90)-((90.0f-angle)/180.0f)*(SERV_0_DUTY_90/2.0f)*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
 			value = duty/period_per_unit;
 			LOG("%s pwm write servo_0 value:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
 			pwmWrite(SERVO_0, value);
 			break;
 		case 1:
 			period_per_unit = (1.0f/PWM_BASE_FREQ)*PWM_CHANNEL_1_CLOCK*1000.0f;
-			duty = (period_per_unit*SERV_1_DUTY_90)-((90.0f-angle)/180.0f)*10.0f*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
+			duty = (period_per_unit*SERV_1_DUTY_90)-((90.0f-angle)/180.0f)*(SERV_1_DUTY_90/2.0f)*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
 			value = duty/period_per_unit;
 			LOG("%s pwm write servo_1 value:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
 			pwmWrite(SERVO_1, value);
