@@ -358,6 +358,16 @@ void* taskSensor(void* arg) {
 	return 0;
 }
 
+void* taskBlink(void* arg) {
+	while (1) {
+		digitalWrite (LED, HIGH) ;	// On
+		delay (500) ;		// mS
+		digitalWrite (LED, LOW) ;	// Off
+		delay (500) ;
+	}
+	return 0;
+}
+
 void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
@@ -483,7 +493,7 @@ int main(void) {
 	servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 	servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 
-	//pinMode (LED, OUTPUT);
+	pinMode (LED, OUTPUT);
 	pinMode (BTN, INPUT);
 	pinMode (SENSOR_0, INPUT);
 	pinMode (SENSOR_1, INPUT);
@@ -516,14 +526,17 @@ int main(void) {
 	pthread_mutex_init(&mutex_cond_fail_check, 0);
 
 	pthread_t tSensor;
+	pthread_t tBlink;
 	pthread_t tShow;
 	pthread_t tCheck;
 	
 	pthread_create(&tSensor, NULL, taskSensor, NULL);
+	pthread_create(&tBlink, NULL, taskBlink, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
 	pthread_create(&tCheck, NULL, taskCheck, NULL);
 	
 	pthread_join(tSensor, NULL);
+	pthread_join(tBlink, NULL);
 	pthread_join(tShow, NULL);
 	pthread_join(tCheck, NULL);
 	
