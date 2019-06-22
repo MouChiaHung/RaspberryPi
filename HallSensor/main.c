@@ -33,9 +33,9 @@
 #define SERV_0_DUTY_90 20
 #define SERV_1_DUTY_90 20
 #define PWM_CHANNEL_0_CLOCK 1920
-#define PWM_CHANNEL_1_CLOCK 1920
+#define PWM_CHANNEL_1_CLOCK 19200
 #define PWM_CHANNEL_0_RANGE 200
-#define PWM_CHANNEL_1_RANGE 200
+#define PWM_CHANNEL_1_RANGE 20
 #define PWM_BASE_FREQ 19200000
 
 #define	DEBOUNCE_TIME 250
@@ -168,7 +168,7 @@ void handler_BTN(void) {
 		return;
 	}
 	interval_btn = millis() + DEBOUNCE_TIME;
-	LOG("%s >>> BTN\n", LIGHT_RED);
+	LOG("%s BTN\n", LIGHT_GRAY);
 	pthread_cond_signal(&cond_fail_check);
 }
 
@@ -181,7 +181,7 @@ void handler_sensor_0(void) {
 		goto END;
 	}
 	interval_sensor_0 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 0 \n", RED);
+	LOG("%s SENSOR 0 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_0) == HIGH) {
 		//LOG("%s ********* LOST SENSOR 0 *********\n", RED);
 		goto END;
@@ -202,7 +202,7 @@ void handler_sensor_1(void) {
 		goto END;
 	}
 	interval_sensor_1 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 1 \n", RED);
+	LOG("%s SENSOR 1 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_1) == HIGH) {
 		goto END;
 	}
@@ -222,7 +222,7 @@ void handler_sensor_2(void) {
 		goto END;
 	}
 	interval_sensor_2 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 2 \n", RED);	
+	LOG("%s SENSOR 2 \n", LIGHT_GRAY);	
 	if (digitalRead(SENSOR_2) == HIGH) {
 		goto END;
 	}
@@ -242,7 +242,7 @@ void handler_sensor_3(void) {
 		goto END;
 	}
 	interval_sensor_3 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 3 \n", RED);
+	LOG("%s SENSOR 3 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_3) == HIGH) {
 		goto END;
 	}
@@ -262,7 +262,7 @@ void handler_sensor_4(void) {
 		goto END;
 	}
 	interval_sensor_4 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 4 \n", RED);
+	LOG("%s SENSOR 4 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_4) == HIGH) {
 		goto END;
 	}
@@ -282,7 +282,7 @@ void handler_sensor_5(void) {
 		goto END;
 	}
 	interval_sensor_5 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 5 \n", RED);
+	LOG("%s SENSOR 5 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_5) == HIGH) {
 		goto END;
 	}
@@ -302,7 +302,7 @@ void handler_sensor_6(void) {
 		goto END;
 	}
 	interval_sensor_6 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 6 \n", RED);
+	LOG("%s SENSOR 6 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_6) == HIGH) {
 		goto END;
 	}
@@ -322,7 +322,7 @@ void handler_sensor_7(void) {
 		goto END;
 	}
 	interval_sensor_7 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 7 \n", RED);
+	LOG("%s SENSOR 7 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_7) == HIGH) {
 		goto END;
 	}
@@ -376,7 +376,7 @@ void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
-		LOG("%s *DETECTED\n", LIGHT_RED);
+		LOG("%s *DETECTED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		int ret = test();
@@ -412,7 +412,7 @@ void* taskCheck(void* arg) {
 		//ts.tv_nsec %= (1000 * 1000 * 1000);
 		//pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
 		pthread_cond_wait(&cond_fail_check, &mutex_cond_fail_check);
-		LOG("%s *PRESSED\n", LIGHT_RED);
+		LOG("%s *PRESSED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_fail_check);
 		int ret = test();
@@ -424,7 +424,7 @@ void* taskCheck(void* arg) {
 			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 		}
 		else {
-			LOG("%s [CHECK and FAIL]\n", LIGHT_GREEN);
+			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
 			servo(1, 90);
 			delay(DELAY_MAGIC);
 			servo(1, -90);
