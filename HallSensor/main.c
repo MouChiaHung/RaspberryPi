@@ -28,7 +28,7 @@
 #define SENSOR_6 25
 #define SENSOR_7 4
 #define SERVO_0 18
-#define SERVO_1 12
+#define SERVO_1 13
 
 #define SERV_0_DUTY_90 20
 #define SERV_1_DUTY_90 20
