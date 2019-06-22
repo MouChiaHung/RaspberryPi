@@ -381,12 +381,12 @@ void* taskShow(void* arg) {
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, -90);
-			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			//servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 			delay(2*DELAY_MAGIC);
 			servo(1, 90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
-			servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
+			//servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -422,24 +422,24 @@ void* taskCheck(void* arg) {
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, -90);
-			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			//servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 			delay(2*DELAY_MAGIC);
 			servo(1, 90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
-			servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
+			//servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, -90);
-			servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+			//servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 			delay(2*DELAY_MAGIC);
 			servo(1, -90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
-			servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
+			//servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 		}
 	}
 	return 0;
