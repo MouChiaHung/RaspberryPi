@@ -56,6 +56,8 @@
 #define PWM_CHANNEL_1_RANGE 200
 #define PWM_BASE_FREQ 19200000
 
+#define RANGE 100
+
 #define	DEBOUNCE_TIME 250
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
@@ -147,11 +149,13 @@ void servo_init() {
 
 #else 
 void servo_init() {
-  //softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
+  int servo[2] = {SERVO_0, SERVO_1} ;
+  for (i=0;i<2;i++) softPwmCreate (servo[i], 0, RANGE) ;
 }
 
 #endif
 
+#if 0
 void servo(int servo, int angle) {
 	float period_per_unit = 0.1; //0.1ms;
 	float duty = 0; //ms
@@ -175,6 +179,23 @@ void servo(int servo, int angle) {
 			break;
 	}
 }
+#elif 0
+void servo(int servo, int angle) {
+	int min = -250;
+	int max = 1250;
+	int value = min+(max-min)*((angle-(-90))/(90-(-90)));
+	LOG("%s soft servo write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	softServoWrite (servo, value) ;
+}
+
+#else 
+void servo(int servo, int angle) {
+	int value = 0+RANGE*((angle-(-90))/(90-(-90)));
+	LOG("%s soft pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	softPwmWrite (servo, value) ;
+}
+
+#endif
 
 void handler_BTN(void) {
 	int time = millis();
