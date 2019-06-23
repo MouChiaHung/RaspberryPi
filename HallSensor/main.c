@@ -473,7 +473,9 @@ void* taskLEDTest(void* arg) {
 					delay (500);
 					digitalWrite(LED_CHECK, LOW);
 					delay (500);
+					LOG("%s BLINKING\n", BLUE);
 				}
+				LOG("%s BREAK BLINKING\n", BLUE);
 				digitalWrite(LED_CHECK, HIGH); 
 				break;	
 			default:
@@ -537,6 +539,7 @@ void* taskCheck(void* arg) {
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECKED and PASS]\n", GREEN);
 			test_state = PASS;
+			isChecked = 1;
 			delay(100);	
 			pthread_cond_signal(&cond_led_test);
 			delay(100);			
@@ -549,6 +552,7 @@ void* taskCheck(void* arg) {
 		else {
 			LOG("%s [CHECKED and FAIL]\n", RED);
 			test_state = FAIL;
+			isChecked = 1;
 			delay(100);	
 			pthread_cond_signal(&cond_led_test);
 			delay(100);	
@@ -562,7 +566,6 @@ void* taskCheck(void* arg) {
 		}
 		delay(1000);
 		test_state = WAIT;
-		isChecked = 1;
 		pthread_cond_signal(&cond_led_test);
 	}
 	return 0;
