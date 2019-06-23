@@ -646,7 +646,9 @@ int main(void) {
 	wiringPiSetupGpio();
 	servo_init();
 
-	pinMode (LED, OUTPUT);
+	pinMode (LED_CHECK, OUTPUT);
+	pinMode (LED_PASS, OUTPUT);
+	pinMode (LED_FAIL, OUTPUT);
 	pinMode (BTN, INPUT);
 	pinMode (SENSOR_0, INPUT);
 	pinMode (SENSOR_1, INPUT);
