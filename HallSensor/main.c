@@ -531,23 +531,23 @@ void* taskCheck(void* arg) {
 		servo_init();
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
-			servo(0, 80);
+			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, 0);
 			 
 			delay(2*DELAY_MAGIC);
-			servo(1, 80);
+			servo(1, 90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
-			servo(0, 80);
+			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, 0);
 			
 			delay(2*DELAY_MAGIC);
-			servo(1, -80);
+			servo(1, -90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
 		}
