@@ -459,9 +459,9 @@ void* taskLEDTest(void* arg) {
 				digitalWrite(LED_PASS, LOW);
 				break;
 			case FAIL:
-				digitalWrite(LED_LOW, HIGH);
+				digitalWrite(LED_FAIL, HIGH);
 				delay (2000);
-				digitalWrite(LED_LOW, LOW);
+				digitalWrite(LED_FAIL, LOW);
 				break;
 			case WAIT:
 
@@ -487,7 +487,7 @@ void* taskLEDCheck(void* arg) {
 				digitalWrite(LED_CHECK, LOW);
 				delay (500);
 				break;
-			default
+			default:
 				LOG("%s UNKNOWN CHECK STATE\n", RED);
 				break;
 		}
