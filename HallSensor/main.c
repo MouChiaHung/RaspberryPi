@@ -85,7 +85,7 @@
 /* -------------------------------------------------------------------- */
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
-char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO4"};
+char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO20"};
 
 int counter_sensor_0 = 0;
 int counter_sensor_1 = 0;
@@ -118,8 +118,6 @@ pthread_mutex_t mutex_sensor_4; //4
 pthread_mutex_t mutex_sensor_5; //5
 pthread_mutex_t mutex_sensor_6; //6
 pthread_mutex_t mutex_sensor_7;  //7
-
-
 
 int test();
 void resetCounter();
@@ -506,10 +504,10 @@ void* taskCheck(void* arg) {
 			delay(DELAY_MAGIC);
 			servo(0, 0);
 			
-			//delay(2*DELAY_MAGIC);
-			///servo(1, 90);
-			//delay(DELAY_MAGIC);
-			//servo(1, 0);
+			delay(2*DELAY_MAGIC);
+			servo(1, 90);
+			delay(DELAY_MAGIC);
+			servo(1, 0);
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
@@ -517,11 +515,10 @@ void* taskCheck(void* arg) {
 			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 			
-			//servo(1, 0);
-			//delay(2*DELAY_MAGIC);
-			//servo(1, -90);
-			//delay(DELAY_MAGIC);
-			//servo(1, 0);
+			delay(2*DELAY_MAGIC);
+			servo(1, -90);
+			delay(DELAY_MAGIC);
+			servo(1, 0);
 		}
 	}
 	return 0;
