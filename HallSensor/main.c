@@ -64,8 +64,8 @@
 #define SERVO_1 
 #endif
 
-#define SERV_0_DUTY_90 200
-#define SERV_1_DUTY_90 200
+#define SERV_0_DUTY_90 20
+#define SERV_1_DUTY_90 20
 #define PWM_CHANNEL_0_CLOCK 192
 #define PWM_CHANNEL_1_CLOCK 192
 #define PWM_CHANNEL_0_RANGE 2000
@@ -182,6 +182,7 @@ void servo_init() {
 
 #if 1
 void servo(int servo, int angle) {
+#if 0	
 	float period_per_unit = 0.1; //0.1ms;
 	float duty = 0; //ms
 	int value = 0; //count of units
@@ -203,6 +204,34 @@ void servo(int servo, int angle) {
 		default:
 			break;
 	}
+#endif
+	int value;
+	switch (servo) {
+		case 0:
+			servo = SERVO_0;
+			break;
+		case 1:
+			servo = SERVO_1;
+			break;
+		default:
+			break;
+	}
+	switch (angle) {
+		case 90:
+			value = 200;
+			break;
+		case 0:
+			value = 150;
+			break;
+		case 90:
+			value = 100;
+			break;	
+		default:
+			break;
+	}
+	LOG("%s pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	pwmWrite(servo, value);
+	
 }
 #elif 0
 void servo(int servo, int angle) {
