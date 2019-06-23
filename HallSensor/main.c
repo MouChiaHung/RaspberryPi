@@ -48,7 +48,7 @@
 #define SENSOR_6 25
 #define SENSOR_7 20
 #define SERVO_0 18
-#define SERVO_1 19
+#define SERVO_1 
 #else //wPi
 #define LED 21
 #define BTN 22
@@ -65,11 +65,8 @@
 #endif
 
 #define SERV_0_DUTY_90 20
-#define SERV_1_DUTY_90 20
 #define PWM_CHANNEL_0_CLOCK 192
-#define PWM_CHANNEL_1_CLOCK 192
 #define PWM_CHANNEL_0_RANGE 2000
-#define PWM_CHANNEL_1_RANGE 2000
 #define PWM_BASE_FREQ 19200000
 
 #define RANGE 100
@@ -145,20 +142,12 @@ void servo_init_(int servo, int pwmc, int pwmr) {
 			pwmSetClock(pwmc);
 			pwmSetRange(pwmr);
 			break;
-		case 1:
-			LOG("%s initialize servo_1 at pin:%d, pwmc:%d, pwmr:%d\n", LIGHT_GRAY, SERVO_1, pwmc, pwmr);
-			pinMode(SERVO_1, PWM_OUTPUT) ;
-			pwmSetMode(PWM_MODE_MS);
-			pwmSetClock(pwmc);
-			pwmSetRange(pwmr);
-			break;
 		default:
 			break;
 	}
 }
 void servo_init() {
 	servo_init_(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
-	servo_init_(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);		
 }
 #elif 0
 void servo_init() {
@@ -182,7 +171,6 @@ void servo_init() {
 
 #if 1
 void servo(int servo, int angle) {
-#if 0	
 	float period_per_unit = 0.1; //0.1ms;
 	float duty = 0; //ms
 	int value = 0; //count of units
@@ -194,45 +182,10 @@ void servo(int servo, int angle) {
 			LOG("%s pwm write servo_0 value:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
 			pwmWrite(SERVO_0, value);
 			break;
-		case 1:
-			period_per_unit = (1.0f/PWM_BASE_FREQ)*PWM_CHANNEL_1_CLOCK*1000.0f;
-			duty = (period_per_unit*SERV_1_DUTY_90)-((90.0f-angle)/180.0f)*(SERV_1_DUTY_90/2.0f)*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
-			value = duty/period_per_unit;
-			LOG("%s pwm write servo_1 value:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
-			pwmWrite(SERVO_1, value);
-			break;
 		default:
 			break;
 	}
-#endif
-	int value = 0;
-	switch (servo) {
-		case 0:
-			servo = SERVO_0;
-			break;
-		case 1:
-			servo = SERVO_1;
-			break;
-		default:
-			break;
-	}
-	switch (angle) {
-		case 90:
-			value = 200;
-			break;
-		case 0:
-			value = 150;
-			break;
-		case -90:
-			value = 100;
-			break;	
-		default:
-			LOG("%s error angle:%d\n", RED, angle);
-			break;
-	}
-	LOG("%s pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
-	pwmWrite(servo, value);
-	
+
 }
 #elif 0
 void servo(int servo, int angle) {
@@ -491,13 +444,7 @@ void* taskShow(void* arg) {
 			LOG("%s [PASS]\n", LIGHT_GREEN);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
-			servo(0, 0);
-		
-			delay(2*DELAY_MAGIC);
-			servo(1, 90);
-			delay(DELAY_MAGIC);
-			servo(1, 0);
-
+			servo(0, -90);
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -533,23 +480,13 @@ void* taskCheck(void* arg) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
-			servo(0, 0);
-			 
-			delay(2*DELAY_MAGIC);
-			servo(1, 90);
-			delay(DELAY_MAGIC);
-			servo(1, 0);
+			servo(0, -90);
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
-			servo(0, 0);
-			
-			delay(2*DELAY_MAGIC);
-			servo(1, -90); 
-			delay(DELAY_MAGIC);
-			servo(1, 0);
+			servo(0, -90);
 		}
 	}
 	return 0;
