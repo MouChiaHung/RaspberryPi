@@ -468,12 +468,13 @@ void* taskLEDTest(void* arg) {
 				digitalWrite(LED_CHECK, HIGH);
 				break;
 			case WAIT:
-				while (isChecked == 0) {
+				while (isChecked == 0 && test_state == WAIT) {
 					digitalWrite(LED_CHECK, HIGH); //blink
 					delay (500);
 					digitalWrite(LED_CHECK, LOW);
 					delay (500);
 				}
+				digitalWrite(LED_CHECK, HIGH); 
 				break;	
 			default:
 				LOG("%s UNKNOWN TEST STATE\n", RED);
@@ -509,9 +510,9 @@ void* taskShow(void* arg) {
 		else {
 			LOG("%s [Please CHECK]\n", YELLOW);
 			test_state = WAIT;
+			isChecked = 0;
+			pthread_cond_signal(&cond_led_test);
 		}
-		isChecked = 0;
-		pthread_cond_signal(&cond_led_test);
 	}
 	return 0;
 }
@@ -536,6 +537,7 @@ void* taskCheck(void* arg) {
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECKED and PASS]\n", GREEN);
 			test_state = PASS;
+			delay(100);	
 			pthread_cond_signal(&cond_led_test);
 			delay(100);			
 			servo(0, 90);
@@ -547,6 +549,7 @@ void* taskCheck(void* arg) {
 		else {
 			LOG("%s [CHECKED and FAIL]\n", RED);
 			test_state = FAIL;
+			delay(100);	
 			pthread_cond_signal(&cond_led_test);
 			delay(100);	
 			servo(0, 90);
