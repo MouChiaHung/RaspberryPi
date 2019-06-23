@@ -115,6 +115,8 @@ pthread_cond_t cond_check = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_check;
 pthread_cond_t cond_led_test = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_led_test;
+pthread_cond_t cond_led_check = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t mutex_cond_led_check;
 pthread_mutex_t mutex_sensor_0; //0
 pthread_mutex_t mutex_sensor_1; //1
 pthread_mutex_t mutex_sensor_2; //2
@@ -468,7 +470,25 @@ void* taskLEDTest(void* arg) {
 				digitalWrite(LED_CHECK, HIGH);
 				break;
 			case WAIT:
-				while (isChecked == 0 && test_state == WAIT) {
+				
+				break;	
+			default:
+				LOG("%s UNKNOWN TEST STATE\n", RED);
+				break;
+		}
+	}
+	return 0;
+}
+
+void* taskLEDCheck(void* arg) {
+	while (1) {
+		pthread_mutex_lock(&mutex_cond_led_check);
+		pthread_cond_wait(&cond_led_check, &mutex_cond_led_check);
+		delay(DELAY_MAGIC);
+		pthread_mutex_unlock(&mutex_cond_led_check);
+		switch (test_state) {
+			case WAIT:
+				while (isChecked == 0) {
 					digitalWrite(LED_CHECK, HIGH); //blink
 					delay (500);
 					digitalWrite(LED_CHECK, LOW);
@@ -479,7 +499,7 @@ void* taskLEDTest(void* arg) {
 				digitalWrite(LED_CHECK, HIGH); 
 				break;	
 			default:
-				LOG("%s UNKNOWN TEST STATE\n", RED);
+				digitalWrite(LED_CHECK, HIGH);
 				break;
 		}
 	}
@@ -513,7 +533,7 @@ void* taskShow(void* arg) {
 			LOG("%s [Please CHECK]\n", YELLOW);
 			test_state = WAIT;
 			isChecked = 0;
-			pthread_cond_signal(&cond_led_test);
+			pthread_cond_signal(&cond_led_check);
 		}
 	}
 	return 0;
@@ -539,8 +559,6 @@ void* taskCheck(void* arg) {
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECKED and PASS]\n", GREEN);
 			test_state = PASS;
-			isChecked = 1;
-			delay(100);	
 			pthread_cond_signal(&cond_led_test);
 			delay(100);			
 			servo(0, 90);
@@ -552,8 +570,6 @@ void* taskCheck(void* arg) {
 		else {
 			LOG("%s [CHECKED and FAIL]\n", RED);
 			test_state = FAIL;
-			isChecked = 1;
-			delay(100);	
 			pthread_cond_signal(&cond_led_test);
 			delay(100);	
 			servo(0, 90);
@@ -564,9 +580,8 @@ void* taskCheck(void* arg) {
 			delay(100);
 			servo(0, 0);
 		}
-		delay(1000);
-		test_state = WAIT;
-		pthread_cond_signal(&cond_led_test);
+		isChecked = 1;
+		pthread_cond_signal(&cond_led_check);
 	}
 	return 0;
 }
@@ -672,14 +687,17 @@ int main(void) {
 	pthread_t tShow;
 	pthread_t tCheck;
 	pthread_t tLEDTest;
+	pthread_t tLEDCheck;
 	
 	pthread_create(&tSensor, NULL, taskSensor, NULL);
 	pthread_create(&tLEDTest, NULL, taskLEDTest, NULL);
+	pthread_create(&tLEDCheck, NULL, taskLEDCheck, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
 	pthread_create(&tCheck, NULL, taskCheck, NULL);
 	
 	pthread_join(tSensor, NULL);
 	pthread_join(tLEDTest, NULL);
+	pthread_join(tLEDCheck, NULL);
 	pthread_join(tShow, NULL);
 	pthread_join(tCheck, NULL);
 	
@@ -694,5 +712,6 @@ int main(void) {
 	pthread_mutex_destroy(&mutex_cond_show);
 	pthread_mutex_destroy(&mutex_cond_check);
 	pthread_mutex_destroy(&mutex_cond_led_test);
+	pthread_mutex_destroy(&mutex_cond_led_check);
 	return 0;
 }
