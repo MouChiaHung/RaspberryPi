@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <wiringPi.h>
 #include <softServo.h>
+#include <softPwm.h>
 #include <pthread.h>
 #include <unistd.h>
 #include <stdarg.h>
@@ -149,8 +150,8 @@ void servo_init() {
 
 #else 
 void servo_init() {
-  int servo[2] = {SERVO_0, SERVO_1} ;
-  for (i=0;i<2;i++) softPwmCreate (servo[i], 0, RANGE) ;
+  int servo[2] = {SERVO_0, SERVO_1};
+  for (int i=0;i<2;i++) softPwmCreate(servo[i], 0, RANGE) ;
 }
 
 #endif
