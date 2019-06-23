@@ -46,9 +46,9 @@
 #define SENSOR_4 23
 #define SENSOR_5 24
 #define SENSOR_6 25
-#define SENSOR_7 4
+#define SENSOR_7 20
 #define SERVO_0 18
-#define SERVO_1 13
+#define SERVO_1 4
 #else //wPi
 #define LED 21
 #define BTN 22
@@ -59,9 +59,9 @@
 #define SENSOR_4 4
 #define SENSOR_5 5
 #define SENSOR_6 6
-#define SENSOR_7 7
+#define SENSOR_7 28
 #define SERVO_0 1
-#define SERVO_1 23
+#define SERVO_1 7
 #endif
 
 #define SERV_0_DUTY_90 20
