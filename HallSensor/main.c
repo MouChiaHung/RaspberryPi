@@ -499,12 +499,16 @@ void* taskCheck(void* arg) {
 			servo(0, -90);
 			delay(2*DELAY_MAGIC);
 			servo(0, 0);
+			delay(2*DELAY_MAGIC);
+			servo(0, 90);
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
 			servo(0, -90);
 			delay(2*DELAY_MAGIC);
 			servo(0, 0);
+			delay(2*DELAY_MAGIC);
+			servo(0, 90);
 		}
 	}
 	return 0;
