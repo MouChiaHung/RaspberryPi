@@ -140,6 +140,11 @@ void servo_init(int servo, int pwmc, int pwmr) {
 			break;
 	}
 }
+#elif
+void servo_init() {
+  softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
+}
+
 #else 
 void servo_init() {
   softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
@@ -427,7 +432,6 @@ void* taskCheck(void* arg) {
 		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
-#if 0			
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, -90);
@@ -435,25 +439,16 @@ void* taskCheck(void* arg) {
 			servo(1, 90);
 			delay(DELAY_MAGIC);
 			servo(1, 0);
-#else
-			softServoWrite(0, -250);
-			delay(DELAY_MAGIC);
-			softServoWrite(0, 1250);
-			delay(DELAY_MAGIC);
-			softServoWrite(1, -250);
-			delay(DELAY_MAGIC);
-			softServoWrite(1, 750);
-#endif	
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
-			softServoWrite(0, -250);
+			servo(0, 90);
 			delay(DELAY_MAGIC);
-			softServoWrite(0, 1250);
+			servo(0, -90);
+			delay(2*DELAY_MAGIC);
+			servo(1, -90);
 			delay(DELAY_MAGIC);
-			softServoWrite(1, 1250);
-			delay(DELAY_MAGIC);
-			softServoWrite(1, 750);
+			servo(1, 0);
 			
 		}
 	}
