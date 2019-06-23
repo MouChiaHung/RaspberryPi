@@ -246,7 +246,7 @@ void handler_BTN(void) {
 		return;
 	}
 	interval_btn = millis() + DEBOUNCE_TIME;
-	LOG("%s BTN\n", LIGHT_GRAY);
+	//LOG("%s BTN\n", LIGHT_GRAY);
 	pthread_cond_signal(&cond_fail_check);
 }
 
