@@ -185,7 +185,7 @@ void servo(int servo, int angle) {
 			break;
 	}
 */
-	int value;
+	int value = 17;
 	switch (servo) {
 		case 0:
 			servo = SERVO_0;
