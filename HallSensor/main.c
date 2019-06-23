@@ -481,7 +481,8 @@ void* taskLEDTest(void* arg) {
 }
 
 void* taskLEDCheck(void* arg) {
-	while (0) {
+#if 0		
+	while (1) {
 		pthread_mutex_lock(&mutex_cond_led_check);
 		pthread_cond_wait(&cond_led_check, &mutex_cond_led_check);
 		delay(DELAY_MAGIC);
@@ -501,6 +502,14 @@ void* taskLEDCheck(void* arg) {
 				break;
 		}
 	}
+#else
+	while (1) {
+		digitalWrite(LED_CHECK, HIGH); //blink
+		delay (500);
+		digitalWrite(LED_CHECK, LOW);
+		delay (500);
+	}
+#endif	
 	return 0;
 }
 
