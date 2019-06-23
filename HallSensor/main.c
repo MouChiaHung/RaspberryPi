@@ -444,7 +444,7 @@ void* taskShow(void* arg) {
 			LOG("%s [PASS]\n", LIGHT_GREEN);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
-			servo(0, -90);
+			servo(0, 0);
 			servo_init();
 		}
 #if 0 //no retry case		
@@ -481,14 +481,14 @@ void* taskCheck(void* arg) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
-			servo(0, -90);
+			servo(0, 0);
 			servo_init();
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
-			servo(0, -90);
+			servo(0, 0);
 			servo_init();
 		}
 	}
