@@ -445,7 +445,7 @@ void* taskShow(void* arg) {
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, -90);
-			servo_init()
+			servo_init();
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -482,14 +482,14 @@ void* taskCheck(void* arg) {
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, -90);
-			servo_init()
+			servo_init();
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, -90);
-			servo_init()
+			servo_init();
 		}
 	}
 	return 0;
