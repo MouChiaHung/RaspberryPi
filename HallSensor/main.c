@@ -518,6 +518,7 @@ void* taskShow(void* arg) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);
+			isChecked = 0;
 			delay(100);			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
