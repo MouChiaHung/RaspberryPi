@@ -140,7 +140,7 @@ void servo_init(int servo, int pwmc, int pwmr) {
 			break;
 	}
 }
-#elif
+#elif 0
 void servo_init() {
   softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
 }
