@@ -62,7 +62,7 @@
 #define SERVO_0 1
 #endif
 
-#define SERV_0_DUTY_90 20
+#define SERV_0_DUTY_90 18
 #define PWM_CHANNEL_0_CLOCK 1920
 #define PWM_CHANNEL_0_RANGE 200
 #define PWM_BASE_FREQ 19200000
