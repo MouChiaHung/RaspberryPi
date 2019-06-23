@@ -142,21 +142,25 @@ void servo_init(int servo, int pwmc, int pwmr) {
 	switch (servo) {
 		case 0:
 			LOG("%s initialize servo_0 at pin:%d, pwmc:%d, pwmr:%d\n", LIGHT_GRAY, SERVO_0, pwmc, pwmr);
-			pinMode (SERVO_0, PWM_OUTPUT) ;
-			pwmSetMode (PWM_MODE_MS);
-			pwmSetClock (pwmc);
-			pwmSetRange (pwmr);
+			pinMode(SERVO_0, PWM_OUTPUT) ;
+			pwmSetMode(PWM_MODE_MS);
+			pwmSetClock(pwmc);
+			pwmSetRange(pwmr);
 			break;
 		case 1:
 			LOG("%s initialize servo_1 at pin:%d, pwmc:%d, pwmr:%d\n", LIGHT_GRAY, SERVO_1, pwmc, pwmr);
-			pinMode (SERVO_1, PWM_OUTPUT) ;
-			pwmSetMode (PWM_MODE_MS);
-			pwmSetClock (pwmc);
-			pwmSetRange (pwmr);
+			pinMode(SERVO_1, PWM_OUTPUT) ;
+			pwmSetMode(PWM_MODE_MS);
+			pwmSetClock(pwmc);
+			pwmSetRange(pwmr);
 			break;
 		default:
 			break;
 	}
+}
+void servo_init() {
+	servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+	servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);		
 }
 #elif 0
 void servo_init() {
@@ -581,8 +585,6 @@ int main(void) {
 	
 	wiringPiSetup();
 	//wiringPiSetupGpio();
-	//servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
-	//servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 	servo_init();
 
 	pinMode (LED, OUTPUT);
