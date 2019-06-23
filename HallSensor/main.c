@@ -137,7 +137,7 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-#if 0
+#if 1
 void servo_init(int servo, int pwmc, int pwmr) {
 	switch (servo) {
 		case 0:
@@ -178,7 +178,7 @@ void servo_init() {
 
 #endif
 
-#if 0
+#if 1
 void servo(int servo, int angle) {
 	float period_per_unit = 0.1; //0.1ms;
 	float duty = 0; //ms
