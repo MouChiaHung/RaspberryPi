@@ -36,7 +36,7 @@
 #define WHITE 		"\033[1;37m"
 
 
-#if 0 //BCM
+#if 1 //BCM
 #define LED 5
 #define BTN 6
 #define SENSOR_0 17
