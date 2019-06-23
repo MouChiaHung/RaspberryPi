@@ -457,17 +457,17 @@ void* taskLEDTest(void* arg) {
 		switch (test_state) {
 			case PASS:
 				digitalWrite(LED_PASS, HIGH);
-				digitalWrite(LED_CHECK, LOW);
+				//digitalWrite(LED_CHECK, LOW);
 				delay (2000);
 				digitalWrite(LED_PASS, LOW);
-				digitalWrite(LED_CHECK, HIGH);
+				//digitalWrite(LED_CHECK, HIGH);
 				break;
 			case FAIL:
 				digitalWrite(LED_FAIL, HIGH);
-				digitalWrite(LED_CHECK, LOW);
+				//digitalWrite(LED_CHECK, LOW);
 				delay (2000);
 				digitalWrite(LED_FAIL, LOW);
-				digitalWrite(LED_CHECK, HIGH);
+				//digitalWrite(LED_CHECK, HIGH);
 				break;
 			case WAIT:
 				
