@@ -88,6 +88,7 @@ char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23",
 
 enum TEST_STATE {WAIT, PASS, FAIL};
 int test_state = WAIT;
+int isChecked = 0;
 
 int counter_sensor_0 = 0;
 int counter_sensor_1 = 0;
@@ -467,10 +468,12 @@ void* taskLEDTest(void* arg) {
 				digitalWrite(LED_CHECK, HIGH);
 				break;
 			case WAIT:
-				digitalWrite(LED_CHECK, HIGH); //blink
-				delay (500);
-				digitalWrite(LED_CHECK, LOW);
-				delay (500);
+				while (isChecked == 0) {
+					digitalWrite(LED_CHECK, HIGH); //blink
+					delay (500);
+					digitalWrite(LED_CHECK, LOW);
+					delay (500);
+				}
 				break;	
 			default:
 				LOG("%s UNKNOWN TEST STATE\n", RED);
@@ -553,7 +556,10 @@ void* taskCheck(void* arg) {
 			delay(100);
 			servo(0, 0);
 		}
+		delay(1000);
 		test_state = WAIT;
+		isChecked = 1;
+		pthread_cond_signal(&cond_led_test);
 	}
 	return 0;
 }
