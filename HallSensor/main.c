@@ -35,7 +35,8 @@
 #define LIGHT_GRAY 	"\033[0;37m"
 #define WHITE 		"\033[1;37m"
 
-//BCM
+
+#if 0 //BCM
 #define LED 5
 #define BTN 6
 #define SENSOR_0 17
@@ -48,6 +49,20 @@
 #define SENSOR_7 4
 #define SERVO_0 18
 #define SERVO_1 13
+#else //wPi
+#define LED 21
+#define BTN 22
+#define SENSOR_0 0
+#define SENSOR_1 25
+#define SENSOR_2 2
+#define SENSOR_3 3
+#define SENSOR_4 4
+#define SENSOR_5 5
+#define SENSOR_6 6
+#define SENSOR_7 7
+#define SERVO_0 1
+#define SERVO_1 23
+#endif
 
 #define SERV_0_DUTY_90 20
 #define SERV_1_DUTY_90 20
@@ -391,6 +406,7 @@ END:
 }
 
 void* taskSensor(void* arg) {
+#if 0	
 	system ("gpio edge 17 falling");
 	system ("gpio edge 26 falling");
 	system ("gpio edge 27 falling");
@@ -400,6 +416,7 @@ void* taskSensor(void* arg) {
 	system ("gpio edge 25 falling");
 	system ("gpio edge 4 falling");
 	system ("gpio edge 6 rising");
+#endif
 
 	wiringPiISR(BTN, INT_EDGE_RISING, &handler_BTN);
 	wiringPiISR(SENSOR_0, INT_EDGE_FALLING, &handler_sensor_0);
@@ -555,8 +572,8 @@ void resetCounter() {
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	
-	//wiringPiSetup();
-	wiringPiSetupGpio();
+	wiringPiSetup();
+	//wiringPiSetupGpio();
 	//servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
 	//servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);
 	servo_init();
