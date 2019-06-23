@@ -517,6 +517,7 @@ void* taskShow(void* arg) {
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
+			pthread_cond_signal(&cond_led_test);
 			delay(100);			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
