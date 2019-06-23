@@ -37,8 +37,11 @@
 
 
 #if 1 //BCM
-#define LED 5
 #define BTN 6
+#define LED_CHECK 5
+#define LED_PASS 12
+#define LED_FAIL 16
+
 #define SENSOR_0 17
 #define SENSOR_1 26
 #define SENSOR_2 27
@@ -75,13 +78,17 @@
 #define	DELAY_LOG 2000
 #define	DELAY_MAGIC 600
 
-#define	TEST_PASS 1
-#define	TEST_FAIL 2
-#define	TEST_RETRY 3
+#define	TEST_PASS 10
+#define	TEST_FAIL 20
+#define	TEST_RETRY 30
 /* -------------------------------------------------------------------- */
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
 char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO20"};
+
+enum CHECK_STATE {ON, TEST, WAIT, PASS, FAIL};
+int check_state = ON;
+int test_state = WAIT;
 
 int counter_sensor_0 = 0;
 int counter_sensor_1 = 0;
@@ -104,8 +111,10 @@ int interval_sensor_7 = 0;
 
 pthread_cond_t cond_show = PTHREAD_COND_INITIALIZER;
 pthread_mutex_t mutex_cond_show;
-pthread_cond_t cond_fail_check = PTHREAD_COND_INITIALIZER;
-pthread_mutex_t mutex_cond_fail_check;
+pthread_cond_t cond_check = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t mutex_cond_check;
+pthread_cond_t cond_led_test = PTHREAD_COND_INITIALIZER;
+pthread_mutex_t mutex_cond_led_test;
 pthread_mutex_t mutex_sensor_0; //0
 pthread_mutex_t mutex_sensor_1; //1
 pthread_mutex_t mutex_sensor_2; //2
@@ -247,7 +256,7 @@ void handler_BTN(void) {
 	}
 	interval_btn = millis() + DEBOUNCE_TIME;
 	//LOG("%s BTN\n", LIGHT_GRAY);
-	pthread_cond_signal(&cond_fail_check);
+	pthread_cond_signal(&cond_check);
 }
 
 void handler_sensor_0(void) {
@@ -437,26 +446,70 @@ void* taskSensor(void* arg) {
 	return 0;
 }
 
-void* taskBlink(void* arg) {
+void* taskLEDTest(void* arg) {
 	while (1) {
-		digitalWrite (LED, HIGH) ;	// On
-		delay (500) ;		// mS
-		digitalWrite (LED, LOW) ;	// Off
-		delay (500) ;
+		pthread_mutex_lock(&mutex_cond_led_test);
+		pthread_cond_wait(&cond_led_test, &mutex_cond_led_test);
+		delay(DELAY_MAGIC);
+		pthread_mutex_unlock(&mutex_cond_led_test);
+		switch (test_state) {
+			case PASS:
+				digitalWrite(LED_PASS, HIGH);
+				delay (2000);
+				digitalWrite(LED_PASS, LOW);
+				break;
+			case FAIL:
+				digitalWrite(LED_LOW, HIGH);
+				delay (2000);
+				digitalWrite(LED_LOW, LOW);
+				break;
+			case WAIT:
+
+				break;	
+			default
+				LOG("%s UNKNOWN TEST STATE\n", RED);
+				break;
+		}
+		
 	}
 	return 0;
 }
+
+void* taskLEDCheck(void* arg) {
+	while (1) {
+		switch (check_state) {
+			case ON:
+				digitalWrite(LED_CHECK, HIGH); //on
+				break;
+			case TEST:
+				digitalWrite(LED_CHECK, HIGH); //blink
+				delay (500);
+				digitalWrite(LED_CHECK, LOW);
+				delay (500);
+				break;
+			default
+				LOG("%s UNKNOWN CHECK STATE\n", RED);
+				break;
+		}
+		
+	}
+	return 0;
+}
+
 
 void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
-		LOG("%s *DETECTED\n", LIGHT_GRAY);
+		//LOG("%s *DETECTED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		int ret = test();
 		if (ret == TEST_PASS) {
-			LOG("%s [PASS]\n", LIGHT_GREEN);
+			LOG("%s [PASS]\n", GREEN);
+			test_state = PASS;
+			pthread_cond_signal(&cond_led_test);
+			delay(100);
 			servo(0, 0);
 			delay(DELAY_MAGIC);
 			servo(0, 90);
@@ -472,7 +525,9 @@ void* taskShow(void* arg) {
 #endif		
 		else {
 			LOG("%s [Please CHECK]\n", YELLOW);
+			check_state = TEST;
 		}
+		test_state = WAIT;
 	}
 	return 0;
 }
@@ -482,20 +537,22 @@ void* taskCheck(void* arg) {
     //struct timespec ts;
 	//int timeInMs = 3000;
 	while (1) {
-		pthread_mutex_lock(&mutex_cond_fail_check);
+		pthread_mutex_lock(&mutex_cond_check);
 		//gettimeofday(&tv, NULL);
 		//ts.tv_sec = time(NULL) + timeInMs / 1000;
 		//ts.tv_nsec = tv.tv_usec * 1000 + 1000 * 1000 * (timeInMs % 1000);
 		//ts.tv_sec += ts.tv_nsec / (1000 * 1000 * 1000);
 		//ts.tv_nsec %= (1000 * 1000 * 1000);
-		//pthread_cond_timedwait(&cond_fail_check, &mutex_cond_fail_check, &ts);
-		pthread_cond_wait(&cond_fail_check, &mutex_cond_fail_check);
-		LOG("%s *PRESSED\n", LIGHT_GRAY);
+		//pthread_cond_timedwait(&cond_check, &mutex_cond_check, &ts);
+		pthread_cond_wait(&cond_check, &mutex_cond_check);
+		//LOG("%s *PRESSED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
-		pthread_mutex_unlock(&mutex_cond_fail_check);
+		pthread_mutex_unlock(&mutex_cond_check);
 		int ret = test();
 		if (ret == TEST_PASS) {
-			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
+			LOG("%s [CHECKED and PASS]\n", GREEN);
+			test_state = PASS;
+			delay(100);
 			servo(0, 0);
 			delay(DELAY_MAGIC);
 			servo(0, 90);
@@ -505,7 +562,9 @@ void* taskCheck(void* arg) {
 			servo(1, 0);
 		}
 		else {
-			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
+			LOG("%s [CHECKED and FAIL]\n", RED);
+			test_state = FAIL;
+			delay(100);
 			servo(0, 0);
 			delay(DELAY_MAGIC);
 			servo(0, 90);
@@ -519,6 +578,8 @@ void* taskCheck(void* arg) {
 			delay(DELAY_MAGIC);
 			servo(1, 0);
 		}
+		check_state = ON;
+		test_state = WAIT;
 	}
 	return 0;
 }
@@ -579,7 +640,7 @@ void resetCounter() {
 }
 
 int main(void) {
-	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
+	LOG("%s -*-*-*- Hello QBI -*-*-*-\n", LIGHT_GREEN);
 	
 	//wiringPiSetup();
 	wiringPiSetupGpio();
@@ -615,20 +676,21 @@ int main(void) {
 	pthread_mutex_init(&mutex_sensor_6, 0);
 	pthread_mutex_init(&mutex_sensor_7, 0);
 	pthread_mutex_init(&mutex_cond_show, 0);
-	pthread_mutex_init(&mutex_cond_fail_check, 0);
+	pthread_mutex_init(&mutex_cond_check, 0);
+	pthread_mutex_init(&mutex_cond_led_test, 0);
 
 	pthread_t tSensor;
-	pthread_t tBlink;
+	pthread_t tLEDCheck;
 	pthread_t tShow;
 	pthread_t tCheck;
 	
 	pthread_create(&tSensor, NULL, taskSensor, NULL);
-	pthread_create(&tBlink, NULL, taskBlink, NULL);
+	pthread_create(&tLEDCheck, NULL, taskLEDCheck, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
 	pthread_create(&tCheck, NULL, taskCheck, NULL);
 	
 	pthread_join(tSensor, NULL);
-	pthread_join(tBlink, NULL);
+	pthread_join(tLEDCheck, NULL);
 	pthread_join(tShow, NULL);
 	pthread_join(tCheck, NULL);
 	
@@ -641,8 +703,7 @@ int main(void) {
 	pthread_mutex_destroy(&mutex_sensor_6);
 	pthread_mutex_destroy(&mutex_sensor_7);
 	pthread_mutex_destroy(&mutex_cond_show);
-	pthread_mutex_destroy(&mutex_cond_fail_check);
-	
-	LOG("%s -*-*-*- Bye bye -*-*-*-\n", LIGHT_GREEN);
+	pthread_mutex_destroy(&mutex_cond_check);
+	pthread_mutex_destroy(&mutex_cond_led_test);
 	return 0;
 }
