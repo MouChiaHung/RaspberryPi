@@ -76,7 +76,7 @@
 #define	DEBOUNCE_TIME 250
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
-#define	DELAY_MAGIC 600
+#define	DELAY_MAGIC 500
 
 #define	TEST_PASS 10
 #define	TEST_FAIL 20
@@ -509,14 +509,12 @@ void* taskShow(void* arg) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);
+			delay(100);			
+			servo(0, 90);
+			delay(3*DELAY_MAGIC);
+			servo(1, 0);
 			delay(100);
 			servo(0, 0);
-			delay(DELAY_MAGIC);
-			servo(0, 90);
-			delay(DELAY_MAGIC);
-			servo(0, 0);
-			delay(DELAY_MAGIC/2);
-			servo(1, 0);
 			check_state = ON;
 		}
 #if 0 //no retry case		
@@ -553,31 +551,24 @@ void* taskCheck(void* arg) {
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECKED and PASS]\n", GREEN);
 			test_state = PASS;
-			delay(100);
-			servo(0, 0);
-			delay(DELAY_MAGIC);
+			delay(100);			
 			servo(0, 90);
-			delay(DELAY_MAGIC);
-			servo(0, 0);
-			delay(100);
+			delay(3*DELAY_MAGIC);
 			servo(1, 0);
+			delay(100);
+			servo(0, 0);
 		}
 		else {
 			LOG("%s [CHECKED and FAIL]\n", RED);
 			test_state = FAIL;
-			delay(100);
-			servo(0, 0);
-			delay(DELAY_MAGIC);
+			delay(100);			
 			servo(0, 90);
-			delay(DELAY_MAGIC);
-			servo(0, 0);
-			
 			delay(100);
-			servo(1, 0);
-			delay(2*DELAY_MAGIC);
 			servo(1, 90);
-			delay(DELAY_MAGIC);
+			delay(3*DELAY_MAGIC);
 			servo(1, 0);
+			delay(100);
+			servo(0, 0);
 		}
 		check_state = ON;
 		test_state = WAIT;
