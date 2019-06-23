@@ -517,6 +517,7 @@ void* taskCheck(void* arg) {
 			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 			
+			servo(1, 0);
 			delay(2*DELAY_MAGIC);
 			servo(1, -90);
 			delay(2*DELAY_MAGIC);
