@@ -470,7 +470,6 @@ void* taskCheck(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_fail_check);
 		int ret = test();
-		servo_init();
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
 			servo(0, 90);
