@@ -517,6 +517,7 @@ void* taskShow(void* arg) {
 			servo(0, 0);
 			delay(DELAY_MAGIC/2);
 			servo(1, 0);
+			check_state = ON;
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
