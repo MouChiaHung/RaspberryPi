@@ -544,8 +544,8 @@ void resetCounter() {
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	
-	wiringPiSetup();
-	//wiringPiSetupGpio();
+	//wiringPiSetup();
+	wiringPiSetupGpio();
 	servo_init();
 
 	pinMode (LED, OUTPUT);
