@@ -86,8 +86,7 @@
 /* -------------------------------------------------------------------- */
 char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO20"};
 
-enum CHECK_STATE {ON, TEST, WAIT, PASS, FAIL};
-int check_state = ON;
+enum TEST_STATE {WAIT, PASS, FAIL};
 int test_state = WAIT;
 
 int counter_sensor_0 = 0;
@@ -455,46 +454,31 @@ void* taskLEDTest(void* arg) {
 		switch (test_state) {
 			case PASS:
 				digitalWrite(LED_PASS, HIGH);
+				digitalWrite(LED_CHECK, LOW);
 				delay (2000);
 				digitalWrite(LED_PASS, LOW);
+				digitalWrite(LED_CHECK, HIGH);
 				break;
 			case FAIL:
 				digitalWrite(LED_FAIL, HIGH);
+				digitalWrite(LED_CHECK, LOW);
 				delay (2000);
 				digitalWrite(LED_FAIL, LOW);
+				digitalWrite(LED_CHECK, HIGH);
 				break;
 			case WAIT:
-
+				digitalWrite(LED_CHECK, HIGH); //blink
+				delay (500);
+				digitalWrite(LED_CHECK, LOW);
+				delay (500);
 				break;	
 			default:
 				LOG("%s UNKNOWN TEST STATE\n", RED);
 				break;
 		}
-		
 	}
 	return 0;
 }
-
-void* taskLEDCheck(void* arg) {
-	while (1) {
-		switch (check_state) {
-			case ON:
-				digitalWrite(LED_CHECK, HIGH); //on
-				break;
-			case TEST:
-				digitalWrite(LED_CHECK, HIGH); //blink
-				delay (500);
-				digitalWrite(LED_CHECK, LOW);
-				delay (500);
-				break;
-			default:
-				LOG("%s UNKNOWN CHECK STATE\n", RED);
-				break;
-		}
-	}
-	return 0;
-}
-
 
 void* taskShow(void* arg) {
 	while (1) {
@@ -507,14 +491,12 @@ void* taskShow(void* arg) {
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
-			pthread_cond_signal(&cond_led_test);
 			delay(100);			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
 			delay(100);
 			servo(0, 0);
-			check_state = ON;
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -523,9 +505,9 @@ void* taskShow(void* arg) {
 #endif		
 		else {
 			LOG("%s [Please CHECK]\n", YELLOW);
-			check_state = TEST;
+			test_state = WAIT;
 		}
-		test_state = WAIT;
+		pthread_cond_signal(&cond_led_test);
 	}
 	return 0;
 }
@@ -571,7 +553,6 @@ void* taskCheck(void* arg) {
 			delay(100);
 			servo(0, 0);
 		}
-		check_state = ON;
 		test_state = WAIT;
 	}
 	return 0;
@@ -677,17 +658,14 @@ int main(void) {
 	pthread_t tSensor;
 	pthread_t tShow;
 	pthread_t tCheck;
-	pthread_t tLEDCheck;
 	pthread_t tLEDTest;
 	
 	pthread_create(&tSensor, NULL, taskSensor, NULL);
-	pthread_create(&tLEDCheck, NULL, taskLEDCheck, NULL);
+	pthread_create(&tLEDTest, NULL, taskLEDTest, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
 	pthread_create(&tCheck, NULL, taskCheck, NULL);
-	pthread_create(&tLEDTest, NULL, taskLEDTest, NULL);
 	
 	pthread_join(tSensor, NULL);
-	pthread_join(tLEDCheck, NULL);
 	pthread_join(tLEDTest, NULL);
 	pthread_join(tShow, NULL);
 	pthread_join(tCheck, NULL);
