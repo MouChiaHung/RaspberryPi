@@ -223,10 +223,11 @@ void servo(int servo, int angle) {
 		case 0:
 			value = 150;
 			break;
-		case 90:
+		case -90:
 			value = 100;
 			break;	
 		default:
+			LOG("%s error angle:%d\n", RED, angle);
 			break;
 	}
 	LOG("%s pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
