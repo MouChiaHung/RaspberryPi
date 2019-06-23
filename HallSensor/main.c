@@ -138,7 +138,7 @@ void LOG(const char* format, ...)
 }
 
 #if 1
-void servo_init(int servo, int pwmc, int pwmr) {
+void servo_init_(int servo, int pwmc, int pwmr) {
 	switch (servo) {
 		case 0:
 			LOG("%s initialize servo_0 at pin:%d, pwmc:%d, pwmr:%d\n", LIGHT_GRAY, SERVO_0, pwmc, pwmr);
@@ -159,8 +159,8 @@ void servo_init(int servo, int pwmc, int pwmr) {
 	}
 }
 void servo_init() {
-	servo_init(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
-	servo_init(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);		
+	servo_init_(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+	servo_init_(1, PWM_CHANNEL_1_CLOCK, PWM_CHANNEL_1_RANGE);		
 }
 #elif 0
 void servo_init() {
