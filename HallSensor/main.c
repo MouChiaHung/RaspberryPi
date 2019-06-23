@@ -205,7 +205,7 @@ void servo(int servo, int angle) {
 			break;
 	}
 #endif
-	int value;
+	int value = 0;
 	switch (servo) {
 		case 0:
 			servo = SERVO_0;
