@@ -147,7 +147,7 @@ void servo_init() {
 
 #else 
 void servo_init() {
-  softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
+  //softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
 }
 
 #endif
