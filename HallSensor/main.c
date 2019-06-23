@@ -36,7 +36,7 @@
 #define WHITE 		"\033[1;37m"
 
 
-#if 0 //BCM
+#if 1 //BCM
 #define LED 5
 #define BTN 6
 #define SENSOR_0 17
@@ -130,7 +130,7 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-#if 0
+#if 1
 void servo_init_(int servo, int pwmc, int pwmr) {
 	switch (servo) {
 		case 0:
@@ -167,7 +167,7 @@ void servo_init() {
 
 #endif
 
-#if 0
+#if 1
 void servo(int servo, int angle) {
 	float period_per_unit = 0.1; //0.1ms;
 	float duty = 0; //ms
@@ -437,7 +437,7 @@ void* taskShow(void* arg) {
 		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", LIGHT_GREEN);
-			servo(0, 90);
+			servo(0, -90);
 			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 		}
@@ -472,13 +472,13 @@ void* taskCheck(void* arg) {
 		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
-			servo(0, 90);
+			servo(0, -90);
 			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
-			servo(0, 90);
+			servo(0, -90);
 			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 		}
