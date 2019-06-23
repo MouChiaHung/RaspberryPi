@@ -132,7 +132,7 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-#if 1
+#if 0
 void servo_init_(int servo, int pwmc, int pwmr) {
 	switch (servo) {
 		case 0:
@@ -156,8 +156,8 @@ void servo_init() {
 
 #else 
 void servo_init() {
-  int servo[2] = {SERVO_0, SERVO_1};
-	for (int i=0;i<2;i++) {
+  int servo[1] = {SERVO_0};
+	for (int i=0;i<1;i++) {
 		if (softPwmCreate(servo[i], 0, RANGE) >= 0) {
 			LOG("%s initialized servo:%d, range:%d\n", LIGHT_GRAY, servo[i], RANGE);
 		}
@@ -169,7 +169,7 @@ void servo_init() {
 
 #endif
 
-#if 1
+#if 0
 void servo(int servo, int angle) {
 	float period_per_unit = 0.1; //0.1ms;
 	float duty = 0; //ms
@@ -212,9 +212,6 @@ void servo(int servo, int angle) {
 	switch (servo) {
 		case 0:
 			servo = SERVO_0;
-			break;
-		case 1:
-			servo = SERVO_1;
 			break;
 		default:
 			break;
