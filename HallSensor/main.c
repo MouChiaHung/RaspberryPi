@@ -36,7 +36,7 @@
 #define WHITE 		"\033[1;37m"
 
 
-#if 0 //BCM
+#if 1 //BCM
 #define LED 5
 #define BTN 6
 #define SENSOR_0 17
@@ -585,8 +585,8 @@ void resetCounter() {
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	
-	wiringPiSetup();
-	//wiringPiSetupGpio();
+	//wiringPiSetup();
+	wiringPiSetupGpio();
 	servo_init();
 
 	pinMode (LED, OUTPUT);
