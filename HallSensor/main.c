@@ -466,7 +466,7 @@ void* taskLEDTest(void* arg) {
 			case WAIT:
 
 				break;	
-			default
+			default:
 				LOG("%s UNKNOWN TEST STATE\n", RED);
 				break;
 		}
