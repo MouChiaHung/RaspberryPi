@@ -510,6 +510,7 @@ void* taskShow(void* arg) {
 			LOG("%s [Please CHECK]\n", YELLOW);
 			test_state = WAIT;
 		}
+		isChecked = 0;
 		pthread_cond_signal(&cond_led_test);
 	}
 	return 0;
