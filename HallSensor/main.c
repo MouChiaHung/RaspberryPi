@@ -510,7 +510,6 @@ void* taskCheck(void* arg) {
 			servo(1, 90);
 			delay(2*DELAY_MAGIC);
 			servo(1, 0);
-			servo_init();
 		}
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
@@ -522,7 +521,6 @@ void* taskCheck(void* arg) {
 			servo(1, -90);
 			delay(2*DELAY_MAGIC);
 			servo(1, 0);
-			servo_init();
 		}
 	}
 	return 0;
