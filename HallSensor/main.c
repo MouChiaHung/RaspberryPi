@@ -551,6 +551,7 @@ void* taskCheck(void* arg) {
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECKED and PASS]\n", GREEN);
 			test_state = PASS;
+			pthread_cond_signal(&cond_led_test);
 			delay(100);			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
@@ -561,7 +562,8 @@ void* taskCheck(void* arg) {
 		else {
 			LOG("%s [CHECKED and FAIL]\n", RED);
 			test_state = FAIL;
-			delay(100);			
+			pthread_cond_signal(&cond_led_test);
+			delay(100);	
 			servo(0, 90);
 			delay(100);
 			servo(1, 90);
