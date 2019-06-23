@@ -48,7 +48,7 @@
 #define SENSOR_6 25
 #define SENSOR_7 20
 #define SERVO_0 18
-#define SERVO_1 12
+#define SERVO_1 19
 #else //wPi
 #define LED 21
 #define BTN 22
@@ -60,8 +60,8 @@
 #define SENSOR_5 5
 #define SENSOR_6 6
 #define SENSOR_7 28
-#define SERVO_0 1
-#define SERVO_1 26
+#define SERVO_0
+#define SERVO_1 
 #endif
 
 #define SERV_0_DUTY_90 20
@@ -498,6 +498,7 @@ void* taskCheck(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_fail_check);
 		int ret = test();
+		servo_init();
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
 			servo(0, 90);
@@ -512,7 +513,7 @@ void* taskCheck(void* arg) {
 		else {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
 			servo(0, 90);
-			delay(2*DELAY_MAGIC);
+			delay(DELAY_MAGIC);
 			servo(0, 0);
 			
 			delay(2*DELAY_MAGIC);
