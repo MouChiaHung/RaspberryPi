@@ -48,6 +48,7 @@
 #define SENSOR_6 25
 #define SENSOR_7 20
 #define SERVO_0 18
+#define SERVO_1 13
 #else //wPi
 #define LED 21
 #define BTN 22
@@ -131,21 +132,12 @@ void LOG(const char* format, ...)
 }
 
 #if 1
-void servo_init_(int servo, int pwmc, int pwmr) {
-	switch (servo) {
-		case 0:
-			LOG("%s initialize servo_0 at pin:%d, pwmc:%d, pwmr:%d\n", LIGHT_GRAY, SERVO_0, pwmc, pwmr);
-			pinMode(SERVO_0, PWM_OUTPUT) ;
-			pwmSetMode(PWM_MODE_MS);
-			pwmSetClock(pwmc);
-			pwmSetRange(pwmr);
-			break;
-		default:
-			break;
-	}
-}
 void servo_init() {
-	servo_init_(0, PWM_CHANNEL_0_CLOCK, PWM_CHANNEL_0_RANGE);
+	pinMode(SERVO_0, PWM_OUTPUT);
+	pinMode(SERVO_1, PWM_OUTPUT);
+	pwmSetMode(PWM_MODE_MS);
+	pwmSetClock(pwmc);
+	pwmSetRange(pwmr);
 }
 #elif 0
 void servo_init() {
@@ -190,7 +182,11 @@ void servo(int servo, int angle) {
 		case 0:
 			servo = SERVO_0;
 			break;
+		case 1:
+			servo = SERVO_1;
+			break;	
 		default:
+			servo = SERVO_0;
 			break;
 	}
 	switch (angle) {
@@ -207,7 +203,7 @@ void servo(int servo, int angle) {
 			break;
 	}
 	LOG("%s soft pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
-	pwmWrite(SERVO_0, value);
+	pwmWrite(servo, value);
 }
 #elif 0
 void servo(int servo, int angle) {
