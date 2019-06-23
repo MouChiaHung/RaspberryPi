@@ -445,6 +445,7 @@ void* taskShow(void* arg) {
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, 0);
+			delay(2*DELAY_MAGIC);
 			servo_init();
 		}
 #if 0 //no retry case		
@@ -482,6 +483,7 @@ void* taskCheck(void* arg) {
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, 0);
+			delay(2*DELAY_MAGIC);
 			servo_init();
 		}
 		else {
@@ -489,6 +491,7 @@ void* taskCheck(void* arg) {
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, 0);
+			delay(2*DELAY_MAGIC);
 			servo_init();
 		}
 	}
