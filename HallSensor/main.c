@@ -191,10 +191,10 @@ void servo(int servo, int angle) {
 	}
 	switch (angle) {
 		case 90:
-			value = 25;
+			value = 24;
 			break;
 		case -90:
-			value = 5;
+			value = 10;
 			break;
 		case 0:
 			value = 15;
@@ -501,7 +501,7 @@ void* taskCheck(void* arg) {
 			servo(0, 90);
 			delay(DELAY_MAGIC);
 			servo(0, 0);
-			delay(DELAY_MAGIC/2);
+			delay(100);
 			servo(1, 0);
 		}
 		else {
@@ -512,11 +512,9 @@ void* taskCheck(void* arg) {
 			delay(DELAY_MAGIC);
 			servo(0, 0);
 			
-			delay(DELAY_MAGIC/2);
-			servo(1, 0);
-			delay(DELAY_MAGIC);
+			delay(100);
 			servo(1, 90);
-			delay(DELAY_MAGIC);
+			delay(2*DELAY_MAGIC);
 			servo(1, 0);
 		}
 	}
