@@ -491,7 +491,6 @@ void* taskLEDCheck(void* arg) {
 				LOG("%s UNKNOWN CHECK STATE\n", RED);
 				break;
 		}
-		
 	}
 	return 0;
 }
@@ -676,17 +675,20 @@ int main(void) {
 	pthread_mutex_init(&mutex_cond_led_test, 0);
 
 	pthread_t tSensor;
-	pthread_t tLEDCheck;
 	pthread_t tShow;
 	pthread_t tCheck;
+	pthread_t tLEDCheck;
+	pthread_t tLEDTest;
 	
 	pthread_create(&tSensor, NULL, taskSensor, NULL);
 	pthread_create(&tLEDCheck, NULL, taskLEDCheck, NULL);
 	pthread_create(&tShow, NULL, taskShow, NULL);
 	pthread_create(&tCheck, NULL, taskCheck, NULL);
+	pthread_create(&tLEDTest, NULL, taskLEDTest, NULL);
 	
 	pthread_join(tSensor, NULL);
 	pthread_join(tLEDCheck, NULL);
+	pthread_join(tLEDTest, NULL);
 	pthread_join(tShow, NULL);
 	pthread_join(tCheck, NULL);
 	
