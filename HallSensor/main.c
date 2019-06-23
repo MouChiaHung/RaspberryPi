@@ -166,7 +166,14 @@ void servo_init() {
 #else 
 void servo_init() {
   int servo[2] = {SERVO_0, SERVO_1};
-  for (int i=0;i<2;i++) softPwmCreate(servo[i], 0, RANGE) ;
+	for (int i=0;i<2;i++) {
+		if (softPwmCreate(servo[i], 0, RANGE) >= 0) {
+			LOG("%s initialized servo:%d, range:%d\n", LIGHT_GRAY, servo[i], RANGE);
+		}
+		else {
+			LOG("%s failed to initialize servo:%d, range:%d\n", RED, servo[i], RANGE);
+		}		
+  }
 }
 
 #endif
