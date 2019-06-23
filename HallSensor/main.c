@@ -136,8 +136,8 @@ void servo_init() {
 	pinMode(SERVO_0, PWM_OUTPUT);
 	pinMode(SERVO_1, PWM_OUTPUT);
 	pwmSetMode(PWM_MODE_MS);
-	pwmSetClock(pwmc);
-	pwmSetRange(pwmr);
+	pwmSetClock(PWM_CHANNEL_0_CLOCK);
+	pwmSetRange(PWM_CHANNEL_0_RANGE);
 }
 #elif 0
 void servo_init() {
