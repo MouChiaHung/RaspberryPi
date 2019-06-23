@@ -36,7 +36,7 @@
 #define WHITE 		"\033[1;37m"
 
 
-#if 1 //BCM
+#if 0 //BCM
 #define LED 5
 #define BTN 6
 #define SENSOR_0 17
@@ -157,10 +157,10 @@ void servo_init() {
   int servo[1] = {SERVO_0};
 	for (int i=0;i<1;i++) {
 		if (softPwmCreate(servo[i], 0, RANGE) >= 0) {
-			LOG("%s initialized servo:%d, range:%d\n", LIGHT_GRAY, servo[i], RANGE);
+			LOG("%s soft pwm create servo:%d, range:%d\n", LIGHT_GRAY, servo[i], RANGE);
 		}
 		else {
-			LOG("%s failed to initialize servo:%d, range:%d\n", RED, servo[i], RANGE);
+			LOG("%s failed to soft pwm create servo:%d, range:%d\n", RED, servo[i], RANGE);
 		}		
   }
 }
