@@ -195,13 +195,13 @@ void servo(int servo, int angle) {
 	}
 	switch (angle) {
 		case 90:
-			value = 20;
+			value = 25;
 			break;
 		case -90:
-			value = 7;
+			value = 5;
 			break;
 		case 0:
-			value = 17;
+			value = 15;
 			break;	
 		default:
 			break;
@@ -498,7 +498,7 @@ void* taskCheck(void* arg) {
 			LOG("%s [CHECK and PASS]\n", LIGHT_GREEN);
 			servo(0, -90);
 			delay(2*DELAY_MAGIC);
-			servo(0, 90);
+			servo(0, 0);
 			delay(2*DELAY_MAGIC);
 			servo(0, -90);
 		}
@@ -506,7 +506,7 @@ void* taskCheck(void* arg) {
 			LOG("%s [CHECK and FAIL]\n", LIGHT_RED);
 			servo(0, -90);
 			delay(2*DELAY_MAGIC);
-			servo(0, 90);
+			servo(0, 0);
 			delay(2*DELAY_MAGIC);
 			servo(0, -90);
 		}
