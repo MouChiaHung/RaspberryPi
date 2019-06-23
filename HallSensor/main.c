@@ -48,7 +48,6 @@
 #define SENSOR_6 25
 #define SENSOR_7 20
 #define SERVO_0 18
-#define SERVO_1 
 #else //wPi
 #define LED 21
 #define BTN 22
@@ -60,8 +59,7 @@
 #define SENSOR_5 5
 #define SENSOR_6 6
 #define SENSOR_7 28
-#define SERVO_0
-#define SERVO_1 
+#define SERVO_0 1
 #endif
 
 #define SERV_0_DUTY_90 20
@@ -547,8 +545,8 @@ void resetCounter() {
 int main(void) {
 	LOG("%s -*-*-*- Amo is cooking Raspberry Pi-*-*-*-\n", LIGHT_GREEN);
 	
-	//wiringPiSetup();
-	wiringPiSetupGpio();
+	wiringPiSetup();
+	//wiringPiSetupGpio();
 	servo_init();
 
 	pinMode (LED, OUTPUT);
