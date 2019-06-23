@@ -185,6 +185,16 @@ void servo(int servo, int angle) {
 	int min = -250;
 	int max = 1250;
 	int value = min+(max-min)*((angle-(-90))/(90-(-90)));
+	switch (servo) {
+		case 0:
+			servo = SERVO_0;
+			break;
+		case 1:
+			servo = SERVO_1;
+			break;
+		default:
+			break;
+	}
 	LOG("%s soft servo write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
 	softServoWrite (servo, value) ;
 }
@@ -192,6 +202,16 @@ void servo(int servo, int angle) {
 #else 
 void servo(int servo, int angle) {
 	int value = 0+RANGE*((angle-(-90))/(90-(-90)));
+	switch (servo) {
+		case 0:
+			servo = SERVO_0;
+			break;
+		case 1:
+			servo = SERVO_1;
+			break;
+		default:
+			break;
+	}
 	LOG("%s soft pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
 	softPwmWrite (servo, value) ;
 }
