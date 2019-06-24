@@ -10,3 +10,5 @@ Function includes:
  - WiringPi
  - POSIX
  - ISR
+ - SERVO
+ - Hall sensor
