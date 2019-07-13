@@ -521,13 +521,13 @@ void* taskShow(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		if (isChecked == 0) {
-			LOG("%s [請勿搖晃方塊]\n", RED);ß
+			LOG("%s [Press BTN]\n", RED);ß
 			continue;
 		}
 
 		int ret = test();
 		if (ret == TEST_PASS) {
-			LOG("%s [通過]\n", GREEN);
+			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);
 			isChecked = 0;
@@ -544,7 +544,7 @@ void* taskShow(void* arg) {
 		}
 #endif		
 		else {
-			LOG("%s [請按重複確認按鈕]\n", YELLOW);
+			LOG("%s [Press BTN]\n", YELLOW);
 			test_state = WAIT;
 			isChecked = 0;
 			pthread_cond_signal(&cond_led_check);
@@ -572,7 +572,7 @@ void* taskCheck(void* arg) {
 		//int ret = test();
 		int ret = TEST_PASS;
 		if (ret == TEST_PASS) {
-			LOG("%s [重複確認後判斷為通過]\n", GREEN);
+			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);		
 			servo(0, 90);
@@ -580,7 +580,7 @@ void* taskCheck(void* arg) {
 			servo(0, 0);
 		}
 		else {
-			LOG("%s [重複確認後判斷為不良品]\n", RED);
+			LOG("%s [FAIL]\n", RED);
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
 			servo(1, 90);
