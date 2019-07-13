@@ -73,7 +73,7 @@
 
 #define RANGE 100
 
-#define	DEBOUNCE_TIME 250
+#define	DEBOUNCE_TIME 500
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
 #define	DELAY_MAGIC 500
@@ -520,6 +520,11 @@ void* taskShow(void* arg) {
 		//LOG("%s *DETECTED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
+		if (isChecked == 0) {
+			LOG("%s [NOT YET]\n", YELLOW);
+			continue;
+		}
+
 		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
@@ -564,30 +569,23 @@ void* taskCheck(void* arg) {
 		//LOG("%s *PRESSED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_check);
-		int ret = test();
+		//int ret = test();
+		int ret = TEST_PASS;
 		if (ret == TEST_PASS) {
 			LOG("%s [CHECKED and PASS]\n", GREEN);
 			test_state = PASS;
-			pthread_cond_signal(&cond_led_test);
-			delay(100);			
+			pthread_cond_signal(&cond_led_test);		
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
-			servo(1, 0);
-			delay(100);
 			servo(0, 0);
 		}
 		else {
 			LOG("%s [CHECKED and FAIL]\n", RED);
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
-			delay(100);	
-			servo(0, 90);
-			delay(100);
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
-			delay(100);
-			servo(0, 0);
 		}
 		isChecked = 1;
 		pthread_cond_signal(&cond_led_check);
