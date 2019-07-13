@@ -521,7 +521,7 @@ void* taskShow(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		if (isChecked == 0) {
-			LOG("%s [Press BTN]\n", RED);ß
+			LOG("%s [Press BTN]\n", RED);
 			continue;
 		}
 
@@ -587,7 +587,7 @@ void* taskCheck(void* arg) {
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
 		}
-		ｓ = 1;
+		isChecked = 1;
 		pthread_cond_signal(&cond_led_check);
 	}
 	return 0;
