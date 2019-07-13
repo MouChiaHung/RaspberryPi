@@ -531,11 +531,8 @@ void* taskShow(void* arg) {
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);
 			isChecked = 0;
-			delay(100);			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
-			servo(1, 0);
-			delay(100);
 			servo(0, 0);
 		}
 #if 0 //no retry case		
