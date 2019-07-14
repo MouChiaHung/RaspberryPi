@@ -571,7 +571,7 @@ void* taskShow(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		if (isChecked == 0) {
-			LOG("%s [Press BTN]\n", RED);
+			LOG("%s [CHECK]\n", RED);
 			continue;
 		}
 
@@ -591,7 +591,7 @@ void* taskShow(void* arg) {
 		}
 #endif		
 		else {
-			LOG("%s [Press BTN]\n", YELLOW);
+			LOG("%s [CHECK]\n", YELLOW);
 			test_state = WAIT;
 			isChecked = 0;
 			pthread_cond_signal(&cond_led_check);
