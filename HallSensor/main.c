@@ -325,6 +325,8 @@ void servo(int servo, int angle) {
 		case 0:
 			LOG("%s gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
 			system("gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
+			LOG("%s gpio -g mode 13 down\n", LIGHT_GRAY);
+			system("gpio -g mode 13 down");
 			switch (angle) {
 				case 90:
 					LOG("%s gpio -g pwm 18 23\n", LIGHT_GRAY);
@@ -345,6 +347,8 @@ void servo(int servo, int angle) {
 		case 1:
 			LOG("%s gpio -g mode 13 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
 			system("gpio -g mode 13 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
+			LOG("%s gpio -g mode 18 down\n", LIGHT_GRAY);
+			system("gpio -g mode 18 down");
 			switch (angle) {
 				case 90:
 					LOG("%s gpio -g pwm 13 23\n", LIGHT_GRAY);
