@@ -51,7 +51,7 @@
 #define SENSOR_6 25
 #define SENSOR_7 20
 #define SERVO_0 18
-#define SERVO_1 1
+#define SERVO_1 13
 #else //wPi
 #define LED 21
 #define BTN 22
