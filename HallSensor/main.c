@@ -233,6 +233,7 @@ void servo(int servo, int angle) {
 	}
 */
 	int value = 17;
+/*	
 	switch (servo) {
 		case 0:
 			servo = SERVO_0;
@@ -248,6 +249,7 @@ void servo(int servo, int angle) {
 			servo = -1;
 			break;
 	}
+*/	
 	switch (angle) {
 		case 90:
 			value = 22;
@@ -619,7 +621,9 @@ void* taskCheck(void* arg) {
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
-			pthread_cond_signal(&cond_led_test);		
+			pthread_cond_signal(&cond_led_test);	
+			servo_open(0);
+			servo_close(1);
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
@@ -628,6 +632,8 @@ void* taskCheck(void* arg) {
 			LOG("%s [FAIL]\n", RED);
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
+			servo_open(1);
+			servo_close(0);
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
