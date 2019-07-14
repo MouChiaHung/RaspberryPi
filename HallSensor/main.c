@@ -346,16 +346,16 @@ void servo(int servo, int angle) {
 			system("gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
 			switch (angle) {
 				case 90:
-					LOG("%s gpio -g pwm 12 23\n", LIGHT_GRAY);
-					system("gpio -g pwm 12 23");
+					LOG("%s gpio -g pwm 12 25\n", LIGHT_GRAY);
+					system("gpio -g pwm 12 25");
 					break;
 				case -90:
 					LOG("%s gpio -g pwm 12 10\n", LIGHT_GRAY);
 					system("gpio -g pwm 12 10");
 					break;
 				case 0:
-					LOG("%s gpio -g pwm 12 12\n", LIGHT_GRAY);
-					system("gpio -g pwm 12 12");
+					LOG("%s gpio -g pwm 12 14\n", LIGHT_GRAY);
+					system("gpio -g pwm 12 14");
 					break;	
 				default:
 					break;
@@ -578,6 +578,7 @@ void* taskLEDTest(void* arg) {
 				delay (2000);
 				digitalWrite(LED_PASS, LOW);
 				//digitalWrite(LED_CHECK, HIGH);
+				test_state = WAIT;
 				break;
 			case FAIL:
 				digitalWrite(LED_FAIL, HIGH);
@@ -585,6 +586,7 @@ void* taskLEDTest(void* arg) {
 				delay (2000);
 				digitalWrite(LED_FAIL, LOW);
 				//digitalWrite(LED_CHECK, HIGH);
+				test_state = WAIT;
 				break;
 			case WAIT:
 				
