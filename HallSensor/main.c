@@ -144,7 +144,7 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-#if 1
+#if 0
 void servo_init() {
 	servo_open(0);
 	servo_open(1);
@@ -154,7 +154,7 @@ void servo_init() {
   softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
 }
 
-#else 
+#elif 0 
 void servo_init() {
   int servo[1] = {SERVO_0};
 	for (int i=0;i<1;i++) {
@@ -166,6 +166,14 @@ void servo_init() {
 		}		
   }
 }
+#else
+void servo_init() {
+	LOG("%s gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
+	system("gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
+	LOG("%s gpio -g mode 13 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
+	system("gpio -g mode 13 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
+	
+}	
 
 #endif
 
@@ -214,7 +222,7 @@ void servo_close(int servo) {
 }
 
 
-#if 1
+#if 0
 void servo(int servo, int angle) {
 /*	
 	float period_per_unit = 0.1; //0.1ms;
@@ -297,7 +305,7 @@ void servo(int servo, int angle) {
 	softServoWrite (servo, value) ;
 }
 
-#else 
+#elif 0
 void servo(int servo, int angle) {
 	int value = 0+RANGE*((angle-(-90))/(90-(-90)));
 	switch (servo) {
@@ -311,6 +319,50 @@ void servo(int servo, int angle) {
 	softPwmWrite (servo, value) ;
 }
 
+#else
+void servo(int servo, int angle) {
+	switch (servo) {
+		case 0:
+			switch (angle) {
+				case 90:
+					LOG("%s gpio -g pwm 18 23\n", LIGHT_GRAY);
+					system("gpio -g pwm 18 23");
+					break;
+				case -90:
+					LOG("%s gpio -g pwm 18 10\n", LIGHT_GRAY);
+					system("gpio -g pwm 18 10");
+					break;
+				case 0:
+					LOG("%s gpio -g pwm 18 15\n", LIGHT_GRAY);
+					system("gpio -g pwm 18 15");
+					break;	
+				default:
+					break;
+			}
+			break;
+		case 1:
+			switch (angle) {
+				case 90:
+					LOG("%s gpio -g pwm 13 23\n", LIGHT_GRAY);
+					system("gpio -g pwm 13 23");
+					break;
+				case -90:
+					LOG("%s gpio -g pwm 13 10\n", LIGHT_GRAY);
+					system("gpio -g pwm 13 10");
+					break;
+				case 0:
+					LOG("%s gpio -g pwm 13 15\n", LIGHT_GRAY);
+					system("gpio -g pwm 13 15");
+					break;	
+				default:
+					break;
+			}
+			break;	
+		default:
+			servo = -1;
+			break;
+	}
+}
 #endif
 
 void handler_BTN(void) {
