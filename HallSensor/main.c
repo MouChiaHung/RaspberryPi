@@ -693,6 +693,7 @@ void* taskCheck(void* arg) {
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
+			servo_init();
 		}
 		else {
 			LOG("%s [FAIL]\n", RED);
@@ -701,6 +702,7 @@ void* taskCheck(void* arg) {
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
+			servo_init();
 		}
 		isChecked = 1;
 		pthread_cond_signal(&cond_led_check);
