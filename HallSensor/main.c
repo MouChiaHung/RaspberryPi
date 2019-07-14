@@ -257,7 +257,7 @@ void servo(int servo, int angle) {
 			value = 10;
 			break;
 		case 0:
-			value = 15;
+			value = 13;
 			break;	
 		default:
 			break;
