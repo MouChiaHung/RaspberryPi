@@ -199,12 +199,12 @@ void servo_close(int servo) {
 	switch (servo) {
 		case 0:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
-			//pinMode(SERVO_0, INPUT);
+			pinMode(SERVO_0, INPUT);
 			pullUpDnControl(SERVO_0, PUD_DOWN);
 			break;
 		case 1:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
-			//pinMode(SERVO_1, INPUT);
+			pinMode(SERVO_1, INPUT);
 			pullUpDnControl(SERVO_1, PUD_DOWN);
 			break;	
 		default:
