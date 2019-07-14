@@ -51,7 +51,7 @@
 #define SENSOR_6 25
 #define SENSOR_7 20
 #define SERVO_0 18
-#define SERVO_1 13
+#define SERVO_1 1
 #else //wPi
 #define LED 21
 #define BTN 22
@@ -170,6 +170,44 @@ void servo_init() {
 
 #endif
 
+
+void servo_open(int servo) {
+	
+	switch (servo) {
+		case 0:
+			spinMode(SERVO_0, PWM_OUTPUT);
+			pwmSetMode(PWM_MODE_MS);
+			pwmSetClock(PWM_CHANNEL_0_CLOCK);
+			pwmSetRange(PWM_CHANNEL_0_RANGE);
+			break;
+		case 1:
+			spinMode(SERVO_1, PWM_OUTPUT);
+			pwmSetMode(PWM_MODE_MS);
+			pwmSetClock(PWM_CHANNEL_0_CLOCK);
+			pwmSetRange(PWM_CHANNEL_0_RANGE);
+			break;	
+		default:
+			
+			break;
+	}
+}
+
+void servo_close(int servo) {
+	
+	switch (servo) {
+		case 0:
+			pinMode (SERVO_0, INPUT);
+			break;
+		case 1:
+			pinMode (SERVO_1, INPUT);
+			break;	
+		default:
+			
+			break;
+	}
+}
+
+
 #if 1
 void servo(int servo, int angle) {
 /*	
@@ -192,12 +230,16 @@ void servo(int servo, int angle) {
 	switch (servo) {
 		case 0:
 			servo = SERVO_0;
+			servo_open(0);
+			servo_close(1);
 			break;
 		case 1:
+			servo_open(1);
+			servo_close(0);
 			servo = SERVO_1;
 			break;	
 		default:
-			servo = SERVO_0;
+			servo = -1;
 			break;
 	}
 	switch (angle) {
@@ -214,6 +256,7 @@ void servo(int servo, int angle) {
 			break;
 	}
 	LOG("%s soft pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	if (servo == -1) return;
 	pwmWrite(servo, value);
 }
 #elif 0
