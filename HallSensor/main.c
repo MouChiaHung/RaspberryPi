@@ -130,6 +130,7 @@ pthread_mutex_t mutex_sensor_7;  //7
 
 int test();
 void resetCounter();
+int oe = 1;
 /* -------------------------------------------------------------------- */
 /* implements                                                           */
 /* -------------------------------------------------------------------- */
@@ -684,17 +685,11 @@ void* taskCheck(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_check);
 		
-		//servo(0, 0);
-		//delay(1*DELAY_MAGIC);
-		//servo(1, 0);
-		//delay(1*DELAY_MAGIC);
-		int ret = TEST_PASS;
+		int ret = ((++oe/2) == 0) ? TEST_PASS : TEST_FAIL;
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);	
-			servo_open(0);
-			servo_close(1);
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
@@ -703,8 +698,6 @@ void* taskCheck(void* arg) {
 			LOG("%s [FAIL]\n", RED);
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
-			servo_open(1);
-			servo_close(0);
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
