@@ -200,12 +200,12 @@ void servo_close(int servo) {
 		case 0:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
 			pinMode(SERVO_0, INPUT);
-			//pullUpDnControl(SERVO_0, PUD_DOWN);
+			pullUpDnControl(SERVO_0, PUD_DOWN);
 			break;
 		case 1:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
 			pinMode(SERVO_1, INPUT);
-			//pullUpDnControl(SERVO_1, PUD_DOWN);
+			pullUpDnControl(SERVO_1, PUD_DOWN);
 			break;	
 		default:
 			
@@ -250,6 +250,17 @@ void servo(int servo, int angle) {
 			break;
 	}
 */	
+	switch (servo) {
+		case 0:
+			servo = SERVO_0;
+			break;
+		case 1:
+			servo = SERVO_1;
+			break;	
+		default:
+			servo = -1;
+			break;
+	}
 	switch (angle) {
 		case 90:
 			value = 22;
@@ -623,6 +634,7 @@ void* taskCheck(void* arg) {
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);	
 			servo_open(0);
+			delay(1*DELAY_MAGIC);
 			servo_close(1);
 			delay(1*DELAY_MAGIC);
 			servo(0, 90);
@@ -634,6 +646,7 @@ void* taskCheck(void* arg) {
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
 			servo_open(1);
+			delay(1*DELAY_MAGIC);
 			servo_close(0);
 			delay(1*DELAY_MAGIC);
 			servo(1, 90);
