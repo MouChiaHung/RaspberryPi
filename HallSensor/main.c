@@ -39,7 +39,7 @@
 #if 1 //BCM
 #define BTN 6
 #define LED_CHECK 16
-#define LED_PASS 12
+#define LED_PASS 13
 #define LED_FAIL 5
 
 #define SENSOR_0 17
@@ -51,7 +51,7 @@
 #define SENSOR_6 25
 #define SENSOR_7 20
 #define SERVO_0 18
-#define SERVO_1 13
+#define SERVO_1 12
 #else //wPi
 #define LED 21
 #define BTN 22
