@@ -249,13 +249,13 @@ void servo(int servo, int angle) {
 	}
 	switch (angle) {
 		case 90:
-			value = 25;
+			value = 22;
 			break;
 		case -90:
 			value = 10;
 			break;
 		case 0:
-			value = 15;
+			value = 12;
 			break;	
 		default:
 			break;
