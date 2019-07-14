@@ -685,7 +685,7 @@ void* taskCheck(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_check);
 		
-		int ret = ((++oe/2) == 0) ? TEST_PASS : TEST_FAIL;
+		int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
