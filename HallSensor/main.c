@@ -175,13 +175,13 @@ void servo_open(int servo) {
 	
 	switch (servo) {
 		case 0:
-			spinMode(SERVO_0, PWM_OUTPUT);
+			pinMode(SERVO_0, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
 			pwmSetClock(PWM_CHANNEL_0_CLOCK);
 			pwmSetRange(PWM_CHANNEL_0_RANGE);
 			break;
 		case 1:
-			spinMode(SERVO_1, PWM_OUTPUT);
+			pinMode(SERVO_1, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
 			pwmSetClock(PWM_CHANNEL_0_CLOCK);
 			pwmSetRange(PWM_CHANNEL_0_RANGE);
