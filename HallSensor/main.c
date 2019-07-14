@@ -573,17 +573,21 @@ void* taskLEDTest(void* arg) {
 		pthread_mutex_unlock(&mutex_cond_led_test);
 		switch (test_state) {
 			case PASS:
+				LOG("%s LED PASS HIGH\n", RED);
 				digitalWrite(LED_PASS, HIGH);
 				//digitalWrite(LED_CHECK, LOW);
 				delay (2000);
+				LOG("%s LED PASS LOW\n", RED);
 				digitalWrite(LED_PASS, LOW);
 				//digitalWrite(LED_CHECK, HIGH);
 				test_state = WAIT;
 				break;
 			case FAIL:
+				LOG("%s LED FAIL HIGH\n", RED);
 				digitalWrite(LED_FAIL, HIGH);
 				//digitalWrite(LED_CHECK, LOW);
 				delay (2000);
+				LOG("%s LED FAIL LOW\n", RED);
 				digitalWrite(LED_FAIL, LOW);
 				//digitalWrite(LED_CHECK, HIGH);
 				test_state = WAIT;
