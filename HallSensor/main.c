@@ -206,7 +206,7 @@ void servo_close(int servo) {
 		case 1:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
 			pinMode (SERVO_1, INPUT);
-			pullUpDnControl(SERVO_0, PUD_DOWN);
+			pullUpDnControl(SERVO_1, PUD_DOWN);
 			break;	
 		default:
 			
@@ -241,9 +241,9 @@ void servo(int servo, int angle) {
 			servo_close(1);
 			break;
 		case 1:
+			servo = SERVO_1;
 			servo_open(1);
 			servo_close(0);
-			servo = SERVO_1;
 			break;	
 		default:
 			servo = -1;
