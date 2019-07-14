@@ -174,7 +174,7 @@ void servo_open(int servo) {
 	switch (servo) {
 		case 0:
 			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
-			pullUpDnControl(SERVO_0, PUD_OFF);
+			//pullUpDnControl(SERVO_0, PUD_OFF);
 			pinMode(SERVO_0, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
 			pwmSetClock(PWM_CHANNEL_0_CLOCK);
@@ -182,7 +182,7 @@ void servo_open(int servo) {
 			break;
 		case 1:
 			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_1);
-			pullUpDnControl(SERVO_1, PUD_OFF);
+			//pullUpDnControl(SERVO_1, PUD_OFF);
 			pinMode(SERVO_1, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
 			pwmSetClock(PWM_CHANNEL_0_CLOCK);
@@ -200,12 +200,12 @@ void servo_close(int servo) {
 		case 0:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
 			pinMode(SERVO_0, INPUT);
-			pullUpDnControl(SERVO_0, PUD_DOWN);
+			//pullUpDnControl(SERVO_0, PUD_DOWN);
 			break;
 		case 1:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
 			pinMode(SERVO_1, INPUT);
-			pullUpDnControl(SERVO_1, PUD_DOWN);
+			//pullUpDnControl(SERVO_1, PUD_DOWN);
 			break;	
 		default:
 			
@@ -624,6 +624,7 @@ void* taskCheck(void* arg) {
 			pthread_cond_signal(&cond_led_test);	
 			servo_open(0);
 			servo_close(1);
+			delay(1*DELAY_MAGIC);
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
@@ -634,6 +635,7 @@ void* taskCheck(void* arg) {
 			pthread_cond_signal(&cond_led_test);
 			servo_open(1);
 			servo_close(0);
+			delay(1*DELAY_MAGIC);
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
