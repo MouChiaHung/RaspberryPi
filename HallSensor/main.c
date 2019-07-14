@@ -144,11 +144,8 @@ void LOG(const char* format, ...)
 
 #if 1
 void servo_init() {
-	pinMode(SERVO_0, PWM_OUTPUT);
-	pinMode(SERVO_1, PWM_OUTPUT);
-	pwmSetMode(PWM_MODE_MS);
-	pwmSetClock(PWM_CHANNEL_0_CLOCK);
-	pwmSetRange(PWM_CHANNEL_0_RANGE);
+	servo_open(0);
+	servo_open(1);
 }
 #elif 0
 void servo_init() {
