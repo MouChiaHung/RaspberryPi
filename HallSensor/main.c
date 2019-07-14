@@ -38,9 +38,9 @@
 
 #if 1 //BCM
 #define BTN 6
-#define LED_CHECK 5
+#define LED_CHECK 16
 #define LED_PASS 12
-#define LED_FAIL 16
+#define LED_FAIL 5
 
 #define SENSOR_0 17
 #define SENSOR_1 26
