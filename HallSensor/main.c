@@ -169,8 +169,6 @@ void servo_init() {
 }
 #else
 void servo_init() {
-	LOG("%s gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
-	system("gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
 	LOG("%s gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
 	system("gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
 	
@@ -326,8 +324,6 @@ void servo(int servo, int angle) {
 		case 0:
 			LOG("%s gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
 			system("gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
-			LOG("%s gpio -g mode 12 in && gpio -g mode 12 down\n", LIGHT_GRAY);
-			system("gpio -g mode 12 in && gpio -g mode 12 down");
 			switch (angle) {
 				case 90:
 					LOG("%s gpio -g pwm 18 23\n", LIGHT_GRAY);
@@ -348,8 +344,6 @@ void servo(int servo, int angle) {
 		case 1:
 			LOG("%s gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
 			system("gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
-			LOG("%s gpio -g mode 18 in && gpio -g mode 18 down\n", LIGHT_GRAY);
-			system("gpio -g mode 18 in && gpio -g mode 18 down");
 			switch (angle) {
 				case 90:
 					LOG("%s gpio -g pwm 12 23\n", LIGHT_GRAY);
@@ -649,9 +643,9 @@ void* taskShow(void* arg) {
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);
 			isChecked = 0;
-			servo(0, 90);
+			servo(1, 90);
 			delay(3*DELAY_MAGIC);
-			servo(0, 0);
+			servo(1, 0);
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -685,14 +679,15 @@ void* taskCheck(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_check);
 		
-		int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
+		//int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
+		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);	
-			servo(0, 90);
+			servo(1, 90);
 			delay(3*DELAY_MAGIC);
-			servo(0, 0);
+			servo(1, 0);
 			servo_init();
 		}
 		else {
