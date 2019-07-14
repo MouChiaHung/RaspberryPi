@@ -81,6 +81,8 @@
 #define	TEST_PASS 10
 #define	TEST_FAIL 20
 #define	TEST_RETRY 30
+
+void servo_open(int servo);
 /* -------------------------------------------------------------------- */
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
