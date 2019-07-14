@@ -354,8 +354,8 @@ void servo(int servo, int angle) {
 					system("gpio -g pwm 12 10");
 					break;
 				case 0:
-					LOG("%s gpio -g pwm 12 15\n", LIGHT_GRAY);
-					system("gpio -g pwm 12 15");
+					LOG("%s gpio -g pwm 12 12\n", LIGHT_GRAY);
+					system("gpio -g pwm 12 12");
 					break;	
 				default:
 					break;
