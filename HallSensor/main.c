@@ -171,11 +171,10 @@ void servo_init() {
 
 
 void servo_open(int servo) {
-	
 	switch (servo) {
 		case 0:
 			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
-			pullUpDnControl(SERVO_0, PUD_OFF);
+			//pullUpDnControl(SERVO_0, PUD_OFF);
 			pinMode(SERVO_0, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
 			pwmSetClock(PWM_CHANNEL_0_CLOCK);
@@ -183,7 +182,7 @@ void servo_open(int servo) {
 			break;
 		case 1:
 			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_1);
-			pullUpDnControl(SERVO_1, PUD_OFF);
+			//pullUpDnControl(SERVO_1, PUD_OFF);
 			pinMode(SERVO_1, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
 			pwmSetClock(PWM_CHANNEL_0_CLOCK);
@@ -200,13 +199,13 @@ void servo_close(int servo) {
 	switch (servo) {
 		case 0:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
-			pinMode (SERVO_0, INPUT);
-			pullUpDnControl(SERVO_0, PUD_DOWN);
+			pinMode(SERVO_0, INPUT);
+			//pullUpDnControl(SERVO_0, PUD_DOWN);
 			break;
 		case 1:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
-			pinMode (SERVO_1, INPUT);
-			pullUpDnControl(SERVO_1, PUD_DOWN);
+			pinMode(SERVO_1, INPUT);
+			//pullUpDnControl(SERVO_1, PUD_DOWN);
 			break;	
 		default:
 			
@@ -570,11 +569,6 @@ void* taskShow(void* arg) {
 		//LOG("%s *DETECTED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
-		if (isChecked == 0) {
-			LOG("%s [CHECK]\n", RED);
-			continue;
-		}
-
 		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
