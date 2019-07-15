@@ -640,6 +640,7 @@ void* taskShow(void* arg) {
 			isChecked = 0;	
 #if 1
 			servo_open(0);
+			delay(DEBOUNCE_TIME);
 			servo_close(1);
 			delay(DEBOUNCE_TIME);
 #endif					
@@ -687,6 +688,7 @@ void* taskCheck(void* arg) {
 			pthread_cond_signal(&cond_led_test);	
 #if 1
 			servo_open(0);
+			delay(DEBOUNCE_TIME);
 			servo_close(1);
 			delay(DEBOUNCE_TIME);
 #endif			
@@ -701,6 +703,7 @@ void* taskCheck(void* arg) {
 			pthread_cond_signal(&cond_led_test);
 #if 1
 			servo_open(1);
+			delay(DEBOUNCE_TIME);
 			servo_close(0);
 			delay(DEBOUNCE_TIME);
 #endif				
