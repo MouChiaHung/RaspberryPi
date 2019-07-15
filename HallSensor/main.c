@@ -637,10 +637,15 @@ void* taskShow(void* arg) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);
-			isChecked = 0;
-			servo(1, 90);
+			isChecked = 0;	
+#if 1
+			servo_open(0);
+			servo_close(1);
+			delay(DEBOUNCE_TIME);
+#endif					
+			servo(0, 90);
 			delay(3*DELAY_MAGIC);
-			servo(1, 0);
+			servo(0, 0);
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -688,7 +693,7 @@ void* taskCheck(void* arg) {
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
-			servo_init();
+			//servo_init();
 		}
 		else {
 			LOG("%s [FAIL]\n", RED);
@@ -702,7 +707,7 @@ void* taskCheck(void* arg) {
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
-			servo_init();
+			//servo_init();
 		}
 		isChecked = 1;
 		pthread_cond_signal(&cond_led_check);
