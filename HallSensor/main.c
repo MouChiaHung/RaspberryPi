@@ -74,7 +74,7 @@
 #define RANGE 100
 
 #define	DEBOUNCE_TIME 500
-#define	DELAY_SERVO 200
+#define	DELAY_SERVO 100
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
 #define	DELAY_MAGIC 500
@@ -681,8 +681,8 @@ void* taskCheck(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_check);
 		
-		int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
-		//int ret = test();
+		//int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
+		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
