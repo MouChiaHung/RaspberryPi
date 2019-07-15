@@ -74,6 +74,7 @@
 #define RANGE 100
 
 #define	DEBOUNCE_TIME 500
+#define	DELAY_SERVO 200
 #define	DELAY_TIME 1000
 #define	DELAY_LOG 2000
 #define	DELAY_MAGIC 500
@@ -640,9 +641,9 @@ void* taskShow(void* arg) {
 			isChecked = 0;	
 #if 1
 			servo_open(0);
-			delay(DEBOUNCE_TIME);
+			delay(DELAY_SERVO);
 			servo_close(1);
-			delay(DEBOUNCE_TIME);
+			delay(DELAY_SERVO);
 #endif					
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
@@ -688,9 +689,9 @@ void* taskCheck(void* arg) {
 			pthread_cond_signal(&cond_led_test);	
 #if 1
 			servo_open(0);
-			delay(DEBOUNCE_TIME);
+			delay(DELAY_SERVO);
 			servo_close(1);
-			delay(DEBOUNCE_TIME);
+			delay(DELAY_SERVO);
 #endif			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
@@ -703,9 +704,9 @@ void* taskCheck(void* arg) {
 			pthread_cond_signal(&cond_led_test);
 #if 1
 			servo_open(1);
-			delay(DEBOUNCE_TIME);
+			delay(DELAY_SERVO);
 			servo_close(0);
-			delay(DEBOUNCE_TIME);
+			delay(DELAY_SERVO);
 #endif				
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
