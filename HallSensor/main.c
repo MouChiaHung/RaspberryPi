@@ -148,9 +148,18 @@ void LOG(const char* format, ...)
 
 #if 1
 void servo_init() {
-	LOG("%s servo open 0 and 1\n", LIGHT_GRAY);
-	servo_open(0);
-	servo_open(1);
+	LOG("%s servo init %d and %d\n", LIGHT_GRAY, SERVO_0, SERVO_1);
+	pullUpDnControl(SERVO_0, PUD_OFF);
+	pinMode(SERVO_0, PWM_OUTPUT);
+	pwmSetMode(PWM_MODE_MS);
+	pwmSetClock(PWM_CHANNEL_0_CLOCK);
+	pwmSetRange(PWM_CHANNEL_0_RANGE);
+	delay(DEBOUNCE_TIME);
+	pullUpDnControl(SERVO_1, PUD_OFF);
+	pinMode(SERVO_1, PWM_OUTPUT);
+	pwmSetMode(PWM_MODE_MS);
+	pwmSetClock(PWM_CHANNEL_0_CLOCK);
+	pwmSetRange(PWM_CHANNEL_0_RANGE);
 }
 #elif 0
 void servo_init() {
@@ -265,7 +274,7 @@ void servo(int servo, int angle) {
 		default:
 			break;
 	}
-	LOG("%s soft pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
 	if (servo == -1) return;
 	pwmWrite(servo, value);
 }
@@ -557,21 +566,17 @@ void* taskLEDTest(void* arg) {
 		pthread_mutex_unlock(&mutex_cond_led_test);
 		switch (test_state) {
 			case PASS:
-				LOG("%s LED PASS HIGH\n", RED);
 				digitalWrite(LED_PASS, HIGH);
 				//digitalWrite(LED_CHECK, LOW);
 				delay (2000);
-				LOG("%s LED PASS LOW\n", RED);
 				digitalWrite(LED_PASS, LOW);
 				//digitalWrite(LED_CHECK, HIGH);
 				test_state = WAIT;
 				break;
 			case FAIL:
-				LOG("%s LED FAIL HIGH\n", RED);
 				digitalWrite(LED_FAIL, HIGH);
 				//digitalWrite(LED_CHECK, LOW);
 				delay (2000);
-				LOG("%s LED FAIL LOW\n", RED);
 				digitalWrite(LED_FAIL, LOW);
 				//digitalWrite(LED_CHECK, HIGH);
 				test_state = WAIT;
