@@ -50,8 +50,8 @@
 #define SENSOR_5 24
 #define SENSOR_6 25
 #define SENSOR_7 20
-#define SERVO_0 18
-#define SERVO_1 12
+#define SERVO_0 12
+#define SERVO_1 18
 #else //wPi
 #define LED 21
 #define BTN 22
@@ -640,14 +640,19 @@ void* taskShow(void* arg) {
 			pthread_cond_signal(&cond_led_test);
 			isChecked = 0;	
 #if 1
-			servo_open(0);
-			delay(DELAY_SERVO);
 			servo_close(1);
 			delay(DELAY_SERVO);
 #endif					
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
+#if 1			
+			delay(DELAY_SERVO);
+			servo_open(0);
+			delay(DELAY_SERVO);
+			servo_open(1);
+			delay(DELAY_SERVO);
+#endif				
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -688,30 +693,38 @@ void* taskCheck(void* arg) {
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);	
 #if 1
-			servo_open(0);
-			delay(DELAY_SERVO);
 			servo_close(1);
 			delay(DELAY_SERVO);
 #endif			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
-			//servo_init();
+#if 1			
+			delay(DELAY_SERVO);
+			servo_open(0);
+			delay(DELAY_SERVO);
+			servo_open(1);
+			delay(DELAY_SERVO);
+#endif	
 		}
 		else {
 			LOG("%s [FAIL]\n", RED);
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
 #if 1
-			servo_open(1);
-			delay(DELAY_SERVO);
 			servo_close(0);
 			delay(DELAY_SERVO);
 #endif				
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
-			//servo_init();
+#if 1			
+			delay(DELAY_SERVO);
+			servo_open(0);
+			delay(DELAY_SERVO);
+			servo_open(1);
+			delay(DELAY_SERVO);
+#endif	
 		}
 		isChecked = 1;
 		pthread_cond_signal(&cond_led_check);
