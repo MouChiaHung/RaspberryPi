@@ -640,14 +640,19 @@ void* taskShow(void* arg) {
 			pthread_cond_signal(&cond_led_test);
 			isChecked = 0;	
 #if 1
-			servo_open(0);
-			delay(DELAY_SERVO);
 			servo_close(1);
 			delay(DELAY_SERVO);
 #endif					
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
+#if 1			
+			delay(DELAY_SERVO);
+			servo_open(0);
+			delay(DELAY_SERVO);
+			servo_open(1);
+			delay(DELAY_SERVO);
+#endif				
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -681,37 +686,45 @@ void* taskCheck(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_check);
 		
-		//int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
-		int ret = test();
+		int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
+		//int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);	
 #if 1
-			servo_open(0);
-			delay(DELAY_SERVO);
 			servo_close(1);
 			delay(DELAY_SERVO);
 #endif			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
 			servo(0, 0);
-			//servo_init();
+#if 1			
+			delay(DELAY_SERVO);
+			servo_open(0);
+			delay(DELAY_SERVO);
+			servo_open(1);
+			delay(DELAY_SERVO);
+#endif	
 		}
 		else {
 			LOG("%s [FAIL]\n", RED);
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
 #if 1
-			servo_open(1);
-			delay(DELAY_SERVO);
 			servo_close(0);
 			delay(DELAY_SERVO);
 #endif				
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
-			//servo_init();
+#if 1			
+			delay(DELAY_SERVO);
+			servo_open(0);
+			delay(DELAY_SERVO);
+			servo_open(1);
+			delay(DELAY_SERVO);
+#endif	
 		}
 		isChecked = 1;
 		pthread_cond_signal(&cond_led_check);
