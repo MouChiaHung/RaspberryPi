@@ -145,9 +145,8 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-#if 1
+#if 0
 void servo_init() {
-	LOG("%s servo open 0 and 1\n", LIGHT_GRAY);
 	servo_open(0);
 	servo_open(1);
 }
@@ -183,18 +182,18 @@ void servo_open(int servo) {
 		case 0:
 			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
 			pullUpDnControl(SERVO_0, PUD_OFF);
-			pinMode(SERVO_0, PWM_OUTPUT);
-			pwmSetMode(PWM_MODE_MS);
-			pwmSetClock(PWM_CHANNEL_0_CLOCK);
-			pwmSetRange(PWM_CHANNEL_0_RANGE);
+			//pinMode(SERVO_0, PWM_OUTPUT);
+			//pwmSetMode(PWM_MODE_MS);
+			//pwmSetClock(PWM_CHANNEL_0_CLOCK);
+			//pwmSetRange(PWM_CHANNEL_0_RANGE);
 			break;
 		case 1:
 			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_1);
 			pullUpDnControl(SERVO_1, PUD_OFF);
-			pinMode(SERVO_1, PWM_OUTPUT);
-			pwmSetMode(PWM_MODE_MS);
-			pwmSetClock(PWM_CHANNEL_0_CLOCK);
-			pwmSetRange(PWM_CHANNEL_0_RANGE);
+			//pinMode(SERVO_1, PWM_OUTPUT);
+			//pwmSetMode(PWM_MODE_MS);
+			//pwmSetClock(PWM_CHANNEL_0_CLOCK);
+			//pwmSetRange(PWM_CHANNEL_0_RANGE);
 			break;	
 		default:
 			
@@ -207,12 +206,12 @@ void servo_close(int servo) {
 	switch (servo) {
 		case 0:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
-			pinMode(SERVO_0, INPUT);
+			//pinMode(SERVO_0, INPUT);
 			pullUpDnControl(SERVO_0, PUD_DOWN);
 			break;
 		case 1:
 			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
-			pinMode(SERVO_1, INPUT);
+			//pinMode(SERVO_1, INPUT);
 			pullUpDnControl(SERVO_1, PUD_DOWN);
 			break;	
 		default:
@@ -222,7 +221,7 @@ void servo_close(int servo) {
 }
 
 
-#if 1
+#if 0
 void servo(int servo, int angle) {
 /*	
 	float period_per_unit = 0.1; //0.1ms;
@@ -686,29 +685,21 @@ void* taskCheck(void* arg) {
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_check);
 		
-		int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
-		//int ret = test();
+		//int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
+		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);	
-#if 1
-			servo_open(0);
-			servo_close(1);
-#endif			
-			servo(0, 90);
+			servo(1, 90);
 			delay(3*DELAY_MAGIC);
-			servo(0, 0);
+			servo(1, 0);
 			servo_init();
 		}
 		else {
 			LOG("%s [FAIL]\n", RED);
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
-#if 1
-			servo_open(1);
-			servo_close(0);
-#endif				
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
 			servo(1, 0);
