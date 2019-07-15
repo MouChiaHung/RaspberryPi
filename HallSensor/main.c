@@ -86,7 +86,8 @@ void servo_open(int servo);
 /* -------------------------------------------------------------------- */
 /* global variables                                                     */
 /* -------------------------------------------------------------------- */
-char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO20"};
+//char sensor_gpio[8][8] = {" GPIO17", " GPIO26", " GPIO27", " GPIO22", " GPIO23", " GPIO24", " GPIO25", " GPIO20"};
+char sensor_gpio[8][8] = {" 0", " 1", " 2", " 3", " 4", " 5", " 6", " 7"};
 
 enum TEST_STATE {WAIT, PASS, FAIL};
 int test_state = WAIT;
@@ -171,8 +172,7 @@ void servo_init() {
 #else
 void servo_init() {
 	LOG("%s gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
-	system("gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
-	
+	system("gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");	
 }	
 
 #endif
@@ -240,24 +240,7 @@ void servo(int servo, int angle) {
 			break;
 	}
 */
-	int value = 17;
-/*	
-	switch (servo) {
-		case 0:
-			servo = SERVO_0;
-			servo_open(0);
-			servo_close(1);
-			break;
-		case 1:
-			servo = SERVO_1;
-			servo_open(1);
-			servo_close(0);
-			break;	
-		default:
-			servo = -1;
-			break;
-	}
-*/	
+	int value = 17;	
 	switch (servo) {
 		case 0:
 			servo = SERVO_0;
@@ -271,13 +254,13 @@ void servo(int servo, int angle) {
 	}
 	switch (angle) {
 		case 90:
-			value = 22;
+			value = 25;
 			break;
 		case -90:
 			value = 10;
 			break;
 		case 0:
-			value = 13;
+			value = 14;
 			break;	
 		default:
 			break;
@@ -327,16 +310,16 @@ void servo(int servo, int angle) {
 			system("gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
 			switch (angle) {
 				case 90:
-					LOG("%s gpio -g pwm 18 23\n", LIGHT_GRAY);
-					system("gpio -g pwm 18 23");
+					LOG("%s gpio -g pwm 18 25\n", LIGHT_GRAY);
+					system("gpio -g pwm 18 25");
 					break;
 				case -90:
 					LOG("%s gpio -g pwm 18 10\n", LIGHT_GRAY);
 					system("gpio -g pwm 18 10");
 					break;
 				case 0:
-					LOG("%s gpio -g pwm 18 15\n", LIGHT_GRAY);
-					system("gpio -g pwm 18 15");
+					LOG("%s gpio -g pwm 18 14\n", LIGHT_GRAY);
+					system("gpio -g pwm 18 14");
 					break;	
 				default:
 					break;
@@ -388,7 +371,7 @@ void handler_sensor_0(void) {
 		goto END;
 	}
 	interval_sensor_0 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 0 \n", LIGHT_GRAY);
+	//LOG("%s SENSOR 0 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_0) == HIGH) {
 		//LOG("%s ********* LOST SENSOR 0 *********\n", RED);
 		goto END;
@@ -409,7 +392,7 @@ void handler_sensor_1(void) {
 		goto END;
 	}
 	interval_sensor_1 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 1 \n", LIGHT_GRAY);
+	//LOG("%s SENSOR 1 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_1) == HIGH) {
 		goto END;
 	}
@@ -429,7 +412,7 @@ void handler_sensor_2(void) {
 		goto END;
 	}
 	interval_sensor_2 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 2 \n", LIGHT_GRAY);	
+	//LOG("%s SENSOR 2 \n", LIGHT_GRAY);	
 	if (digitalRead(SENSOR_2) == HIGH) {
 		goto END;
 	}
@@ -449,7 +432,7 @@ void handler_sensor_3(void) {
 		goto END;
 	}
 	interval_sensor_3 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 3 \n", LIGHT_GRAY);
+	//LOG("%s SENSOR 3 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_3) == HIGH) {
 		goto END;
 	}
@@ -469,7 +452,7 @@ void handler_sensor_4(void) {
 		goto END;
 	}
 	interval_sensor_4 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 4 \n", LIGHT_GRAY);
+	//LOG("%s SENSOR 4 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_4) == HIGH) {
 		goto END;
 	}
@@ -489,7 +472,7 @@ void handler_sensor_5(void) {
 		goto END;
 	}
 	interval_sensor_5 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 5 \n", LIGHT_GRAY);
+	//LOG("%s SENSOR 5 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_5) == HIGH) {
 		goto END;
 	}
@@ -509,7 +492,7 @@ void handler_sensor_6(void) {
 		goto END;
 	}
 	interval_sensor_6 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 6 \n", LIGHT_GRAY);
+	//LOG("%s SENSOR 6 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_6) == HIGH) {
 		goto END;
 	}
@@ -529,7 +512,7 @@ void handler_sensor_7(void) {
 		goto END;
 	}
 	interval_sensor_7 = millis() + DEBOUNCE_TIME;
-	LOG("%s SENSOR 7 \n", LIGHT_GRAY);
+	//LOG("%s SENSOR 7 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_7) == HIGH) {
 		goto END;
 	}
@@ -695,6 +678,7 @@ void* taskCheck(void* arg) {
 #if 1
 			servo_open(0);
 			servo_close(1);
+			delay(DEBOUNCE_TIME);
 #endif			
 			servo(0, 90);
 			delay(3*DELAY_MAGIC);
@@ -708,6 +692,7 @@ void* taskCheck(void* arg) {
 #if 1
 			servo_open(1);
 			servo_close(0);
+			delay(DEBOUNCE_TIME);
 #endif				
 			servo(1, 90);
 			delay(3*DELAY_MAGIC);
