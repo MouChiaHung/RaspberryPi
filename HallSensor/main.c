@@ -191,7 +191,7 @@ void servo_init() {
 void servo_open(int servo) {
 	switch (servo) {
 		case 0:
-			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
+			//LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
 			pullUpDnControl(SERVO_0, PUD_OFF);
 			pinMode(SERVO_0, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
@@ -199,7 +199,7 @@ void servo_open(int servo) {
 			pwmSetRange(PWM_CHANNEL_0_RANGE);
 			break;
 		case 1:
-			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_1);
+			//LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_1);
 			pullUpDnControl(SERVO_1, PUD_OFF);
 			pinMode(SERVO_1, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
@@ -216,12 +216,12 @@ void servo_close(int servo) {
 	
 	switch (servo) {
 		case 0:
-			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
+			//LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
 			pinMode(SERVO_0, INPUT);
 			pullUpDnControl(SERVO_0, PUD_DOWN);
 			break;
 		case 1:
-			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
+			//LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
 			pinMode(SERVO_1, INPUT);
 			pullUpDnControl(SERVO_1, PUD_DOWN);
 			break;	
@@ -275,7 +275,7 @@ void servo(int servo, int angle) {
 		default:
 			break;
 	}
-	LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	//LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
 	if (servo == -1) return;
 	pwmWrite(servo, value);
 }
