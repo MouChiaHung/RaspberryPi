@@ -149,7 +149,7 @@ void LOG(const char* format, ...)
 
 #if 1
 void servo_init() {
-	LOG("%s servo init %d and %d\n", LIGHT_GRAY, SERVO_0, SERVO_1);
+	//LOG("%s servo init %d and %d\n", LIGHT_GRAY, SERVO_0, SERVO_1);
 	pullUpDnControl(SERVO_0, PUD_OFF);
 	pinMode(SERVO_0, PWM_OUTPUT);
 	pwmSetMode(PWM_MODE_MS);
