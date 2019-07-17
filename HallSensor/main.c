@@ -636,7 +636,7 @@ void* taskShow(void* arg) {
 			delay(DELAY_SERVO);
 #endif					
 			servo(0, 90);
-			delay(3*DELAY_MAGIC);
+			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 #if 1			
 			delay(DELAY_SERVO);
@@ -649,10 +649,27 @@ void* taskShow(void* arg) {
 		}
 #endif		
 		else {
+#if 1 //No check
+			LOG("%s [FAIL]\n", RED);
+			test_state = FAIL;
+			pthread_cond_signal(&cond_led_test);
+#if 1
+			servo_close(0);
+			delay(DELAY_SERVO);
+#endif				
+			servo(1, 90);
+			delay(2*DELAY_MAGIC);
+			servo(1, 0);
+#if 1			
+			delay(DELAY_SERVO);
+			servo_init();
+#endif	
+#else //Go Check
 			LOG("%s [CHECK]\n", YELLOW);
 			test_state = WAIT;
 			isChecked = 0;
 			pthread_cond_signal(&cond_led_check);
+#end	
 		}
 	}
 	return 0;
@@ -686,7 +703,7 @@ void* taskCheck(void* arg) {
 			delay(DELAY_SERVO);
 #endif			
 			servo(0, 90);
-			delay(3*DELAY_MAGIC);
+			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 #if 1			
 			delay(DELAY_SERVO);
@@ -702,7 +719,7 @@ void* taskCheck(void* arg) {
 			delay(DELAY_SERVO);
 #endif				
 			servo(1, 90);
-			delay(3*DELAY_MAGIC);
+			delay(2*DELAY_MAGIC);
 			servo(1, 0);
 #if 1			
 			delay(DELAY_SERVO);
