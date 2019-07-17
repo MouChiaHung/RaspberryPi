@@ -669,7 +669,7 @@ void* taskShow(void* arg) {
 			test_state = WAIT;
 			isChecked = 0;
 			pthread_cond_signal(&cond_led_check);
-#end	
+#endif	
 		}
 	}
 	return 0;
