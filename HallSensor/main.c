@@ -139,7 +139,7 @@ int oe = 1;
 void LOG(const char* format, ...)
 {
 	char str[320];
-	char tmp[320];
+	char tmp[256];
 	va_list ap;
 	va_start(ap, format);
 	vsprintf(tmp, format, ap);
