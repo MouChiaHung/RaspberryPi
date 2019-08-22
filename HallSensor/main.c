@@ -138,12 +138,13 @@ int oe = 1;
 /* -------------------------------------------------------------------- */
 void LOG(const char* format, ...)
 {
-	char str[255];
+	char str[320];
+	char tmp[320];
 	va_list ap;
-	va_start(ap,format);
-	vsprintf(str,format,ap);
-	sprintf(str,"%s%s",str,NONECOLOR);
-	printf("%s",str);
+	va_start(ap, format);
+	vsprintf(tmp, format, ap);
+	sprintf(str, "%s%s", tmp, NONECOLOR);
+	printf("%s", str);
 	va_end(ap); 
 }
 
