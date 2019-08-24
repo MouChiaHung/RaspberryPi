@@ -374,7 +374,7 @@ void handler_sensor_0(void) {
 		goto END;
 	}
 	interval_sensor_0 = millis() + DEBOUNCE_TIME;
-	//LOG("%s SENSOR 0 \n", LIGHT_GRAY);
+	LOG("%s SENSOR 0 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_0) == HIGH) {
 		//LOG("%s ********* LOST SENSOR 0 *********\n", RED);
 		goto END;
@@ -395,7 +395,7 @@ void handler_sensor_1(void) {
 		goto END;
 	}
 	interval_sensor_1 = millis() + DEBOUNCE_TIME;
-	//LOG("%s SENSOR 1 \n", LIGHT_GRAY);
+	LOG("%s SENSOR 1 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_1) == HIGH) {
 		goto END;
 	}
@@ -415,7 +415,7 @@ void handler_sensor_2(void) {
 		goto END;
 	}
 	interval_sensor_2 = millis() + DEBOUNCE_TIME;
-	//LOG("%s SENSOR 2 \n", LIGHT_GRAY);	
+	LOG("%s SENSOR 2 \n", LIGHT_GRAY);	
 	if (digitalRead(SENSOR_2) == HIGH) {
 		goto END;
 	}
@@ -435,7 +435,7 @@ void handler_sensor_3(void) {
 		goto END;
 	}
 	interval_sensor_3 = millis() + DEBOUNCE_TIME;
-	//LOG("%s SENSOR 3 \n", LIGHT_GRAY);
+	LOG("%s SENSOR 3 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_3) == HIGH) {
 		goto END;
 	}
@@ -455,7 +455,7 @@ void handler_sensor_4(void) {
 		goto END;
 	}
 	interval_sensor_4 = millis() + DEBOUNCE_TIME;
-	//LOG("%s SENSOR 4 \n", LIGHT_GRAY);
+	LOG("%s SENSOR 4 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_4) == HIGH) {
 		goto END;
 	}
@@ -475,7 +475,7 @@ void handler_sensor_5(void) {
 		goto END;
 	}
 	interval_sensor_5 = millis() + DEBOUNCE_TIME;
-	//LOG("%s SENSOR 5 \n", LIGHT_GRAY);
+	LOG("%s SENSOR 5 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_5) == HIGH) {
 		goto END;
 	}
@@ -495,7 +495,7 @@ void handler_sensor_6(void) {
 		goto END;
 	}
 	interval_sensor_6 = millis() + DEBOUNCE_TIME;
-	//LOG("%s SENSOR 6 \n", LIGHT_GRAY);
+	LOG("%s SENSOR 6 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_6) == HIGH) {
 		goto END;
 	}
@@ -515,7 +515,7 @@ void handler_sensor_7(void) {
 		goto END;
 	}
 	interval_sensor_7 = millis() + DEBOUNCE_TIME;
-	//LOG("%s SENSOR 7 \n", LIGHT_GRAY);
+	LOG("%s SENSOR 7 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_7) == HIGH) {
 		goto END;
 	}
