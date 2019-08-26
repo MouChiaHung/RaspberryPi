@@ -637,7 +637,7 @@ void* taskShow(void* arg) {
 	while (1) {
 		pthread_mutex_lock(&mutex_cond_show);
 		pthread_cond_wait(&cond_show, &mutex_cond_show);
-		LOG("%s *DETECTED\n", LIGHT_GRAY);
+		//LOG("%s *DETECTED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
 		int ret = test();
