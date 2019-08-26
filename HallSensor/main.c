@@ -268,7 +268,7 @@ void servo(int servo, int angle) {
 		default:
 			break;
 	}
-	//LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
 	if (servo == -1) return;
 	pwmWrite(servo, value);
 }
