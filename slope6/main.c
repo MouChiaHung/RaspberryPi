@@ -574,7 +574,6 @@ int test() {
 		strcat(str, sensor_gpio[3]);
 		level++;
 	} 
-#if 0	
 	if (digitalRead(SENSOR_4) == HIGH) {
 		strcat(str, sensor_gpio[4]);
 		level++;
@@ -583,6 +582,7 @@ int test() {
 		strcat(str, sensor_gpio[5]);
 		level++;
 	} 
+#if 0	
 	if (digitalRead(SENSOR_6) == HIGH) {
 		strcat(str, sensor_gpio[6]);
 		level++;
