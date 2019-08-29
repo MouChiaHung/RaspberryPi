@@ -183,22 +183,6 @@ void servo_close(int servo) {
 }
 
 void servo(int servo, int angle) {
-/*	
-	float period_per_unit = 0.1; //0.1ms;
-	float duty = 0; //ms
-	int value = 0; //count of units
-	switch (servo) {
-		case 0:
-			period_per_unit = (1.0f/PWM_BASE_FREQ)*PWM_CHANNEL_0_CLOCK*1000.0f; //ms
-			duty = (period_per_unit*SERV_0_DUTY_90)-((90.0f-angle)/180.0f)*(SERV_0_DUTY_90/2.0f)*period_per_unit; //1.5ms for 0, 2ms for 90, 1ms for -90
-			value = duty/period_per_unit;
-			LOG("%s pwm write servo_0 value:%d, duty:%f, unit:%f\n", LIGHT_GRAY, value, duty, period_per_unit);
-			pwmWrite(SERVO_0, value);
-			break;
-		default:
-			break;
-	}
-*/
 	int value = 17;	
 	switch (servo) {
 		case 0:
@@ -221,7 +205,7 @@ void servo(int servo, int angle) {
 		default:
 			break;
 	}
-	//LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
 	if (servo == -1) return;
 	pwmWrite(servo, value);
 }
@@ -351,6 +335,7 @@ void handler_sensor_5(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_5) {
+		//LOG("%s ********* FAST SENSOR 5 *********\n", RED);
 		//LOG("%s ********* FAST SENSOR 5 *********\n", RED);
 		goto END;
 	}
