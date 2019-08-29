@@ -149,14 +149,14 @@ void LOG(const char* format, ...)
 }
 
 void servo_init() {
-	LOG("%s servo init %d\n", LIGHT_GRAY, SERVO_0);
+	//LOG("%s servo init %d\n", LIGHT_GRAY, SERVO_0);
 	servo_open(0);
 }
 
 void servo_open(int servo) {
 	switch (servo) {
 		case 0:
-			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
+			//LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
 			pullUpDnControl(SERVO_0, PUD_OFF);
 			pinMode(SERVO_0, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
@@ -205,7 +205,7 @@ void servo(int servo, int angle) {
 		default:
 			break;
 	}
-	LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
+	//LOG("%s pwmWrite servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
 	if (servo == -1) return;
 	pwmWrite(servo, value);
 }
