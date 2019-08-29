@@ -51,7 +51,7 @@
 #define SENSOR_6 25
 #define SENSOR_7 20
 #define SERVO_0 12
-#define SERVO_1 18
+//#define SERVO_1 18
 #else //wPi
 #define LED 21
 #define BTN 22
@@ -148,57 +148,21 @@ void LOG(const char* format, ...)
 	va_end(ap); 
 }
 
-#if 1
 void servo_init() {
-	//LOG("%s servo init %d and %d\n", LIGHT_GRAY, SERVO_0, SERVO_1);
+	LOG("%s servo init %d\n", LIGHT_GRAY, SERVO_0);
 	servo_open(0);
-	delay(DELAY_SERVO);
-	servo_open(1);
 }
-#elif 0
-void servo_init() {
-  softServoSetup (SERVO_0, SERVO_1, -1, -1, -1, -1, -1, -1) ;
-}
-
-#elif 0 
-void servo_init() {
-  int servo[1] = {SERVO_0};
-	for (int i=0;i<1;i++) {
-		if (softPwmCreate(servo[i], 0, RANGE) >= 0) {
-			LOG("%s soft pwm create servo:%d, range:%d\n", LIGHT_GRAY, servo[i], RANGE);
-		}
-		else {
-			LOG("%s failed to soft pwm create servo:%d, range:%d\n", RED, servo[i], RANGE);
-		}		
-  }
-}
-#else
-void servo_init() {
-	LOG("%s gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
-	system("gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");	
-}	
-
-#endif
-
 
 void servo_open(int servo) {
 	switch (servo) {
 		case 0:
-			//LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
+			LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_0);
 			pullUpDnControl(SERVO_0, PUD_OFF);
 			pinMode(SERVO_0, PWM_OUTPUT);
 			pwmSetMode(PWM_MODE_MS);
 			pwmSetClock(PWM_CHANNEL_0_CLOCK);
 			pwmSetRange(PWM_CHANNEL_0_RANGE);
 			break;
-		case 1:
-			//LOG("%s servo open:%d\n", LIGHT_GRAY, SERVO_1);
-			pullUpDnControl(SERVO_1, PUD_OFF);
-			pinMode(SERVO_1, PWM_OUTPUT);
-			pwmSetMode(PWM_MODE_MS);
-			pwmSetClock(PWM_CHANNEL_0_CLOCK);
-			pwmSetRange(PWM_CHANNEL_0_RANGE);
-			break;	
 		default:
 			
 			break;
@@ -206,26 +170,18 @@ void servo_open(int servo) {
 }
 
 void servo_close(int servo) {
-	
 	switch (servo) {
 		case 0:
-			//LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
+			LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_0);
 			pinMode(SERVO_0, INPUT);
 			pullUpDnControl(SERVO_0, PUD_DOWN);
 			break;
-		case 1:
-			//LOG("%s servo close:%d\n", LIGHT_GRAY, SERVO_1);
-			pinMode(SERVO_1, INPUT);
-			pullUpDnControl(SERVO_1, PUD_DOWN);
-			break;	
 		default:
 			
 			break;
 	}
 }
 
-
-#if 1
 void servo(int servo, int angle) {
 /*	
 	float period_per_unit = 0.1; //0.1ms;
@@ -248,9 +204,6 @@ void servo(int servo, int angle) {
 		case 0:
 			servo = SERVO_0;
 			break;
-		case 1:
-			servo = SERVO_1;
-			break;	
 		default:
 			servo = -1;
 			break;
@@ -272,88 +225,6 @@ void servo(int servo, int angle) {
 	if (servo == -1) return;
 	pwmWrite(servo, value);
 }
-#elif 0
-void servo(int servo, int angle) {
-	int min = -250;
-	int max = 1250;
-	int value = min+(max-min)*((angle-(-90))/(90-(-90)));
-	switch (servo) {
-		case 0:
-			servo = SERVO_0;
-			break;
-		case 1:
-			servo = SERVO_1;
-			break;
-		default:
-			break;
-	}
-	LOG("%s soft servo write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
-	softServoWrite (servo, value) ;
-}
-
-#elif 0
-void servo(int servo, int angle) {
-	int value = 0+RANGE*((angle-(-90))/(90-(-90)));
-	switch (servo) {
-		case 0:
-			servo = SERVO_0;
-			break;
-		default:
-			break;
-	}
-	LOG("%s soft pwm write servo:%d, value:%d\n", LIGHT_GRAY, servo, value);
-	softPwmWrite (servo, value) ;
-}
-
-#else
-void servo(int servo, int angle) {
-	switch (servo) {
-		case 0:
-			LOG("%s gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
-			system("gpio -g mode 18 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
-			switch (angle) {
-				case 90:
-					LOG("%s gpio -g pwm 18 25\n", LIGHT_GRAY);
-					system("gpio -g pwm 18 25");
-					break;
-				case -90:
-					LOG("%s gpio -g pwm 18 10\n", LIGHT_GRAY);
-					system("gpio -g pwm 18 10");
-					break;
-				case 0:
-					LOG("%s gpio -g pwm 18 14\n", LIGHT_GRAY);
-					system("gpio -g pwm 18 14");
-					break;	
-				default:
-					break;
-			}
-			break;
-		case 1:
-			LOG("%s gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200\n", LIGHT_GRAY);
-			system("gpio -g mode 12 pwm && gpio pwm-ms && gpio pwmc 1920 && gpio pwmr 200");
-			switch (angle) {
-				case 90:
-					LOG("%s gpio -g pwm 12 25\n", LIGHT_GRAY);
-					system("gpio -g pwm 12 25");
-					break;
-				case -90:
-					LOG("%s gpio -g pwm 12 10\n", LIGHT_GRAY);
-					system("gpio -g pwm 12 10");
-					break;
-				case 0:
-					LOG("%s gpio -g pwm 12 14\n", LIGHT_GRAY);
-					system("gpio -g pwm 12 14");
-					break;	
-				default:
-					break;
-			}
-			break;	
-		default:
-			servo = -1;
-			break;
-	}
-}
-#endif
 
 void handler_BTN(void) {
 	int time = millis();
@@ -601,35 +472,12 @@ void* taskLEDTest(void* arg) {
 }
 
 void* taskLEDCheck(void* arg) {
-#if 0		
-	while (1) {
-		pthread_mutex_lock(&mutex_cond_led_check);
-		pthread_cond_wait(&cond_led_check, &mutex_cond_led_check);
-		delay(DELAY_MAGIC);
-		pthread_mutex_unlock(&mutex_cond_led_check);
-		switch (test_state) {
-			case WAIT:
-				while (isChecked == 0) {
-					digitalWrite(LED_CHECK, HIGH); //blink
-					delay (500);
-					digitalWrite(LED_CHECK, LOW);
-					delay (500);
-				}
-				digitalWrite(LED_CHECK, HIGH); 
-				break;	
-			default:
-				digitalWrite(LED_CHECK, HIGH);
-				break;
-		}
-	}
-#else
 	while (1) {
 		digitalWrite(LED_CHECK, HIGH); //blink
 		delay (500);
 		digitalWrite(LED_CHECK, LOW);
 		delay (500);
 	}
-#endif	
 	return 0;
 }
 
@@ -646,17 +494,13 @@ void* taskShow(void* arg) {
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);
 			isChecked = 0;	
-#if 1
-			servo_close(1);
-			delay(DELAY_SERVO);
-#endif					
+			
 			servo(0, 90);
 			delay(2*DELAY_MAGIC);
-			servo(0, 0);
-#if 1			
+			servo(0, 0);			
 			delay(DELAY_SERVO);
-			servo_init();
-#endif				
+			servo_init();	
+			
 		}
 #if 0 //no retry case		
 		else if (ret == TEST_RETRY){
@@ -667,18 +511,9 @@ void* taskShow(void* arg) {
 #if 1 //No check
 			LOG("%s [FAIL]\n", RED);
 			test_state = FAIL;
-			pthread_cond_signal(&cond_led_test);
-#if 1
-			servo_close(0);
-			delay(DELAY_SERVO);
-#endif				
-			servo(1, 90);
-			delay(2*DELAY_MAGIC);
-			servo(1, 0);
-#if 1			
+			pthread_cond_signal(&cond_led_test);		
 			delay(DELAY_SERVO);
 			servo_init();
-#endif	
 #else //Go Check
 			LOG("%s [CHECK]\n", YELLOW);
 			test_state = WAIT;
@@ -713,33 +548,20 @@ void* taskCheck(void* arg) {
 			LOG("%s [PASS]\n", GREEN);
 			test_state = PASS;
 			pthread_cond_signal(&cond_led_test);	
-#if 1
-			servo_close(1);
-			delay(DELAY_SERVO);
-#endif			
+			
 			servo(0, 90);
 			delay(2*DELAY_MAGIC);
-			servo(0, 0);
-#if 1			
+			servo(0, 0);		
 			delay(DELAY_SERVO);
 			servo_init();
-#endif	
+
 		}
 		else {
 			LOG("%s [FAIL]\n", RED);
 			test_state = FAIL;
 			pthread_cond_signal(&cond_led_test);
-#if 1
-			servo_close(0);
-			delay(DELAY_SERVO);
-#endif				
-			servo(1, 90);
-			delay(2*DELAY_MAGIC);
-			servo(1, 0);
-#if 1			
 			delay(DELAY_SERVO);
 			servo_init();
-#endif	
 		}
 		isChecked = 1;
 		pthread_cond_signal(&cond_led_check);
