@@ -138,12 +138,13 @@ int oe = 1;
 /* -------------------------------------------------------------------- */
 void LOG(const char* format, ...)
 {
-	char str[255];
+	char str[320];
+	char tmp[256];
 	va_list ap;
-	va_start(ap,format);
-	vsprintf(str,format,ap);
-	sprintf(str,"%s%s",str,NONECOLOR);
-	printf("%s",str);
+	va_start(ap, format);
+	vsprintf(tmp, format, ap);
+	sprintf(str, "%s%s", tmp, NONECOLOR);
+	printf("%s", str);
 	va_end(ap); 
 }
 
@@ -391,11 +392,13 @@ void handler_sensor_1(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_1) {
+		//LOG("%s ********* FAST SENSOR 1 *********\n", RED);
 		goto END;
 	}
 	interval_sensor_1 = millis() + DEBOUNCE_TIME;
 	//LOG("%s SENSOR 1 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_1) == HIGH) {
+		//LOG("%s ********* LOST SENSOR 1 *********\n", RED);
 		goto END;
 	}
 	(counter_sensor_1)++;
@@ -411,11 +414,13 @@ void handler_sensor_2(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_2) {
+		//LOG("%s ********* FAST SENSOR 2 *********\n", RED);
 		goto END;
 	}
 	interval_sensor_2 = millis() + DEBOUNCE_TIME;
 	//LOG("%s SENSOR 2 \n", LIGHT_GRAY);	
 	if (digitalRead(SENSOR_2) == HIGH) {
+		//LOG("%s ********* LOST SENSOR 2 *********\n", RED);
 		goto END;
 	}
 	(counter_sensor_2)++;
@@ -431,11 +436,13 @@ void handler_sensor_3(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_3) {
+		//LOG("%s ********* FAST SENSOR 3 *********\n", RED);
 		goto END;
 	}
 	interval_sensor_3 = millis() + DEBOUNCE_TIME;
 	//LOG("%s SENSOR 3 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_3) == HIGH) {
+		//LOG("%s ********* LOST SENSOR 3 *********\n", RED);
 		goto END;
 	}
 	(counter_sensor_3)++;
@@ -451,11 +458,13 @@ void handler_sensor_4(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_4) {
+		//LOG("%s ********* FAST SENSOR 4 *********\n", RED);
 		goto END;
 	}
 	interval_sensor_4 = millis() + DEBOUNCE_TIME;
 	//LOG("%s SENSOR 4 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_4) == HIGH) {
+		//LOG("%s ********* LOST SENSOR 4 *********\n", RED);
 		goto END;
 	}
 	(counter_sensor_4)++;
@@ -471,11 +480,13 @@ void handler_sensor_5(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_5) {
+		//LOG("%s ********* FAST SENSOR 5 *********\n", RED);
 		goto END;
 	}
 	interval_sensor_5 = millis() + DEBOUNCE_TIME;
 	//LOG("%s SENSOR 5 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_5) == HIGH) {
+		//LOG("%s ********* LOST SENSOR 5 *********\n", RED);
 		goto END;
 	}
 	(counter_sensor_5)++;
@@ -491,11 +502,13 @@ void handler_sensor_6(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_6) {
+		//LOG("%s ********* FAST SENSOR 6 *********\n", RED);
 		goto END;
 	}
 	interval_sensor_6 = millis() + DEBOUNCE_TIME;
 	//LOG("%s SENSOR 6 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_6) == HIGH) {
+		//LOG("%s ********* LOST SENSOR 6 *********\n", RED);
 		goto END;
 	}
 	(counter_sensor_6)++;
@@ -511,11 +524,13 @@ void handler_sensor_7(void) {
 	int time = 0;
 	time = millis();
 	if (time < interval_sensor_7) {
+		//LOG("%s ********* FAST SENSOR 7 *********\n", RED);
 		goto END;
 	}
 	interval_sensor_7 = millis() + DEBOUNCE_TIME;
 	//LOG("%s SENSOR 7 \n", LIGHT_GRAY);
 	if (digitalRead(SENSOR_7) == HIGH) {
+		//LOG("%s ********* LOST SENSOR 7 *********\n", RED);
 		goto END;
 	}
 	(counter_sensor_7)++;
@@ -638,7 +653,7 @@ void* taskShow(void* arg) {
 			delay(DELAY_SERVO);
 #endif					
 			servo(0, 90);
-			delay(3*DELAY_MAGIC);
+			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 #if 1			
 			delay(DELAY_SERVO);
@@ -651,10 +666,27 @@ void* taskShow(void* arg) {
 		}
 #endif		
 		else {
+#if 1 //No check
+			LOG("%s [FAIL]\n", RED);
+			test_state = FAIL;
+			pthread_cond_signal(&cond_led_test);
+#if 1
+			servo_close(0);
+			delay(DELAY_SERVO);
+#endif				
+			servo(1, 90);
+			delay(2*DELAY_MAGIC);
+			servo(1, 0);
+#if 1			
+			delay(DELAY_SERVO);
+			servo_init();
+#endif	
+#else //Go Check
 			LOG("%s [CHECK]\n", YELLOW);
 			test_state = WAIT;
 			isChecked = 0;
 			pthread_cond_signal(&cond_led_check);
+#endif	
 		}
 	}
 	return 0;
@@ -689,7 +721,7 @@ void* taskCheck(void* arg) {
 			delay(DELAY_SERVO);
 #endif			
 			servo(0, 90);
-			delay(3*DELAY_MAGIC);
+			delay(2*DELAY_MAGIC);
 			servo(0, 0);
 #if 1			
 			delay(DELAY_SERVO);
@@ -705,7 +737,7 @@ void* taskCheck(void* arg) {
 			delay(DELAY_SERVO);
 #endif				
 			servo(1, 90);
-			delay(3*DELAY_MAGIC);
+			delay(2*DELAY_MAGIC);
 			servo(1, 0);
 #if 1			
 			delay(DELAY_SERVO);
