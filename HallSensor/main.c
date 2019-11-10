@@ -625,6 +625,8 @@ void* taskShow(void* arg) {
 		//LOG("%s *DETECTED\n", LIGHT_GRAY);
 		delay(DELAY_MAGIC);
 		pthread_mutex_unlock(&mutex_cond_show);
+		//for fail and pass
+		delay(DELAY_MAGIC/2);
 		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
@@ -676,6 +678,7 @@ void* taskCheck(void* arg) {
 		pthread_mutex_unlock(&mutex_cond_check);
 		
 		//int ret = ((++oe%2) == 0) ? TEST_PASS : TEST_FAIL;
+		
 		int ret = test();
 		if (ret == TEST_PASS) {
 			LOG("%s [PASS]\n", GREEN);
